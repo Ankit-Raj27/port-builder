@@ -88,7 +88,7 @@ export function Navbar() {
             </NavigationMenuItem>
           </NavigationMenuList>
         </NavigationMenu>
-        <div className="ml-auto flex items-center gap-4">
+        <div className="ml-auto mr-5  flex items-center gap-4">
           <UserButton />
         </div>
       </div>
