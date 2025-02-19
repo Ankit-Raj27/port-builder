@@ -1,5 +1,5 @@
 import { SearchBar } from "@/components/forms/search";
-import { Navbar } from "@/components/navigation/navbar/page";
+import { Navbar } from "@/components/navbar/Navbar";
 import React from "react";
 
 function page() {

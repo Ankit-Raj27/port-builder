@@ -1,9 +1,9 @@
-import { Navbar } from "@/components/navigation/navbar/page";
 import { Download, Code, Globe, Wand2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from "next/link";
 import Image from "next/image";
 import Footer from "@/components/common/Footer";
+import { Navbar } from '@/components/navbar/Navbar';
 
 export default function Home() {
   const features = [
@@ -159,7 +159,6 @@ export default function Home() {
         {/* Footer Section */}
         <Footer />
       </main>
-
     </div>
   );
 }
