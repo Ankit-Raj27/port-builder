@@ -3,6 +3,7 @@ import { Download, Code, Globe, Wand2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from "next/link";
 import Image from "next/image";
+import Footer from "@/components/common/Footer";
 
 export default function Home() {
   const features = [
@@ -26,7 +27,6 @@ export default function Home() {
   return (
     <div>
       <main className="container">
-
         <Navbar />
         {/* Welcome section */}
         <section className="max-w-[1200px] mx-auto px-4 py-20 md:py-22">
@@ -138,13 +138,26 @@ export default function Home() {
 
         </section>
 
-        {/* Footer Section */}
-        <section>
-                <h1>
-                  Your vision. Your goals. Your website!
-                </h1>
+        {/* CAT Section */}
+        <section className="h-auto p-16 w-full bg-gradient-to-b from-blue-50 to-blue-400 flex flex-col items-center justify-center px-4">
+          <div className="max-4xl mx-auto text-center space-y-8">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-medium tracking-tight text-navy-900">
+              <span className="block">Your vision. Your goals.</span>
+              <span className="block">Your website.</span>
+            </h1>
+            <div>
+              <Button
+                asChild
+                size="lg"
+                className="rounded-full px-8 py-6 text-lg font-medium bg-white text-navy-900 hover:bg-white/90"
+              >
+                <Link href="/get-started">Get Started</Link>
+              </Button>
+            </div>
+          </div>
         </section>
-
+        {/* Footer Section */}
+        <Footer />
       </main>
 
     </div>
