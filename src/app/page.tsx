@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import Link from "next/link";
 import Image from "next/image";
 import Footer from "@/components/common/Footer";
-import { Navbar } from '@/components/navbar/Navbar';
+import { Navbar } from '@/components/navbars/Navbar';
 
 export default function Home() {
   const features = [

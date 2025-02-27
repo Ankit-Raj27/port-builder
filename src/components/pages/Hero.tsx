@@ -1,5 +1,5 @@
 import React from 'react'
-import { Navbar } from '../navbar/Navbar'
+import { Navbar } from '../navbars/Navbar'
 import Link from 'next/link'
 
 function Hero() {
