@@ -1,11 +1,13 @@
-"use client"
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+"use client";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
+
 import Navbar1 from "@/components/navbars/Navbar1";
 import Navbar2 from "@/components/navbars/Navbar2";
 import Navbar3 from "@/components/navbars/Navbar3";
 import Navbar4 from "@/components/navbars/Navbar4";
 import Navbar5 from "@/components/navbars/Navbar5";
+
 import Hero1 from "@/components/hero/Hero1";
 import Hero2 from "@/components/hero/Hero2";
 import Hero3 from "@/components/hero/Hero3";
@@ -15,20 +17,28 @@ import Hero5 from "@/components/hero/Hero5";
 import Project1 from "@/components/projects/Project1";
 import Project2 from "@/components/projects/Project2";
 
-
 import usePortfolioStore from "@/components/store/usePortfolioStore";
 
 const TemplateEditor: React.FC = () => {
   const router = useRouter();
-  const queryParams = new URLSearchParams(window.location.search);
-  const id = queryParams.get("id") || "";
-  const queryNavbar = queryParams.get("navbar");
-  const queryHero = queryParams.get("hero");
-  const queryProject = queryParams.get("project");
-  const queryBlog = queryParams.get("blog");
-  const queryFooter = queryParams.get("footer");
+  const searchParams = useSearchParams();
+  const [queryParams, setQueryParams] = useState<URLSearchParams | null>(null);
 
-  const { navbar, hero, setNavbar, setHero, project, setProject, blog, setBlog,footer, setFooter } = usePortfolioStore();
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setQueryParams(new URLSearchParams(window.location.search));
+    }
+  }, []);
+
+  // ✅ Fix: Ensure queryParams isn't null before calling .get()
+  const id = queryParams?.get("id") || "";
+  const queryNavbar = queryParams?.get("navbar") || null;
+  const queryHero = queryParams?.get("hero") || null;
+  const queryProject = queryParams?.get("project") || null;
+  const queryBlog = queryParams?.get("blog") || null;
+  const queryFooter = queryParams?.get("footer") || null;
+
+  const { navbar, hero, setNavbar, setHero, project, setProject, blog, setBlog, footer, setFooter } = usePortfolioStore();
 
   useEffect(() => {
     if (queryNavbar) setNavbar(queryNavbar);
@@ -36,7 +46,46 @@ const TemplateEditor: React.FC = () => {
     if (queryProject) setProject(queryProject);
     if (queryBlog) setBlog(queryBlog);
     if (queryFooter) setFooter(queryFooter);
-  }, [queryNavbar, queryHero, queryProject, queryBlog,queryFooter, setNavbar, setHero,setProject,setBlog,setFooter]);
+  }, [queryNavbar, queryHero, queryProject, queryBlog, queryFooter, setNavbar, setHero, setProject, setBlog, setFooter]);
+
+  // Download Zip function
+  const [isDownloading, setIsDownloading] = useState(false);
+  const handleDownload = async () => {
+    setIsDownloading(true);
+    try {
+      // Explicitly define bodyData type
+      const bodyData: { navbar: string | null; hero: string | null; project?: string | null } = {
+        navbar,
+        hero,
+      };
+  
+      if (project) bodyData.project = project; // ✅ Only add project if it exists
+  
+      const response = await fetch("/api/download", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(bodyData),
+      });
+  
+      if (!response.ok) {
+        const errorMessage = await response.text();
+        throw new Error(`Failed to download ZIP: ${errorMessage}`);
+      }
+  
+      const blob = await response.blob();
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = "portfolio.zip";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (error) {
+      console.error("Download failed:", error);
+    } finally {
+      setIsDownloading(false);
+    }
+  };
+          
 
   return (
     <div className="flex h-screen">
@@ -49,16 +98,15 @@ const TemplateEditor: React.FC = () => {
           {navbar === "Navbar3" && <Navbar3 />}
           {navbar === "Navbar4" && <Navbar4 />}
           {navbar === "Navbar5" && <Navbar5 />}
-          
+
           {hero === "Hero1" && <Hero1 />}
           {hero === "Hero2" && <Hero2 />}
           {hero === "Hero3" && <Hero3 />}
           {hero === "Hero4" && <Hero4 />}
           {hero === "Hero5" && <Hero5 />}
-          
+
           {project === "Project1" && <Project1 />}
           {project === "Project2" && <Project2 />}
-
         </div>
       </div>
 
@@ -68,46 +116,52 @@ const TemplateEditor: React.FC = () => {
 
         {/* Navbar Selection */}
         <h3 className="text-lg font-semibold">Select a Navbar:</h3>
-        <button onClick={() => setNavbar("Navbar1")} className={`p-2 m-2 w-full text-left ${navbar === "Navbar1" ? "bg-blue-500 text-white" : "bg-gray-300"}`}>
-          Navbar 1
-        </button>
-        <button onClick={() => setNavbar("Navbar2")} className={`p-2 m-2 w-full text-left ${navbar === "Navbar2" ? "bg-blue-500 text-white" : "bg-gray-300"}`}>
-          Navbar 2
-        </button>
-        <button onClick={() => setNavbar("Navbar3")} className={`p-2 m-2 w-full text-left ${navbar === "Navbar3" ? "bg-blue-500 text-white" : "bg-gray-300"}`}>
-          Navbar 3
-        </button>
-        <button onClick={() => setNavbar("Navbar4")} className={`p-2 m-2 w-full text-left ${navbar === "Navbar4" ? "bg-blue-500 text-white" : "bg-gray-300"}`}>
-          Navbar 4
-        </button>
-        <button onClick={() => setNavbar("Navbar5")} className={`p-2 m-2 w-full text-left ${navbar === "Navbar5" ? "bg-blue-500 text-white" : "bg-gray-300"}`}>
-          Navbar 5
-        </button>
+        {["Navbar1", "Navbar2", "Navbar3", "Navbar4", "Navbar5"].map((nav) => (
+          <button
+            key={nav}
+            onClick={() => setNavbar(nav)}
+            className={`p-2 m-2 w-full text-left ${navbar === nav ? "bg-blue-500 text-white" : "bg-gray-300"}`}
+          >
+            {nav}
+          </button>
+        ))}
 
         {/* Hero Section Selection */}
         <h3 className="text-lg font-semibold mt-4">Select a Hero Section:</h3>
-        <button onClick={() => setHero("Hero1")} className={`p-2 m-2 w-full text-left ${hero === "Hero1" ? "bg-blue-500 text-white" : "bg-gray-300"}`}>
-          Hero 1
-        </button>
-        <button onClick={() => setHero("Hero2")} className={`p-2 m-2 w-full text-left ${hero === "Hero2" ? "bg-blue-500 text-white" : "bg-gray-300"}`}>
-          Hero 2
-        </button>
-        <button onClick={() => setHero("Hero3")} className={`p-2 m-2 w-full text-left ${hero === "Hero3" ? "bg-blue-500 text-white" : "bg-gray-300"}`}>
-          Hero 3
-        </button>
-        <button onClick={() => setHero("Hero4")} className={`p-2 m-2 w-full text-left ${hero === "Hero4" ? "bg-blue-500 text-white" : "bg-gray-300"}`}>
-          Hero 4
-        </button>
-        <button onClick={() => setHero("Hero5")} className={`p-2 m-2 w-full text-left ${hero === "Hero5" ? "bg-blue-500 text-white" : "bg-gray-300"}`}>
-          Hero 5
-        </button>
+        {["Hero1", "Hero2", "Hero3", "Hero4", "Hero5"].map((h) => (
+          <button
+            key={h}
+            onClick={() => setHero(h)}
+            className={`p-2 m-2 w-full text-left ${hero === h ? "bg-blue-500 text-white" : "bg-gray-300"}`}
+          >
+            {h}
+          </button>
+        ))}
 
         {/* Project Section Selection */}
-        <h3 className="text-lg font-semibold mt-4">Select a Hero Section:</h3>
-        <button onClick={() => setProject("Project1")} className={`p-2 m-2 w-full text-left ${project === "Project1" ? "bg-blue-500 text-white" : "bg-gray-300"}`}>
-          Project 1
-        </button>
+        <h3 className="text-lg font-semibold mt-4">Select a Project Section:</h3>
+        {["Project1", "Project2"].map((p) => (
+          <button
+            key={p}
+            onClick={() => setProject(p)}
+            className={`p-2 m-2 w-full text-left ${project === p ? "bg-blue-500 text-white" : "bg-gray-300"}`}
+          >
+            {p}
+          </button>
+
+          
+        ))}
+         <button
+        onClick={handleDownload}
+        disabled={isDownloading}
+        className="mt-4 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition"
+      >
+        {isDownloading ? "Downloading..." : "Download ZIP"}
+      </button>
       </div>
+
+   
+     
     </div>
   );
 };
