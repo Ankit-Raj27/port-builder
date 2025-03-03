@@ -10,7 +10,7 @@ type Template = {
 };
 
 const templates: Template[] = [
-  { id: "template1", name: "Modern Portfolio", description: "A sleek, minimal portfolio.", navbar: "Navbar1", hero: "Hero2" },
+  { id: "template1", name: "Modern Portfolio", description: "A sleek, minimal portfolio.", navbar: "Navbar1", hero: "Hero1" },
   { id: "template2", name: "Creative Portfolio", description: "A stylish and colorful template.", navbar: "Navbar2", hero: "Hero1" },
   { id: "template3", name: "Business Portfolio", description: "A professional portfolio.", navbar: "Navbar1", hero: "Hero1" }
 ];
