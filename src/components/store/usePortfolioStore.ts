@@ -24,7 +24,7 @@ const usePortfolioStore = create<PortfolioState>((set) => ({
   footer: null,
   setNavbar: (navbar) => set({ navbar }),
   setHero: (hero) => set({ hero }),
-  setProject: (hero) => set({ hero }),
+  setProject: (project) => set({ project}),
   setBlog: (hero) => set({ hero }),
   setFooter: (footer) => set({ footer }),
   setContact: (contact) => set({ contact }),
