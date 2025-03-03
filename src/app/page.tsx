@@ -1,4 +1,5 @@
 import { Download, Code, Globe, Wand2 } from 'lucide-react';
+//import ThemeSelector from "@/components/ThemeProvider";
 import { Button } from '@/components/ui/button';
 import Link from "next/link";
 import Image from "next/image";
@@ -72,8 +73,7 @@ export default function Home() {
             </div>
           </div>
         </section>
-
-
+  
         {/* Template Section */}
         <section className="w-full py-16 bg-gray-100">
           <div className="mx-auto max-w-3xl text-center px-4 mb-20">

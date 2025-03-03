@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+//import ThemeProvider from "@/components/ThemeProvider"; // ✅ Import ThemeProvider
+import "./globals.css";
 import {
   ClerkProvider,
   // SignInButton,
@@ -35,7 +37,7 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en">
         <body>
-          {children}
+        {children}
         </body>
       </html>
     </ClerkProvider>
