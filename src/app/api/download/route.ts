@@ -18,7 +18,11 @@ function findFile(basePaths: string[], subPath: string): string | null {
 }
 
 // ✅ Recursively add files from a folder
-function addFilesFromFolder(archive: archiver.Archiver, folderPath: string, zipFolderPath: string): void {
+function addFilesFromFolder(
+  archive: archiver.Archiver,
+  folderPath: string,
+  zipFolderPath: string
+): void {
   if (fs.existsSync(folderPath)) {
     const files = fs.readdirSync(folderPath);
     files.forEach((file) => {
@@ -42,10 +46,16 @@ export async function POST(req: Request) {
       path.resolve(process.cwd(), "src/components"),
     ];
 
-    const navbarPath = navbar ? findFile(basePaths, `navbars/${navbar}.tsx`) : null;
+    const navbarPath = navbar
+      ? findFile(basePaths, `navbars/${navbar}.tsx`)
+      : null;
     const heroPath = hero ? findFile(basePaths, `hero/${hero}.tsx`) : null;
-    const projectPath = project ? findFile(basePaths, `projects/${project}.tsx`) : null;
-    const footerPath = footer ? findFile(basePaths, `footer/${footer}.tsx`) : null;
+    const projectPath = project
+      ? findFile(basePaths, `projects/${project}.tsx`)
+      : null;
+    const footerPath = footer
+      ? findFile(basePaths, `footer/${footer}.tsx`)
+      : null;
     const uiPath = findFile(basePaths, "ui");
 
     console.log("📂 Checking files:");
@@ -56,7 +66,10 @@ export async function POST(req: Request) {
     console.log(`   📁 UI Folder Path: ${uiPath ?? "❌ Not Found"}`);
 
     if (!navbarPath && !heroPath && !projectPath && !footerPath) {
-      return NextResponse.json({ error: "No components selected" }, { status: 400 });
+      return NextResponse.json(
+        { error: "No components selected" },
+        { status: 400 }
+      );
     }
 
     const tmpDir = "/tmp";
@@ -72,38 +85,199 @@ export async function POST(req: Request) {
       output.on("close", async () => {
         console.log(`✅ ZIP finalized with ${archive.pointer()} bytes`);
         if (archive.pointer() === 0) {
-          return resolve(NextResponse.json({ error: "ZIP file is empty" }, { status: 500 }));
+          return resolve(
+            NextResponse.json({ error: "ZIP file is empty" }, { status: 500 })
+          );
         }
         try {
           const fileBuffer = await readFile(zipPath);
-          resolve(new NextResponse(fileBuffer, {
-            headers: {
-              "Content-Type": "application/zip",
-              "Content-Disposition": "attachment; filename=portfolio.zip",
-            },
-          }));
-        } catch (error) {
-          reject(NextResponse.json({ error: "Failed to read ZIP file" }, { status: 500 }));
+          resolve(
+            new NextResponse(fileBuffer, {
+              headers: {
+                "Content-Type": "application/zip",
+                "Content-Disposition": "attachment; filename=portfolio.zip",
+              },
+            })
+          );
+        } catch{
+          reject(
+            NextResponse.json(
+              { error: "Failed to read ZIP file" },
+              { status: 500 }
+            )
+          );
         }
       });
 
       archive.on("error", (err) => {
         console.error("❌ Archiver Error:", err);
-        reject(NextResponse.json({ error: "ZIP creation failed" }, { status: 500 }));
+        reject(
+          NextResponse.json({ error: "ZIP creation failed" }, { status: 500 })
+        );
       });
 
       archive.pipe(output);
 
-      if (navbarPath) archive.append(fs.createReadStream(navbarPath), { name: `components/navbars/${navbar}.tsx` });
-      if (heroPath) archive.append(fs.createReadStream(heroPath), { name: `components/hero/${hero}.tsx` });
-      if (projectPath) archive.append(fs.createReadStream(projectPath), { name: `components/projects/${project}.tsx` });
-      if (footerPath) archive.append(fs.createReadStream(footerPath), { name: `components/footer/${footer}.tsx` });
-      if (uiPath) addFilesFromFolder(archive, uiPath, "components/ui");
+      // ✅ Add Next.js Project Files with Tailwind Config
+      const projectFiles = {
+        "package.json": `{
+          "name": "portfolio",
+          "version": "1.0.0",
+          "scripts": {
+            "dev": "next dev",
+            "build": "next build",
+            "start": "next start",
+            "postinstall": "npx shadcn@latest init -y && npx shadcn@latest add"
+          },
+          "dependencies": {
+          "@hookform/resolvers": "^4.1.0",
+              "@radix-ui/react-accordion": "^1.2.3",
+              "@radix-ui/react-alert-dialog": "^1.1.6",
+              "@radix-ui/react-aspect-ratio": "^1.1.2",
+              "@radix-ui/react-avatar": "^1.1.3",
+              "@radix-ui/react-checkbox": "^1.1.4",
+              "@radix-ui/react-collapsible": "^1.1.3",
+              "@radix-ui/react-context-menu": "^2.2.6",
+              "@radix-ui/react-dialog": "^1.1.6",
+              "@radix-ui/react-dropdown-menu": "^2.1.6",
+              "@radix-ui/react-hover-card": "^1.1.6",
+              "@radix-ui/react-label": "^2.1.2",
+              "@radix-ui/react-menubar": "^1.1.6",
+              "@radix-ui/react-navigation-menu": "^1.2.5",
+              "@radix-ui/react-popover": "^1.1.6",
+              "@radix-ui/react-progress": "^1.1.2",
+              "@radix-ui/react-radio-group": "^1.2.3",
+              "@radix-ui/react-scroll-area": "^1.2.3",
+              "@radix-ui/react-select": "^2.1.6",
+              "@radix-ui/react-separator": "^1.1.2",
+              "@radix-ui/react-slider": "^1.2.3",
+              "@radix-ui/react-slot": "^1.1.2",
+              "@radix-ui/react-switch": "^1.1.3",
+              "@radix-ui/react-tabs": "^1.1.3",
+              "@radix-ui/react-toast": "^1.2.6",
+              "@radix-ui/react-toggle": "^1.1.2",
+              "@radix-ui/react-toggle-group": "^1.1.2",
+              "@radix-ui/react-tooltip": "^1.1.8",
+              "archiver": "^7.0.1",
+              "class-variance-authority": "^0.7.1",
+              "clsx": "^2.1.1",
+              "cmdk": "^1.0.0",
+              "date-fns": "^3.6.0",
+              "embla-carousel-react": "^8.5.2",
+              "framer-motion": "^12.4.2",
+              "input-otp": "^1.4.2",
+              "jszip": "^3.10.1",
+              "lucide-react": "^0.462.0",
+              "next-themes": "^0.4.4",
+              "react-day-picker": "^8.10.1",
+              "react-hook-form": "^7.54.2",
+               "react-icons": "^5.4.0",
+              "react-resizable-panels": "^2.1.7",
+              "recharts": "^2.15.1",
+              "sonner": "^2.0.0",
+              "tailwind-merge": "^2.6.0",
+              "tailwindcss-animate": "^1.0.7",
+              "vaul": "^1.1.2",
+              "zod": "^3.24.2",
+              "zustand": "^5.0.3",
+
+            "next": "^15.1.7",
+            "react": "^18.3.1",
+            "react-dom": "^18.3.1",
+            "tailwindcss": "^3.4.0",
+            "postcss": "^8.4.0",
+            "autoprefixer": "^10.4.0"
+          }
+        }`,
+        "tsconfig.json": `{
+          "compilerOptions": {
+            "target": "es5",
+            "lib": ["dom", "dom.iterable", "esnext"],
+            "allowJs": true,
+            "skipLibCheck": true,
+            "strict": false,
+            "forceConsistentCasingInFileNames": true,
+            "noEmit": true,
+            "incremental": true,
+            "module": "esnext",
+            "moduleResolution": "node",
+            "resolveJsonModule": true,
+            "isolatedModules": true,
+            "jsx": "preserve",
+            "baseUrl": ".",
+            "paths": {
+              "@/": ["./"]
+            }
+          }
+        }`,
+        "tailwind.config.js": `/** @type {import('tailwindcss').Config} */
+        module.exports = {
+          content: ["./app/**/*.{js,ts,jsx,tsx}", "./components/**/*.{js,ts,jsx,tsx}"],
+          theme: {
+            extend: {},
+          },
+          plugins: [],
+        };`,
+        "postcss.config.js": `module.exports = {
+          plugins: {
+            tailwindcss: {},
+            autoprefixer: {},
+          },
+        };`,
+        "app/globals.css": `@tailwind base;
+        @tailwind components;
+        @tailwind utilities;`,
+        "next.config.js": `module.exports = { reactStrictMode: true };`,
+        "app/layout.tsx": `import React from "react";
+        import "./globals.css"; 
+
+        export default function RootLayout({ children }: { children: React.ReactNode }) {
+          return (
+            <html lang="en">
+              <body>{children}</body>
+            </html>
+          );
+        }`,
+        "app/page.tsx": `import Navbar from "../components/navbars/${navbar}";
+        ${hero ? `import Hero from "../components/hero/${hero}";` : ""}
+        ${project ? `import Project from "../components/projects/${project}";` : ""}
+        ${footer ? `import Footer from "../components/footer/${footer}";` : ""}
+
+        export default function Home() {
+          return (
+            <div>
+              <Navbar />
+              ${hero ? `<Hero />` : ""}
+              ${project ? `<Project />` : ""}
+              ${footer ? `<Footer />` : ""}
+            </div>
+          );
+        }`
+      };
+
+      // ✅ Add all project files
+      for (const [filePath, content] of Object.entries(projectFiles)) {
+        archive.append(Buffer.from(content, "utf-8"), { name: filePath });
+      }
+
+      // ✅ Add UI Folder
+      if (uiPath) {
+        addFilesFromFolder(archive, uiPath, "components/ui");
+      }
+
+      // ✅ Add selected components
+      if (navbarPath) {archive.append(fs.createReadStream(navbarPath), { name: `components/navbars/${navbar}.tsx` })};
+      if (heroPath){ archive.append(fs.createReadStream(heroPath), { name: `components/hero/${hero}.tsx` })};
+      if (projectPath) {archive.append(fs.createReadStream(projectPath), { name: `components/projects/${project}.tsx` })};
+      if (footerPath) {archive.append(fs.createReadStream(footerPath), { name: `components/footer/${footer}.tsx` })};
 
       archive.finalize();
     });
   } catch (error) {
     console.error("❌ Unexpected Server Error:", error);
-    return NextResponse.json({ error: "Unexpected server error" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Unexpected server error" },
+      { status: 500 }
+    );
   }
 }

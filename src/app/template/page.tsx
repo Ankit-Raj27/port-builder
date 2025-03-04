@@ -20,7 +20,7 @@ const Templates: React.FC = () => {
 
   const handleSelectTemplate = (template: Template) => {
     router.push(
-      `/templates/${template.id}?navbar=${template.navbar}&hero=${template.hero}`
+      `/template/${template.id}?navbar=${template.navbar}&hero=${template.hero}`
     );
   };
 

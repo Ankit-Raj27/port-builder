@@ -9,8 +9,8 @@ interface PortfolioState {
   footer: string | null;
   setNavbar: (navbar: string | null) => void;
   setHero: (hero: string | null) => void;
-  setProject: (hero: string | null) => void;
-  setBlog: (hero: string | null) => void;
+  setProject: (project: string | null) => void;
+  setBlog: (blog: string | null) => void;
   setFooter: (footer: string | null) => void;
   setContact: (contact: string | null) => void;
 }
@@ -19,13 +19,13 @@ const usePortfolioStore = create<PortfolioState>((set) => ({
   navbar: null,
   hero: null,
   contact: null,
-  project:  null,
-  blog:  null,
+  project: null,
+  blog: null,
   footer: null,
   setNavbar: (navbar) => set({ navbar }),
   setHero: (hero) => set({ hero }),
-  setProject: (project) => set({ project}),
-  setBlog: (hero) => set({ hero }),
+  setProject: (project) => set({ project }),
+  setBlog: (blog) => set({ blog }),  
   setFooter: (footer) => set({ footer }),
   setContact: (contact) => set({ contact }),
 }));

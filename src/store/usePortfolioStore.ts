@@ -24,6 +24,7 @@ const usePortfolioStore = create<PortfolioStore>((set) => ({
   navbar: "Navbar1", // ✅ Default Navbar
   hero: "Hero1", // ✅ Default Hero
   project: "Project1", // ✅ Default Project (Prevents `null.tsx` error)
+  
 
   setNavbar: (navbar) => set({ navbar }),
   setHero: (hero) => set({ hero }),
