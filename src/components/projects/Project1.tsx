@@ -34,7 +34,7 @@ const projects = [
   {
     id: 3,
     title: "Smart Home App",
-    description: "IoT control center for managing all smart home devices from a single interface.",
+    description: "IoT control center for managing all smart home devices fro~m a single interface.",
     image: "/placeholder.svg?height=800&width=1200",
     category: "Mobile App",
     client: "HomeConnect",

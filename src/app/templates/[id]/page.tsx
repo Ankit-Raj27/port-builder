@@ -17,6 +17,8 @@ import Hero5 from "@/components/hero/Hero5";
 import Project1 from "@/components/projects/Project1";
 import Project2 from "@/components/projects/Project2";
 
+import Footer1 from "@/components/footer/Footer1";
+
 import usePortfolioStore from "@/components/store/usePortfolioStore";
 
 const TemplateEditor: React.FC = () => {
@@ -107,6 +109,10 @@ const TemplateEditor: React.FC = () => {
 
           {project === "Project1" && <Project1 />}
           {project === "Project2" && <Project2 />}
+          
+          {footer === "Footer1" && <Footer1 />}
+
+
         </div>
       </div>
 
@@ -148,9 +154,24 @@ const TemplateEditor: React.FC = () => {
           >
             {p}
           </button>
-
-          
         ))}
+
+        {/* Footer Section Selection */}
+        <h3 className="text-lg font-semibold mt-4">Select a Footer Section:</h3>
+        {["Footer1"].map((p) => (
+          <button
+            key={p}
+            onClick={() => setFooter(p)}
+            className={`p-2 m-2 w-full text-left ${project === p ? "bg-blue-500 text-white" : "bg-gray-300"}`}
+          >
+            {p}
+          </button>
+          ))}
+
+
+
+
+
          <button
         onClick={handleDownload}
         disabled={isDownloading}
