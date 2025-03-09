@@ -21,7 +21,7 @@ const projects = [
     title: "Minimalist Portfolio Website",
     description:
       "A clean, minimalist portfolio website for a photographer showcasing their work with a focus on visual content.",
-    image: "/placeholder.svg?height=600&width=400",
+    image: "/a.jpg",
     category: "Web Design",
     height: "tall", // tall, medium, or short
     link: "/projects/portfolio-website",
@@ -101,11 +101,11 @@ const projects = [
 export default function Project3() {
 
   return (
-    <section className="w-full py-12 md:py-24 lg:py-32 bg-gradient-to-b from-background to-muted/30">
+    <section className="w-full py-4 md:py-6 lg:py-8 bg-gradient-to-b from-background to-muted/30">
       <div className="container px-4 md:px-6">
         <div className="flex flex-col items-center justify-center space-y-4 text-center">
           <div className="space-y-2">
-            <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">Creative Portfolio</h2>
+            <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">My Project</h2>
             <p className="max-w-[700px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
               A showcase of my creative work across various disciplines and industries.
             </p>

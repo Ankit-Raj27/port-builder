@@ -7,12 +7,14 @@ interface PortfolioState {
   project: string | null;
   blog: string | null;
   footer: string | null;
+  experience : string | null;
   setNavbar: (navbar: string | null) => void;
   setHero: (hero: string | null) => void;
   setProject: (project: string | null) => void;
   setBlog: (blog: string | null) => void;
   setFooter: (footer: string | null) => void;
   setContact: (contact: string | null) => void;
+  setExperience : (experience : string | null) => void;
 }
 
 const usePortfolioStore = create<PortfolioState>((set) => ({
@@ -22,12 +24,14 @@ const usePortfolioStore = create<PortfolioState>((set) => ({
   project: null,
   blog: null,
   footer: null,
+  experience: null,
   setNavbar: (navbar) => set({ navbar }),
   setHero: (hero) => set({ hero }),
   setProject: (project) => set({ project }),
   setBlog: (blog) => set({ blog }),  
   setFooter: (footer) => set({ footer }),
-  setContact: (contact) => set({ contact }),
+  setExperience : (experience) => set(({experience})),
+  setContact: (contact) => set(({ contact })),
 }));
 
 export default usePortfolioStore;

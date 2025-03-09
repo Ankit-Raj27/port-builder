@@ -4,18 +4,21 @@ interface PortfolioState {
   hero: string | null;
   project: string | null;
   footer: string | null;
+  experience : string | null;
   heroText: { title: string; description: string; buttonText: string };
   setNavbar: (navbar: string | null) => void;
   setHero: (hero: string | null) => void;
   setProject: (project: string | null) => void;
   setFooter: (footer: string | null) => void;
   setHeroText: (text: { title: string; description: string; buttonText: string }) => void;
+  setExperience : (experience : string | null) => void;
 }
 
 const usePortfolioStore = create<PortfolioState>((set) => ({
   navbar: "Navbar1",
   hero: "Hero1",
   project: "Project1",
+experience : "Experience1",
   footer: "Footer1",
   heroText: {
     title: "Welcome to My Portfolio",
@@ -27,6 +30,7 @@ const usePortfolioStore = create<PortfolioState>((set) => ({
   setProject: (project) => set({ project }),
   setFooter: (footer) => set({ footer }),
   setHeroText: (heroText) => set({ heroText }),
+  setExperience: (experience) => set({ experience }),
 }));
 
 export default usePortfolioStore;

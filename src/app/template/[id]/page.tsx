@@ -19,9 +19,19 @@ import Project2 from "@/components/projects/Project2";
 import Footer1 from "@/components/footer/Footer1";
 
 import usePortfolioStore from "@/components/store/usePortfolioStore";
+import Project3 from "@/components/projects/Project3";
+import { Hero6 } from "@/components/hero/Hero6";
+import Hero7 from "@/components/hero/Hero7";
+import Footer3 from "@/components/footer/Footer3";
+import Footer2 from "@/components/footer/Footer2";
+import Navbar6 from "@/components/navbars/Navbar6";
+import Projects4 from "@/components/projects/Project4";
+import Projects5 from "@/components/projects/Project5";
+import Projects6 from "@/components/projects/Project6";
+import Experience1 from "@/components/experience/Experience1";
 
 const TemplateEditor: React.FC = () => {
-  const { navbar, hero, setNavbar, setHero, project, setProject, footer, setFooter } = usePortfolioStore();
+  const { navbar, hero, setNavbar, setHero, project, setProject, footer, setFooter, experience, setExperience } = usePortfolioStore();
   const [expandedSections, setExpandedSections] = useState<string[]>([]);
   const [isDownloading, setIsDownloading] = useState(false);
 
@@ -35,6 +45,7 @@ const TemplateEditor: React.FC = () => {
         setHero(hero);
         setProject(project);
         setFooter(footer);
+        setExperience(experience);
       } catch (error) {
         console.error("Error parsing saved state:", error);
       }
@@ -89,25 +100,37 @@ const TemplateEditor: React.FC = () => {
   return (
     <div className="flex h-screen">
       {/* Left Preview Section */}
-      <div className="flex-1 bg-gray-50 p-6 border-r overflow-y-auto max-h-screen">
+      <div className="flex-1 bg-gray-50 p-6 border-r overflow-y-scroll max-h-screen">
         <h2 className="text-2xl font-semibold mb-6 text-gray-800">Editing Your Portfolio</h2>
-        <div className="border bg-white p-6 shadow-md rounded-lg">
+        <div className="bg-white shadow-md z-10 ">
           {navbar === "Navbar1" && <Navbar1 />}
           {navbar === "Navbar2" && <Navbar2 />}
           {navbar === "Navbar3" && <Navbar3 />}
           {navbar === "Navbar4" && <Navbar4 />}
           {navbar === "Navbar5" && <Navbar5 />}
+          {navbar === "Navbar6" && <Navbar6 />}
+          
 
           {hero === "Hero1" && <Hero1 />}
           {hero === "Hero2" && <Hero2 />}
           {hero === "Hero3" && <Hero3 />}
           {hero === "Hero4" && <Hero4 />}
           {hero === "Hero5" && <Hero5 />}
+          {hero === "Hero6" && <Hero6 />}
+          {hero === "Hero7" && <Hero7 />}
+
+          {experience === "Experience1" && <Experience1 />}
 
           {project === "Project1" && <Project1 />}
           {project === "Project2" && <Project2 />}
+          {project === "Project3" && <Project3 />}
+          {project === "Project4" && <Projects4 />}
+          {project === "Project5" && <Projects5 />}
+          {project === "Project6" && <Projects6 />}
 
           {footer === "Footer1" && <Footer1 />}
+          {footer === "Footer2" && <Footer2 />}
+          {footer === "Footer3" && <Footer3 />}
         </div>
       </div>
 
@@ -116,10 +139,11 @@ const TemplateEditor: React.FC = () => {
         <h2 className="text-2xl font-bold mb-6 text-gray-900">Customize Your Portfolio</h2>
 
         {[
-          { name: "Navbar", options: ["Navbar1", "Navbar2", "Navbar3", "Navbar4", "Navbar5"], setter: setNavbar, selected: navbar },
-          { name: "Hero", options: ["Hero1", "Hero2", "Hero3", "Hero4", "Hero5"], setter: setHero, selected: hero },
-          { name: "Project", options: ["Project1", "Project2"], setter: setProject, selected: project },
-          { name: "Footer", options: ["Footer1"], setter: setFooter, selected: footer },
+          { name: "Navbar", options: ["Navbar1", "Navbar2", "Navbar3", "Navbar4", "Navbar5","Navbar6"], setter: setNavbar, selected: navbar },
+          { name: "Hero", options: ["Hero1", "Hero2", "Hero3", "Hero4", "Hero5","Hero6","Hero7"], setter: setHero, selected: hero },
+          { name: "Experience", options: ["Experience1"], setter: setExperience, selected: experience },
+          { name: "Project", options: ["Project1", "Project2","Project3","Project4","Project5","Project6"], setter: setProject, selected: project },
+          { name: "Footer", options: ["Footer1","Footer2","Footer3"], setter: setFooter, selected: footer },
         ].map(({ name, options, setter, selected }) => (
           <div key={name} className="mb-4">
             <button

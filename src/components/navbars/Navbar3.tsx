@@ -21,7 +21,7 @@ export default function Navbar3() {
   const [isOpen, setIsOpen] = React.useState(false)
 
   return (
-    <header className="sticky top-0 z-50 w-full">
+    <header className=" z-50 ml-10 mr-10 max-w-full">
       <div className="container flex h-20 items-center justify-between">
         <Link href="/" className="font-bold text-2xl relative z-50">
           <motion.div

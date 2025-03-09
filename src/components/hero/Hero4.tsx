@@ -1,7 +1,4 @@
 "use client"
-
-// import { useEffect, useRef } from "react"
-import Image from "next/image"
 import Link from "next/link"
 import { motion } from "framer-motion"
 import { ArrowRight, Github, Linkedin, Twitter } from 'lucide-react'
@@ -14,7 +11,7 @@ export default function Hero4() {
   ]
   
   return (
-    <section className="relative w-full overflow-hidden bg-background py-12 md:py-24 lg:py-32">
+    <section className="relative w-full overflow-hidden bg-background md:py-8">
       {/* Background Pattern */}
       <div className="absolute inset-0 -z-10 opacity-[0.02]" aria-hidden="true">
         <svg className="h-full w-full" xmlns="http://www.w3.org/2000/svg">
@@ -36,7 +33,6 @@ export default function Hero4() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}
               >
-                <Badge className="mb-4" variant="outline">Available for freelance work</Badge>
               </motion.div>
               
               <motion.h1 
@@ -117,13 +113,7 @@ export default function Hero4() {
               className="relative h-[400px] w-[400px] sm:h-[500px] sm:w-[500px] md:h-[600px] md:w-[600px]"
             >
               <div className="absolute left-0 top-0 h-full w-full rounded-full bg-gradient-to-br from-primary/20 to-primary/0 blur-3xl"></div>
-              <Image
-                src="/placeholder.svg?height=600&width=600"
-                width={600}
-                height={600}
-                alt="Alex Chen"
-                className="relative z-10 mx-auto rounded-2xl object-cover"
-              />
+
               
               <div className="absolute -right-4 -top-4 z-20 rounded-lg bg-background p-4 shadow-lg">
                 <div className="flex items-center gap-2">

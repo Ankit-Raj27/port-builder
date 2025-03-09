@@ -1,99 +1,51 @@
-"use client";
-import React, { useState, useEffect } from "react";
+import { ArrowRight } from "lucide-react"
+import Image from "next/image"
+import Link from "next/link"
 
-const Hero1: React.FC = () => {
-  const [title, setTitle] = useState("Welcome to My Portfolio");
-  const [description, setDescription] = useState("Showcasing my projects.");
-  const [buttonText, setButtonText] = useState("Get Started");
+import { Button } from "@/components/ui/button"
 
-  // Prevents Enter key from adding new lines in contentEditable elements
-  const preventNewLine = (e: React.KeyboardEvent<HTMLHeadingElement>) => {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      e.currentTarget.blur();
-    }
-  };
-
-  // Function to generate the edited hero component code
-  const getEditedHeroComponent = React.useCallback(() => `
-"use client";
-import React from "react";
-
-const Hero1: React.FC = () => {
+export default function Hero1() {
   return (
-    <section className="bg-gray-900 text-white text-center py-20">
-      <div className="container mx-auto">
-        <h1 className="text-4xl font-bold mb-4">${title}</h1>
-        <p className="text-lg mb-6">${description}</p>
-        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded">
-          ${buttonText}
-        </button>
+    <section className="relative overflow-hidden bg-background py-24 md:py-32">
+      <div className="container px-4 md:px-6">
+        <div className="grid gap-12 md:grid-cols-2 md:gap-16 lg:gap-20">
+          <div className="flex flex-col justify-center space-y-4">
+            <div className="space-y-2">
+              <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl/none">
+                Hi, I am <span className="text-primary">John Doe</span>
+              </h1>
+              <p className="text-xl text-muted-foreground md:text-2xl">Frontend Developer & UI/UX Designer</p>
+            </div>
+            <p className="max-w-[600px] text-muted-foreground md:text-xl">
+              I create beautiful, responsive websites with modern technologies that help businesses grow and users
+              smile.
+            </p>
+            <div className="flex flex-col gap-2 min-[400px]:flex-row">
+              <Button size="lg" asChild>
+                <Link href="#projects">
+                  View My Work
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Link>
+              </Button>
+              <Button size="lg" variant="outline" asChild>
+                <Link href="#contact">Contact Me</Link>
+              </Button>
+            </div>
+          </div>
+          <div className="flex items-center justify-center">
+            <div className="relative h-[400px] w-[400px] overflow-hidden rounded-full border-8 border-muted">
+              <Image
+                src="/placeholder.svg?height=400&width=400"
+                alt="John Doe"
+                fill
+                className="object-cover"
+                priority
+              />
+            </div>
+          </div>
+        </div>
       </div>
     </section>
-  );
-};
+  )
+}
 
-export default Hero1;
-  `.trim(), [title, description, buttonText]);
-
-  // Debounce localStorage updates to optimize performance
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      localStorage.setItem("editedHero", getEditedHeroComponent());
-    }, 500); // 500ms delay
-    return () => clearTimeout(timeout);
-  }, [title, description, buttonText, getEditedHeroComponent]);
-
-  // Load saved content from localStorage on mount
-  useEffect(() => {
-    const savedHero = localStorage.getItem("editedHero");
-    if (savedHero) {
-      try {
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(savedHero, "text/html");
-        setTitle(doc.querySelector("h1")?.textContent || title);
-        setDescription(doc.querySelector("p")?.textContent || description);
-        setButtonText(doc.querySelector("button")?.textContent || buttonText);
-      } catch (error) {
-        console.error("Error parsing saved hero:", error);
-      }
-    }
-  }, [title, description, buttonText]);
-
-  return (
-    <section className="bg-gray-900 text-white text-center py-20">
-      <div className="container mx-auto">
-        <h1
-          className="text-4xl font-bold mb-4 cursor-pointer focus:outline-none"
-          contentEditable
-          suppressContentEditableWarning
-          onBlur={(e) => setTitle(e.target.innerText.trim())}
-          onKeyDown={preventNewLine}
-        >
-          {title}
-        </h1>
-        <p
-          className="text-lg mb-6 cursor-pointer focus:outline-none"
-          contentEditable
-          suppressContentEditableWarning
-          onBlur={(e) => setDescription(e.target.innerText.trim())}
-          onKeyDown={preventNewLine}
-        >
-          {description}
-        </p>
-        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded">
-          <span
-            contentEditable
-            suppressContentEditableWarning
-            onBlur={(e) => setButtonText(e.target.innerText.trim())}
-            onKeyDown={preventNewLine}
-          >
-            {buttonText}
-          </span>
-        </button>
-      </div>
-    </section>
-  );
-};
-
-export default Hero1;
