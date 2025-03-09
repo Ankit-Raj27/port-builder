@@ -1,6 +1,5 @@
 "use client";
 import { useState, useEffect } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
 
 import Navbar1 from "@/components/navbars/Navbar1";
 import Navbar2 from "@/components/navbars/Navbar2";
@@ -26,6 +25,33 @@ const TemplateEditor: React.FC = () => {
   const [expandedSections, setExpandedSections] = useState<string[]>([]);
   const [isDownloading, setIsDownloading] = useState(false);
 
+  // Load saved user preferences on mount
+  useEffect(() => {
+    const savedState = localStorage.getItem("portfolioState");
+    if (savedState) {
+      try {
+        const { navbar, hero, project, footer } = JSON.parse(savedState);
+        setNavbar(navbar);
+        setHero(hero);
+        setProject(project);
+        setFooter(footer);
+      } catch (error) {
+        console.error("Error parsing saved state:", error);
+      }
+    }
+  }, [setFooter, setHero, setNavbar, setProject]);
+
+  // Save state changes to localStorage (debounced)
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      localStorage.setItem(
+        "portfolioState",
+        JSON.stringify({ navbar, hero, project, footer })
+      );
+    }, 300);
+    return () => clearTimeout(timeout);
+  }, [navbar, hero, project, footer]);
+
   const toggleSection = (section: string) => {
     setExpandedSections((prev) =>
       prev.includes(section) ? prev.filter((s) => s !== section) : [...prev, section]
@@ -42,7 +68,9 @@ const TemplateEditor: React.FC = () => {
         body: JSON.stringify(bodyData),
       });
 
-      if (!response.ok) throw new Error("Failed to download ZIP");
+      if (!response.ok) {
+        throw new Error("Failed to download ZIP");
+      }
 
       const blob = await response.blob();
       const link = document.createElement("a");
@@ -60,6 +88,7 @@ const TemplateEditor: React.FC = () => {
 
   return (
     <div className="flex h-screen">
+      {/* Left Preview Section */}
       <div className="flex-1 bg-gray-50 p-6 border-r overflow-y-auto max-h-screen">
         <h2 className="text-2xl font-semibold mb-6 text-gray-800">Editing Your Portfolio</h2>
         <div className="border bg-white p-6 shadow-md rounded-lg">
@@ -82,13 +111,15 @@ const TemplateEditor: React.FC = () => {
         </div>
       </div>
 
+      {/* Right Sidebar */}
       <div className="w-1/3 p-6 bg-white overflow-y-auto max-h-screen">
         <h2 className="text-2xl font-bold mb-6 text-gray-900">Customize Your Portfolio</h2>
 
-        {[{ name: "Navbar", options: ["Navbar1", "Navbar2", "Navbar3", "Navbar4", "Navbar5"], setter: setNavbar, selected: navbar },
+        {[
+          { name: "Navbar", options: ["Navbar1", "Navbar2", "Navbar3", "Navbar4", "Navbar5"], setter: setNavbar, selected: navbar },
           { name: "Hero", options: ["Hero1", "Hero2", "Hero3", "Hero4", "Hero5"], setter: setHero, selected: hero },
           { name: "Project", options: ["Project1", "Project2"], setter: setProject, selected: project },
-          { name: "Footer", options: ["Footer1"], setter: setFooter, selected: footer }
+          { name: "Footer", options: ["Footer1"], setter: setFooter, selected: footer },
         ].map(({ name, options, setter, selected }) => (
           <div key={name} className="mb-4">
             <button
@@ -102,7 +133,7 @@ const TemplateEditor: React.FC = () => {
                 {options.map((option) => (
                   <button
                     key={option}
-                    onClick={() => setter(selected === option ? null : option)}
+                    onClick={() => setter(selected === option ? "" : option)}
                     className={`px-4 py-2 rounded-lg shadow-sm transition-all duration-200 ${
                       selected === option
                         ? "bg-indigo-500 text-white shadow-md"

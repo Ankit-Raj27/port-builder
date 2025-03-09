@@ -1,3 +1,4 @@
+"use client"
 import { Download, Code, Globe, Wand2 } from 'lucide-react';
 //import ThemeSelector from "@/components/ThemeProvider";
 import { Button } from '@/components/ui/button';
@@ -5,8 +6,19 @@ import Link from "next/link";
 import Image from "next/image";
 import Footer from "@/components/common/Footer";
 import { Navbar } from '@/components/navbars/Navbar';
+import { useAuth } from '@clerk/nextjs';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 
 export default function Home() {
+   const { isSignedIn } = useAuth();
+    const router = useRouter();
+  
+    useEffect(() => {
+      if (isSignedIn) {
+        router.replace("/template"); // Redirect if user is already signed in
+      }
+    }, [isSignedIn, router]);
   const features = [
     {
       icon: <Download className="w-8 h-8 text-black-400" />,

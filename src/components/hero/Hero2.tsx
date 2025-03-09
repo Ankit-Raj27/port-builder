@@ -1,11 +1,13 @@
-import React from 'react'
+import React from "react";
 
-function Hero2() {
+const TemplateEditor: React.FC = () => {
+
+
   return (
     <div>
-      Hero2
-    </div>
-  )
-}
+      Hi
+    </div>  
+  );
+};
 
-export default Hero2
+export default TemplateEditor;

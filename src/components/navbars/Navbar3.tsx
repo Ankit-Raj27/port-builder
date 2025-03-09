@@ -127,7 +127,7 @@ export default function Navbar3() {
             className="mt-4"
           >
             <Button variant="default" size="lg" className="rounded-full px-8" asChild onClick={() => setIsOpen(false)}>
-              <Link href="/contact">Let's Talk</Link>
+              <Link href="/contact">Let us Talk</Link>
             </Button>
           </motion.div>
         </motion.div>

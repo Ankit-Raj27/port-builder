@@ -19,7 +19,7 @@ import { useTheme } from "next-themes"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 
 export default function Navbar4() {
-  const { setTheme, theme } = useTheme()
+  const { setTheme } = useTheme()
   const pathname = usePathname()
 
   return (

@@ -12,10 +12,9 @@ import {
 import { UserButton } from "@clerk/nextjs";
 
 const productItems = [
-  { title: "Design", href: "#" },
-  { title: "Development", href: "#" },
-  { title: "Security", href: "#" },
-  { title: "Integrations", href: "#" },
+  { title: "Modern", href: "/template/template1?navbar=Navbar1&hero=Hero1" },
+  { title: "Creative", href: "/template/template2?navbar=Navbar2&hero=Hero1" },
+  { title: "Business", href: "/template/template2?navbar=Navbar2&hero=Hero1" },
 ];
 
 const resourceItems = [
@@ -35,7 +34,7 @@ export function Navbar() {
         <NavigationMenu className="hidden md:flex items-center justify-center">
           <NavigationMenuList>
             <NavigationMenuItem>
-              <NavigationMenuTrigger>Product</NavigationMenuTrigger>
+              <NavigationMenuTrigger>Template</NavigationMenuTrigger>
               <NavigationMenuContent>
                 <ul className="grid w-48 gap-1 p-2">
                   {productItems.map((item) => (
