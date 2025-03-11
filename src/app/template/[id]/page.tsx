@@ -1,39 +1,51 @@
 "use client";
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 import Navbar1 from "@/components/navbars/Navbar1";
 import Navbar2 from "@/components/navbars/Navbar2";
 import Navbar3 from "@/components/navbars/Navbar3";
 import Navbar4 from "@/components/navbars/Navbar4";
 import Navbar5 from "@/components/navbars/Navbar5";
+import Navbar6 from "@/components/navbars/Navbar6";
 
 import Hero1 from "@/components/hero/Hero1";
 import Hero2 from "@/components/hero/Hero2";
 import Hero3 from "@/components/hero/Hero3";
 import Hero4 from "@/components/hero/Hero4";
 import Hero5 from "@/components/hero/Hero5";
+import { Hero6 } from "@/components/hero/Hero6";
+import Hero7 from "@/components/hero/Hero7";
+
+import Experience1 from "@/components/experience/Experience1";
 
 import Project1 from "@/components/projects/Project1";
 import Project2 from "@/components/projects/Project2";
-
-import Footer1 from "@/components/footer/Footer1";
-
-import usePortfolioStore from "@/components/store/usePortfolioStore";
 import Project3 from "@/components/projects/Project3";
-import { Hero6 } from "@/components/hero/Hero6";
-import Hero7 from "@/components/hero/Hero7";
-import Footer3 from "@/components/footer/Footer3";
-import Footer2 from "@/components/footer/Footer2";
-import Navbar6 from "@/components/navbars/Navbar6";
 import Projects4 from "@/components/projects/Project4";
 import Projects5 from "@/components/projects/Project5";
 import Projects6 from "@/components/projects/Project6";
-import Experience1 from "@/components/experience/Experience1";
+
+import Footer1 from "@/components/footer/Footer1";
+import Footer2 from "@/components/footer/Footer2";
+import Footer3 from "@/components/footer/Footer3";
+
+import usePortfolioStore from "@/components/store/usePortfolioStore";
+
+
+
+
+
 
 const TemplateEditor: React.FC = () => {
+  const router = useRouter();
   const { navbar, hero, setNavbar, setHero, project, setProject, footer, setFooter, experience, setExperience } = usePortfolioStore();
   const [expandedSections, setExpandedSections] = useState<string[]>([]);
+  const [templateId, setTemplateId] = useState<string>("my-template");
   const [isDownloading, setIsDownloading] = useState(false);
+
+ 
+
 
   // Load saved user preferences on mount
   useEffect(() => {
@@ -96,6 +108,20 @@ const TemplateEditor: React.FC = () => {
       setIsDownloading(false);
     }
   };
+
+
+  const handleEdit = () => {
+    const selectedComponents = { navbar, hero, project, footer, experience };
+    
+    // Save to localStorage or state management (Zustand)
+    localStorage.setItem("selectedComponents", JSON.stringify(selectedComponents));
+
+    // Navigate to the editor page
+    router.push(`/template/${templateId}/editor`);
+  };
+
+
+
 
   return (
     <div className="flex h-screen">
@@ -179,6 +205,14 @@ const TemplateEditor: React.FC = () => {
         >
           {isDownloading ? "Downloading..." : "Download ZIP"}
         </button>
+
+        <button
+        onClick={handleEdit}
+        className="mt-6 w-full bg-blue-600 text-white px-4 py-3 rounded-lg shadow-md hover:bg-blue-700 transition"
+      >
+        Go to Editor
+      </button>
+
       </div>
     </div>
   );

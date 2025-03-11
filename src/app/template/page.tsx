@@ -13,7 +13,15 @@ type Template = {
 const templates: Template[] = [
   { id: "template1", name: "Modern Portfolio", description: "A sleek, minimal portfolio.", navbar: "Navbar1", hero: "Hero1" },
   { id: "template2", name: "Creative Portfolio", description: "A stylish and colorful template.", navbar: "Navbar2", hero: "Hero1" },
-  { id: "template3", name: "Business Portfolio", description: "A professional portfolio.", navbar: "Navbar1", hero: "Hero1" }
+  { id: "template3", name: "Business Portfolio", description: "A professional portfolio.", navbar: "Navbar1", hero: "Hero1" },
+  { id: "template4", name: "Business Portfolio", description: "A professional portfolio.", navbar: "Navbar1", hero: "Hero1" },
+  { id: "template5", name: "Business Portfolio", description: "A professional portfolio.", navbar: "Navbar1", hero: "Hero1" },
+  { id: "template6", name: "Business Portfolio", description: "A professional portfolio.", navbar: "Navbar1", hero: "Hero1" },
+  { id: "template7", name: "Business Portfolio", description: "A professional portfolio.", navbar: "Navbar1", hero: "Hero1" },
+  { id: "template8", name: "Business Portfolio", description: "A professional portfolio.", navbar: "Navbar1", hero: "Hero1" },
+  { id: "template9", name: "Business Portfolio", description: "A professional portfolio.", navbar: "Navbar1", hero: "Hero1" },
+  { id: "template10", name: "Business Portfolio", description: "A professional portfolio.", navbar: "Navbar1", hero: "Hero1" },
+  { id: "template11", name: "Business Portfolio", description: "A professional portfolio.", navbar: "Navbar1", hero: "Hero1" }
 ];
 
 const Templates: React.FC = () => {
