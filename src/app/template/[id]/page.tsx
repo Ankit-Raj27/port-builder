@@ -29,6 +29,8 @@ import Projects4 from "@/components/projects/Project4";
 import Projects5 from "@/components/projects/Project5";
 import Projects6 from "@/components/projects/Project6";
 import Experience1 from "@/components/experience/Experience1";
+import Experience2 from "@/components/experience/Experience2";
+import Experience3 from "@/components/experience/Experience3";
 
 const TemplateEditor: React.FC = () => {
   const { navbar, hero, setNavbar, setHero, project, setProject, footer, setFooter, experience, setExperience } = usePortfolioStore();
@@ -120,6 +122,8 @@ const TemplateEditor: React.FC = () => {
           {hero === "Hero7" && <Hero7 />}
 
           {experience === "Experience1" && <Experience1 />}
+          {experience === "Experience2" && <Experience2 />}
+          {experience === "Experience3" && <Experience3 />}
 
           {project === "Project1" && <Project1 />}
           {project === "Project2" && <Project2 />}
@@ -141,7 +145,7 @@ const TemplateEditor: React.FC = () => {
         {[
           { name: "Navbar", options: ["Navbar1", "Navbar2", "Navbar3", "Navbar4", "Navbar5","Navbar6"], setter: setNavbar, selected: navbar },
           { name: "Hero", options: ["Hero1", "Hero2", "Hero3", "Hero4", "Hero5","Hero6","Hero7"], setter: setHero, selected: hero },
-          { name: "Experience", options: ["Experience1"], setter: setExperience, selected: experience },
+          { name: "Experience", options: ["Experience1","Experience2","Experience3"], setter: setExperience, selected: experience },
           { name: "Project", options: ["Project1", "Project2","Project3","Project4","Project5","Project6"], setter: setProject, selected: project },
           { name: "Footer", options: ["Footer1","Footer2","Footer3"], setter: setFooter, selected: footer },
         ].map(({ name, options, setter, selected }) => (
