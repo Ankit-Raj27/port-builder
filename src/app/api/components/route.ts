@@ -1,3 +1,4 @@
+/*
 import { NextResponse } from "next/server";
 import fs from "fs/promises";
 import path from "path";
@@ -45,3 +46,5 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "ZIP creation failed" }, { status: 500 });
   }
 }
+
+*/
