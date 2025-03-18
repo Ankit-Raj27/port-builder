@@ -6,26 +6,33 @@ import { Menu, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
-const navItems = [
-  { title: "Home", href: "#" },
-  { title: "Projects", href: "#projects" },
-  { title: "Experience", href: "#experience" },
-  { title: "Contact", href: "#contact" },
-]
+interface NavbarProps {
+  data?: {
+    title?: string
+    buttonText?: string
+    avatarSrc?: string
+  }
+}
 
-export default function Navbar2() {
-  const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false)
+const Navbar1: React.FC<NavbarProps> = ({ data }) => {
+  const navItems = [
+    { title: "Home", href: "#" },
+    { title: "Projects", href: "#projects" },
+    { title: "Experience", href: "#experience" },
+    { title: "Contact", href: "#contact" },
+  ]
+  
 
   return (
     <header className="bg-background border-b">
       <div className="container flex h-16 items-center justify-between">
         <div className="flex items-center gap-2">
           <Avatar>
-            <AvatarImage src="/placeholder.svg?height=32&width=32" alt="Avatar" />
-            <AvatarFallback>JD</AvatarFallback>
+            <AvatarImage src={data?.avatarSrc || "/placeholder.svg"} alt="Avatar" />
+            <AvatarFallback>{data?.title?.charAt(0) || "JD"}</AvatarFallback>
           </Avatar>
           <Link href="#" className="font-semibold">
-            John Doe
+            {data?.title || "John Doe"}
           </Link>
         </div>
 
@@ -41,37 +48,13 @@ export default function Navbar2() {
           ))}
         </nav>
 
-        <div className="hidden md:block">
-          <Button>Get in Touch</Button>
-        </div>
 
-        <div className="md:hidden">
-          <Button variant="ghost" size="icon" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
-            {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-            <span className="sr-only">Toggle menu</span>
-          </Button>
+        <div className="hidden md:block">
+          <Button>{data?.buttonText || "Get in Touch"}</Button>
         </div>
       </div>
-
-      {/* Mobile menu */}
-      {mobileMenuOpen && (
-        <div className="md:hidden">
-          <div className="container py-4 flex flex-col gap-4">
-            {navItems.map((item) => (
-              <Link
-                key={item.title}
-                href={item.href}
-                className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                {item.title}
-              </Link>
-            ))}
-            <Button className="mt-2">Get in Touch</Button>
-          </div>
-        </div>
-      )}
     </header>
   )
 }
 
+export default Navbar1

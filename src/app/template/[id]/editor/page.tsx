@@ -1,9 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import usePortfolioStore from "@/store/usePortfolioStore";
+import { useParams } from "next/navigation"; 
+import usePortfolioStore from "@/components/store/usePortfolioStore";
+import DynamicForm from "@/components/forms/DynamicForm";
 
-// Import possible components
+// Import Navbar components
 import Navbar1 from "@/components/navbars/Navbar1";
 import Navbar2 from "@/components/navbars/Navbar2";
 import Navbar3 from "@/components/navbars/Navbar3";
@@ -11,120 +13,136 @@ import Navbar4 from "@/components/navbars/Navbar4";
 import Navbar5 from "@/components/navbars/Navbar5";
 import Navbar6 from "@/components/navbars/Navbar6";
 
-import Hero1 from "@/components/hero/Hero1";
-import Hero2 from "@/components/hero/Hero2";
-import Hero3 from "@/components/hero/Hero3";
-import Hero4 from "@/components/hero/Hero4";
-import Hero5 from "@/components/hero/Hero5";
-import { Hero6 } from "@/components/hero/Hero6";
-import Hero7 from "@/components/hero/Hero7";
-
-import Experience1 from "@/components/experience/Experience1";
-
-import Project1 from "@/components/projects/Project1";
-import Project2 from "@/components/projects/Project2";
-import Project3 from "@/components/projects/Project3";
-import Project4 from "@/components/projects/Project4";
-import Project5 from "@/components/projects/Project5";
-import Project6 from "@/components/projects/Project6";
-
-import Footer1 from "@/components/footer/Footer1";
-import Footer2 from "@/components/footer/Footer2";
-import Footer3 from "@/components/footer/Footer3";
-
-// Define TypeScript interface for selected components
+// Define TypeScript interface for selected Navbar
 interface SelectedComponents {
-  navbar?: string;
-  hero?: string;
-  project?: string;
-  footer?: string;
-  experience?: string;
+  navbar: string;
 }
 
 const EditorPage = () => {
-  const { setNavbar, setHero, setProject, setFooter, setExperience } = usePortfolioStore();
-  
-  // Initialize state with a proper type
-  const [selectedComponents, setSelectedComponents] = useState<SelectedComponents>({});
+  const params = useParams(); // ✅ Get template ID from URL
+  const { navbar, setNavbar } = usePortfolioStore();
 
+  // ✅ Ensure correct Navbar is selected
+  const [selectedComponents, setSelectedComponents] = useState<SelectedComponents>({ navbar: "" });
+
+  // ✅ Store form data
+  const [formData, setFormData] = useState<Record<string, any>>({ navbar: {} });
+
+  // ✅ Load selected components on mount
   useEffect(() => {
-    const storedComponents = localStorage.getItem("selectedComponents");
-  
-    if (storedComponents) {
+    const savedComponents = localStorage.getItem("selectedComponents");
+    if (savedComponents) {
       try {
-        const parsedComponents: SelectedComponents = JSON.parse(storedComponents);
-        console.log("Loaded components from storage:", parsedComponents); // Debugging log
-        setSelectedComponents(parsedComponents);
-  
-        // Delay Zustand store update to avoid stale state
-        setTimeout(() => {
-          setNavbar(parsedComponents.navbar || "");
-          setHero(parsedComponents.hero || "");
-          setProject(parsedComponents.project || "");
-          setFooter(parsedComponents.footer || "");
-          setExperience(parsedComponents.experience || "");
-        }, 100);
+        const parsedData = JSON.parse(savedComponents);
+        setNavbar(parsedData.navbar);
+        setSelectedComponents({ navbar: parsedData.navbar });
       } catch (error) {
-        console.error("Error parsing selected components:", error);
+        console.error("Error loading selected components:", error);
       }
     }
-  }, [setNavbar, setHero, setProject, setFooter, setExperience]);
+  }, [setNavbar]);
+
+
+
+const [isDownloading, setIsDownloading] = useState(false);
+
+const handleEditDownload = async () => {
+  setIsDownloading(true);
+  try {
+    // ✅ Ensure we capture the latest state
+    const updatedNavbarCode = JSON.stringify(formData.navbar, null, 2);
+
+    const bodyData = {
+      navbar: selectedComponents.navbar,
+      editedComponents: { navbar: updatedNavbarCode }, // ✅ Now sending correct JSON
+    };
+
+    console.log("📤 Sending Edited Navbar for Download:", bodyData);
+
+    const response = await fetch("/api/editdownload", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(bodyData),
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`Failed to download ZIP: ${errorText || response.statusText}`);
+    }
+
+    const blob = await response.blob();
+    if (blob.size === 0) {
+      throw new Error("Received empty ZIP file");
+    }
+
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "edited-navbar.zip";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  } catch (error) {
+    console.error("❌ Download failed:", error instanceof Error ? error.message : error);
+  } finally {
+    setIsDownloading(false);
+  }
+};
+       
+
+
   
+
+
+  // ✅ Handle form changes
+  const handleFormChange = (section: string, field: string, value: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      [section]: { ...prev[section], [field]: value },
+    }));
+  };
+
   return (
-    <div className="editor-container">
-      <h2 className="text-xl font-semibold mb-4">Live Preview</h2>
-      <div className="border bg-white p-5 shadow-lg rounded-md">
-        {/* Navbar */}
+    <div className="flex h-screen w-full">
+      {/* Left Side - Live Preview */}
+      <div className="w-2/3 p-5 bg-gray-100 overflow-hidden">
+        <div className="border bg-white p-5 shadow-lg rounded-md">
+          {/* ✅ Render only the selected Navbar */}
+          {selectedComponents.navbar === "Navbar1" && <Navbar1 data={formData.navbar} />}
+          {selectedComponents.navbar === "Navbar2" && <Navbar2  />}
+          {selectedComponents.navbar === "Navbar3" && <Navbar3  />}
+          {selectedComponents.navbar === "Navbar4" && <Navbar4  />}
+          {selectedComponents.navbar === "Navbar5" && <Navbar5  />}
+          {selectedComponents.navbar === "Navbar6" && <Navbar6  />}
+        </div>
+      </div>
+
+      {/* Right Side - Form Editor */}
+      <div className="w-1/3 h-full bg-gray-100 p-6 overflow-auto">
+        <h2 className="text-lg font-bold mb-4">Customize Your Navbar</h2>
+
+        {/* ✅ Show DynamicForm only if a Navbar is selected */}
         {selectedComponents.navbar && (
           <>
-            {selectedComponents.navbar === "Navbar1" && <Navbar1 />}
-            {selectedComponents.navbar === "Navbar2" && <Navbar2 />}
-            {selectedComponents.navbar === "Navbar3" && <Navbar3 />}
-            {selectedComponents.navbar === "Navbar4" && <Navbar4 />}
-            {selectedComponents.navbar === "Navbar5" && <Navbar5 />}
-            {selectedComponents.navbar === "Navbar6" && <Navbar6 />}
+            <h3 className="text-md font-semibold">Navbar Settings</h3>
+            <DynamicForm
+              section="navbar"
+              selectedComponent={selectedComponents.navbar}
+              formData={formData.navbar} 
+              onChange={handleFormChange}
+            />
           </>
         )}
-  
-        {/* Hero */}
-        {selectedComponents.hero && (
-          <>
-            {selectedComponents.hero === "Hero1" && <Hero1 />}
-            {selectedComponents.hero === "Hero2" && <Hero2 />}
-            {selectedComponents.hero === "Hero3" && <Hero3 />}
-            {selectedComponents.hero === "Hero4" && <Hero4 />}
-            {selectedComponents.hero === "Hero5" && <Hero5 />}
-            {selectedComponents.hero === "Hero6" && <Hero6 />}
-            {selectedComponents.hero === "Hero7" && <Hero7 />}
-          </>
-        )}
-  
-        {/* Project */}
-        {selectedComponents.project && (
-          <>
-            {selectedComponents.project === "Project1" && <Project1 />}
-            {selectedComponents.project === "Project2" && <Project2 />}
-            {selectedComponents.project === "Project3" && <Project3 />}
-            {selectedComponents.project === "Project4" && <Project4 />}
-            {selectedComponents.project === "Project5" && <Project5 />}
-            {selectedComponents.project === "Project6" && <Project6 />}
-          </>
-        )}
-  
-        {/* Experience */}
-        {selectedComponents.experience && selectedComponents.experience === "Experience1" && <Experience1 />}
-  
-        {/* Footer */}
-        {selectedComponents.footer && (
-          <>
-            {selectedComponents.footer === "Footer1" && <Footer1 />}
-            {selectedComponents.footer === "Footer2" && <Footer2 />}
-            {selectedComponents.footer === "Footer3" && <Footer3 />}
-          </>
-        )}
+
+<button 
+        onClick={handleEditDownload} 
+        className="px-4 py-2 bg-blue-500 text-white rounded-lg mt-4 disabled:opacity-50"
+        disabled={isDownloading}
+      >
+        {isDownloading ? "Downloading..." : "Download Edited Components"}
+      </button>
       </div>
     </div>
   );
-  
-}
+};
+
 export default EditorPage;
