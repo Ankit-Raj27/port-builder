@@ -1,25 +1,61 @@
 "use client"
-import { Download, Code, Globe, Wand2 } from 'lucide-react';
-//import ThemeSelector from "@/components/ThemeProvider";
-import { Button } from '@/components/ui/button';
-import Link from "next/link";
-import Image from "next/image";
-import Footer from "@/components/common/Footer";
-import { Navbar } from '@/components/navbars/Navbar';
-import { useAuth } from '@clerk/nextjs';
-import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+
+import { Download, Code, Globe, Wand2 } from "lucide-react"
+import { Variants } from "framer-motion"
+import { Button } from "@/components/ui/button"
+import Link from "next/link"
+import Image from "next/image"
+import Footer from "@/components/common/Footer"
+import { Navbar } from "@/components/navbars/Navbar"
+import { useAuth } from "@clerk/nextjs"
+import { useRouter } from "next/navigation"
+import { useEffect } from "react"
+import { motion } from "framer-motion"
 
 export default function Home() {
-  const { isSignedIn } = useAuth();
-  const router = useRouter();
+  const { isSignedIn } = useAuth()
+  const router = useRouter()
 
   useEffect(() => {
     if (isSignedIn) {
-      router.replace("/template"); // Redirect if user is already signed in
+      router.replace("/template") 
     }
-  }, [isSignedIn, router]);
-  const features = [
+  }, [isSignedIn, router])
+
+
+
+  // Animation variants
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2,
+        delayChildren: 0.3,
+      },
+    },
+  }
+
+  const itemVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: {
+        type: "spring",
+        stiffness: 100,
+        damping: 10,
+      },
+    },
+  }
+
+  interface Feature {
+    icon: JSX.Element;
+    title: string;
+  }
+
+
+  const features: Feature[] = [
     {
       icon: <Download className="w-8 h-8 text-black-400" />,
       title: "No Downloads",
@@ -37,140 +73,344 @@ export default function Home() {
       title: "User-Friendly",
     },
   ];
+
+  const featureVariants: Variants = {
+    hidden: { scale: 0.8, opacity: 0 },
+    visible: (i: number) => ({
+      scale: 1,
+      opacity: 1,
+      transition: {
+        delay: i * 0.1,
+        type: "spring",
+        stiffness: 100,
+      },
+    }),
+  };
+
+  const buttonVariants = {
+    initial: { scale: 1 },
+    hover: {
+      scale: 1.05,
+      boxShadow: "0px 5px 15px rgba(0, 0, 0, 0.1)",
+      transition: {
+        type: "spring",
+        stiffness: 400,
+        damping: 10,
+      },
+    },
+    tap: { scale: 0.95 },
+  }
+
+  const imageHoverVariants = {
+    initial: { scale: 1 },
+    hover: {
+      scale: 1.05,
+      transition: { duration: 0.3 },
+    },
+  }
+
   return (
     <div>
-      <main >
+      <main>
         <Navbar />
         {/* Welcome section */}
-        <section className="max-w-[1200px] mx-auto px-4 py-20 md:py-22">
+        <motion.section
+          initial="hidden"
+          animate="visible"
+          variants={containerVariants}
+          className="max-w-[1200px] mx-auto px-4 py-20 md:py-22"
+        >
           <div className="space-y-8">
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-medium tracking-tight">
+            <motion.h1 variants={itemVariants} className="text-5xl md:text-6xl lg:text-7xl font-medium tracking-tight">
               Welcome to the Port-Builder!
-            </h1>
-            <p className="text-xl md:text-2xl text-muted-foreground max-w-[600px]">
-              Our enterprise solution offers advanced site management,
-              highly-efficient portfolio site creation, and the customization
-              options you require.
-            </p>
-            <div>
+            </motion.h1>
+            <motion.p variants={itemVariants} className="text-xl md:text-2xl text-muted-foreground max-w-[600px]">
+              Our enterprise solution offers advanced site management, highly-efficient portfolio site creation, and the
+              customization options you require.
+            </motion.p>
+            <motion.div variants={itemVariants}>
               <Link href="/sign-up">
-                <button className="inline-flex h-12 items-center justify-center rounded-full bg-black px-8 text-sm font-medium text-white hover:bg-gray-800 transition-colors">
+                <motion.button
+                  variants={buttonVariants}
+                  initial="initial"
+                  whileHover="hover"
+                  whileTap="tap"
+                  className="inline-flex h-12 items-center justify-center rounded-full bg-black px-8 text-sm font-medium text-white hover:bg-gray-800 transition-colors"
+                >
                   Create an account!
-                </button>
+                </motion.button>
               </Link>
               <Link href="/sign-in">
-                <button className="inline-flex ml-4 h-12 items-center justify-center rounded-full bg-black px-8 text-sm font-medium text-white hover:bg-gray-800 transition-colors">
+                <motion.button
+                  variants={buttonVariants}
+                  initial="initial"
+                  whileHover="hover"
+                  whileTap="tap"
+                  className="inline-flex ml-4 h-12 items-center justify-center rounded-full bg-black px-8 text-sm font-medium text-white hover:bg-gray-800 transition-colors"
+                >
                   Already have an account?
-                </button>
+                </motion.button>
               </Link>
-            </div>
-            <div className="w-full max-w-4xl mx-auto  text-center">
+            </motion.div>
+            <motion.div variants={itemVariants} className="w-full max-w-4xl mx-auto text-center">
               <div className="flex justify-center gap-16 mb-12 mt-20">
                 {features.map((feature, index) => (
-                  <div key={index} className="flex flex-col items-center">
-                    <div className="mb-4">
+                  <motion.div
+                    key={index}
+                    custom={index}
+                    variants={featureVariants}
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true, amount: 0.8 }}
+                    whileHover={{ y: -5, transition: { duration: 0.2 } }}
+                    className="flex flex-col items-center"
+                  >
+                    <motion.div
+                      className="mb-4"
+                      whileHover={{ rotate: [0, -10, 10, -10, 0], transition: { duration: 0.5 } }}
+                    >
                       {feature.icon}
-                    </div>
-                    <p className="text-gray-600 text-sm">
-                      {feature.title}
-                    </p>
-                  </div>
+                    </motion.div>
+                    <p className="text-gray-600 text-sm">{feature.title}</p>
+                  </motion.div>
                 ))}
               </div>
-              <Button
-                className="bg-black text-white px-8 py-2 rounded-full hover:bg-gray-700 transition-colors"
-              >
-                Create Your Portfolio
-              </Button>
-            </div>
+              <motion.div variants={buttonVariants} initial="initial" whileHover="hover" whileTap="tap">
+                <Button className="bg-black text-white px-8 py-2 rounded-full hover:bg-gray-700 transition-colors">
+                  Create Your Portfolio
+                </Button>
+              </motion.div>
+            </motion.div>
           </div>
-        </section>
+        </motion.section>
 
         {/* Template Section */}
         <section className="w-full py-16 bg-gray-100">
-          <div className="mx-auto max-w-3xl text-center px-4 mb-20">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+            className="mx-auto max-w-3xl text-center px-4 mb-20"
+          >
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 mb-6">
               Choose the best templates for your portfolio website
             </h2>
             <p className="text-lg text-slate-600">
-              Portfoliobox offers a wide variety of templates for creatives looking to make their portfolio. You can easily
-              mix templates to create a digital portfolio that perfectly fits your needs.
+              Portfoliobox offers a wide variety of templates for creatives looking to make their portfolio. You can
+              easily mix templates to create a digital portfolio that perfectly fits your needs.
             </p>
-          </div>
+          </motion.div>
           <div className="grid grid-cols-2 gap-y-24 min-h-screen max-w-7xl mx-auto px-4">
             {/* First image section with grid */}
-            <div className="grid grid-cols-2 gap-4 p-4">
-              <Image src="/11.jpeg" width={240} height={240} alt="df" className="rounded-lg shadow-lg w-full h-full object-cover" />
-              <Image src="/11.jpeg" width={240} height={240} alt="df" className="rounded-lg shadow-lg mt-12 object-cover" />
-              <Image src="/11.jpeg" width={240} height={240} alt="df" className="rounded-lg shadow-lg w-full h-full object-cover" />
-            </div>
+            <motion.div
+              initial={{ opacity: 0, x: -50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6, staggerChildren: 0.1 }}
+              viewport={{ once: true }}
+              className="grid grid-cols-2 gap-4 p-4"
+            >
+              <motion.div whileHover="hover" initial="initial" variants={imageHoverVariants}>
+                <Image
+                  src="/11.jpeg"
+                  width={240}
+                  height={240}
+                  alt="df"
+                  className="rounded-lg shadow-lg w-full h-full object-cover"
+                />
+              </motion.div>
+              <motion.div whileHover="hover" initial="initial" variants={imageHoverVariants}>
+                <Image
+                  src="/11.jpeg"
+                  width={240}
+                  height={240}
+                  alt="df"
+                  className="rounded-lg shadow-lg mt-12 object-cover"
+                />
+              </motion.div>
+              <motion.div whileHover="hover" initial="initial" variants={imageHoverVariants}>
+                <Image
+                  src="/11.jpeg"
+                  width={240}
+                  height={240}
+                  alt="df"
+                  className="rounded-lg shadow-lg w-full h-full object-cover"
+                />
+              </motion.div>
+            </motion.div>
 
-            <div className="flex flex-col justify-center">
+            <motion.div
+              initial={{ opacity: 0, x: 50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+              className="flex flex-col justify-center"
+            >
               <h2 className="text-3xl font-bold tracking-tighter sm:text-3xl md:text-4xl">Text and contact form</h2>
               <h3 className="text font-medium sm:text-2xl mt-2">Create web pages easily</h3>
               <p className="mt-2 max-w-[600px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed l:text-l/relaxed dark:text-gray-400">
                 You can easily add text pages and contact forms to your portfolio. Choose from a variety of templates
                 and customize each page to create the perfect design for your website.
               </p>
-            </div>
+            </motion.div>
 
-            <div className="flex flex-col justify-center">
+            <motion.div
+              initial={{ opacity: 0, x: -50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+              className="flex flex-col justify-center"
+            >
               <h2 className="text-3xl font-bold tracking-tighter sm:text-3xl md:text-4xl">Text and contact form</h2>
               <h3 className="text font-medium sm:text-2xl mt-2">Create web pages easily</h3>
               <p className="mt-2 max-w-[600px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed l:text-l/relaxed dark:text-gray-400">
                 You can easily add text pages and contact forms to your portfolio. Choose from a variety of templates
                 and customize each page to create the perfect design for your website.
               </p>
-            </div>
+            </motion.div>
 
             {/* Second image section with grid */}
-            <div className="grid grid-cols-2 gap-4 p-4">
-              <Image src="/11.jpeg" width={240} height={240} alt="df" className="rounded-lg shadow-lg w-full h-full object-cover" />
-              <Image src="/11.jpeg" width={240} height={240} alt="df" className="rounded-lg shadow-lg w-full h-full object-cover" />
-              <Image src="/11.jpeg" width={240} height={240} alt="df" className="rounded-lg shadow-lg w-full h-full object-cover" />
-              <Image src="/11.jpeg" width={240} height={240} alt="df" className="rounded-lg shadow-lg w-full h-full object-cover" />
-            </div>
+            <motion.div
+              initial={{ opacity: 0, x: 50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6, staggerChildren: 0.1 }}
+              viewport={{ once: true }}
+              className="grid grid-cols-2 gap-4 p-4"
+            >
+              <motion.div whileHover="hover" initial="initial" variants={imageHoverVariants}>
+                <Image
+                  src="/11.jpeg"
+                  width={240}
+                  height={240}
+                  alt="df"
+                  className="rounded-lg shadow-lg w-full h-full object-cover"
+                />
+              </motion.div>
+              <motion.div whileHover="hover" initial="initial" variants={imageHoverVariants}>
+                <Image
+                  src="/11.jpeg"
+                  width={240}
+                  height={240}
+                  alt="df"
+                  className="rounded-lg shadow-lg w-full h-full object-cover"
+                />
+              </motion.div>
+              <motion.div whileHover="hover" initial="initial" variants={imageHoverVariants}>
+                <Image
+                  src="/11.jpeg"
+                  width={240}
+                  height={240}
+                  alt="df"
+                  className="rounded-lg shadow-lg w-full h-full object-cover"
+                />
+              </motion.div>
+              <motion.div whileHover="hover" initial="initial" variants={imageHoverVariants}>
+                <Image
+                  src="/11.jpeg"
+                  width={240}
+                  height={240}
+                  alt="df"
+                  className="rounded-lg shadow-lg w-full h-full object-cover"
+                />
+              </motion.div>
+            </motion.div>
 
             {/* Third image section with grid */}
-            <div className=" gap-4">
-              <Image src="/11.jpeg" width={400} height={400} alt="df" className="rounded-lg shadow-lg  object-cover" />
-            </div>
+            <motion.div
+              initial={{ opacity: 0, x: -50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+              className="gap-4"
+            >
+              <motion.div whileHover="hover" initial="initial" variants={imageHoverVariants}>
+                <Image src="/11.jpeg" width={400} height={400} alt="df" className="rounded-lg shadow-lg object-cover" />
+              </motion.div>
+            </motion.div>
 
-            <div className="flex flex-col justify-center">
+            <motion.div
+              initial={{ opacity: 0, x: 50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+              className="flex flex-col justify-center"
+            >
               <h2 className="text-3xl font-bold tracking-tighter sm:text-3xl md:text-4xl">Web Hosting</h2>
               <h3 className="text font-medium sm:text-2xl mt-2">Host your portfolio easily</h3>
               <p className="mt-2 max-w-[600px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed l:text-l/relaxed dark:text-gray-400">
-                Say goodbye to hosting companies and domain settings. Create your portfolio in your browser, and PortBuilder will handle everything else.
+                Say goodbye to hosting companies and domain settings. Create your portfolio in your browser, and
+                PortBuilder will handle everything else.
               </p>
-            </div>
+            </motion.div>
           </div>
         </section>
-        {/* Carousel Section  */}
-        <section>
 
-        </section>
+        {/* Carousel Section */}
+        <section>{/* Empty section preserved as in original */}</section>
 
         {/* CAT Section */}
-        <section className="h-auto p-16 w-full bg-gradient-to-b from-blue-50 to-blue-400 flex flex-col items-center justify-center px-4">
-          <div className="max-4xl mx-auto text-center space-y-8">
+        <motion.section
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 0.8 }}
+          viewport={{ once: true }}
+          className="h-auto p-16 w-full bg-gradient-to-b from-blue-50 to-blue-400 flex flex-col items-center justify-center px-4"
+        >
+          <motion.div
+            initial={{ y: 50, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            viewport={{ once: true }}
+            className="max-4xl mx-auto text-center space-y-8"
+          >
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-medium tracking-tight text-navy-900">
-              <span className="block">Your vision. Your goals.</span>
-              <span className="block">Your website.</span>
-            </h1>
-            <div>
-              <Button
-                asChild
-                size="lg"
-                className="rounded-full px-8 py-6 text-lg font-medium bg-white text-navy-900 hover:bg-white/90"
+              <motion.span
+                initial={{ y: 20, opacity: 0 }}
+                whileInView={{ y: 0, opacity: 1 }}
+                transition={{ duration: 0.5 }}
+                viewport={{ once: true }}
+                className="block"
               >
-                <Link href="/get-started">Get Started</Link>
-              </Button>
-            </div>
-          </div>
-        </section>
+                Your vision. Your goals.
+              </motion.span>
+              <motion.span
+                initial={{ y: 20, opacity: 0 }}
+                whileInView={{ y: 0, opacity: 1 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+                viewport={{ once: true }}
+                className="block"
+              >
+                Your website.
+              </motion.span>
+            </h1>
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              whileInView={{ scale: 1, opacity: 1 }}
+              transition={{
+                duration: 0.5,
+                delay: 0.4,
+                type: "spring",
+                stiffness: 200,
+              }}
+              viewport={{ once: true }}
+            >
+              <motion.div variants={buttonVariants} initial="initial" whileHover="hover" whileTap="tap">
+                <Button
+                  asChild
+                  size="lg"
+                  className="rounded-full px-8 py-6 text-lg font-medium bg-white text-navy-900 hover:bg-white"
+                >
+                  <Link href="/sign-up">Get Started</Link>
+                </Button>
+              </motion.div>
+            </motion.div>
+          </motion.div>
+        </motion.section>
+
         {/* Footer Section */}
         <Footer />
       </main>
     </div>
-  );
+  )
 }
+

@@ -11,6 +11,7 @@ import Navbar3 from "@/components/navbars/Navbar3";
 import Navbar4 from "@/components/navbars/Navbar4";
 import Navbar5 from "@/components/navbars/Navbar5";
 import Navbar6 from "@/components/navbars/Navbar6";
+import { Navbar } from "@/components/navbars/Navbar";
 
 // Define TypeScript interfaces
 interface SelectedComponents {
@@ -106,40 +107,43 @@ const EditorPage = () => {
   const SelectedNavbarComponent = navbarComponents[selectedComponents.navbar] || null;
 
   return (
-    <div className="flex h-screen w-full">
-      {/* Left Side - Live Preview */}
-      <div className="w-2/3 p-5 bg-gray-100 overflow-hidden">
-        <div className="border bg-white p-5 shadow-lg rounded-md">
-          {SelectedNavbarComponent && <SelectedNavbarComponent data={formData.navbar} />}
+    <>
+    <Navbar />
+      <div className="flex h-screen w-full">
+        {/* Left Side - Live Preview */}
+        <div className="w-2/3 p-5 bg-gray-100 overflow-hidden">
+          <div className="border bg-white p-5 shadow-lg rounded-md">
+            {SelectedNavbarComponent && <SelectedNavbarComponent data={formData.navbar} />}
+          </div>
+        </div>
+
+        {/* Right Side - Form Editor */}
+        <div className="w-1/3 h-full bg-gray-100 p-6 overflow-auto">
+          <h2 className="text-lg font-bold mb-4">Customize Your Navbar</h2>
+
+          {/* Show DynamicForm only if a Navbar is selected */}
+          {selectedComponents.navbar && (
+            <>
+              <h3 className="text-md font-semibold">Navbar Settings</h3>
+              <DynamicForm
+                section="navbar"
+                selectedComponent={selectedComponents.navbar}
+                formData={formData.navbar}
+                onChange={handleFormChange}
+              />
+            </>
+          )}
+
+          <button
+            onClick={handleEditDownload}
+            className="px-4 py-2 bg-blue-500 text-white rounded-lg mt-4 disabled:opacity-50"
+            disabled={isDownloading}
+          >
+            {isDownloading ? "Downloading..." : "Download Edited Components"}
+          </button>
         </div>
       </div>
-
-      {/* Right Side - Form Editor */}
-      <div className="w-1/3 h-full bg-gray-100 p-6 overflow-auto">
-        <h2 className="text-lg font-bold mb-4">Customize Your Navbar</h2>
-
-        {/* Show DynamicForm only if a Navbar is selected */}
-        {selectedComponents.navbar && (
-          <>
-            <h3 className="text-md font-semibold">Navbar Settings</h3>
-            <DynamicForm
-              section="navbar"
-              selectedComponent={selectedComponents.navbar}
-              formData={formData.navbar}
-              onChange={handleFormChange}
-            />
-          </>
-        )}
-
-        <button
-          onClick={handleEditDownload}
-          className="px-4 py-2 bg-blue-500 text-white rounded-lg mt-4 disabled:opacity-50"
-          disabled={isDownloading}
-        >
-          {isDownloading ? "Downloading..." : "Download Edited Components"}
-        </button>
-      </div>
-    </div>
+    </>
   );
 };
 

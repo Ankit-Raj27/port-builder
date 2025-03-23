@@ -19,7 +19,7 @@ export default function Navbar6() {
 
 
   return (
-    <header className="bg-background/80 backdrop-blur-md sticky top-0 z-50 border-b">
+    <header className="bg-background/80 backdrop-blur-md top-0 z-50 border-b">
       <div className="container flex h-16 items-center">
         <Link href="#" className="mr-6 flex items-center space-x-2">
           <div className="h-6 w-6 rounded-full bg-primary" />
