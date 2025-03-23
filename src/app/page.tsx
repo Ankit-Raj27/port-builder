@@ -11,14 +11,14 @@ import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
 export default function Home() {
-   const { isSignedIn } = useAuth();
-    const router = useRouter();
-  
-    useEffect(() => {
-      if (isSignedIn) {
-        router.replace("/template"); // Redirect if user is already signed in
-      }
-    }, [isSignedIn, router]);
+  const { isSignedIn } = useAuth();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (isSignedIn) {
+      router.replace("/template"); // Redirect if user is already signed in
+    }
+  }, [isSignedIn, router]);
   const features = [
     {
       icon: <Download className="w-8 h-8 text-black-400" />,
@@ -39,7 +39,7 @@ export default function Home() {
   ];
   return (
     <div>
-      <main className="container">
+      <main >
         <Navbar />
         {/* Welcome section */}
         <section className="max-w-[1200px] mx-auto px-4 py-20 md:py-22">
@@ -85,7 +85,7 @@ export default function Home() {
             </div>
           </div>
         </section>
-  
+
         {/* Template Section */}
         <section className="w-full py-16 bg-gray-100">
           <div className="mx-auto max-w-3xl text-center px-4 mb-20">

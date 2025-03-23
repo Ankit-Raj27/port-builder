@@ -25,23 +25,19 @@ import Project3 from "@/components/projects/Project3";
 import Projects4 from "@/components/projects/Project4";
 import Projects5 from "@/components/projects/Project5";
 import Projects6 from "@/components/projects/Project6";
-<<<<<<< HEAD
-import Experience1 from "@/components/experience/Experience1";
-import Experience2 from "@/components/experience/Experience2";
-import Experience3 from "@/components/experience/Experience3";
-=======
 
 import Footer1 from "@/components/footer/Footer1";
 import Footer2 from "@/components/footer/Footer2";
 import Footer3 from "@/components/footer/Footer3";
 
 import usePortfolioStore from "@/components/store/usePortfolioStore";
+import Experience2 from "@/components/experience/Experience2";
+import Experience3 from "@/components/experience/Experience3";
 
 
 
 
 
->>>>>>> 977598f7d8c4a582e7ea266c14ce956241b81c27
 
 const TemplateEditor: React.FC = () => {
   const router = useRouter();
@@ -90,7 +86,13 @@ const TemplateEditor: React.FC = () => {
   const handleDownload = async () => {
     setIsDownloading(true);
     try {
-      const bodyData = { navbar, hero, project, footer };
+      const linkedPages: string[] = [];
+
+      if (project) {linkedPages.push("/projects/[id]")};
+      if (experience) {linkedPages.push("/experience")};
+      if (navbar) {linkedPages.push("/contact", "/about")};
+
+      const bodyData = { navbar, hero, project, footer,experience, linkedPages  };
       const response = await fetch("/api/download", {
         method: "POST",
         headers: { "Content-Type": "application/json" },

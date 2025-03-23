@@ -40,7 +40,7 @@ function addFilesFromFolder(
 
 export async function POST(req: Request): Promise<Response> {
   try {
-    const { navbar, hero, project, footer, editedHero } = await req.json();
+    const { navbar, hero, project, footer, editedHero,linkedPages  } = await req.json();
     const basePaths = [
       path.resolve(process.cwd(), "src/components"),
       path.resolve("D:/Programming 2024/port-builder/src/components"),
@@ -52,8 +52,18 @@ export async function POST(req: Request): Promise<Response> {
     const projectPath = project ? findFile(basePaths, `projects/${project}.tsx`) : null;
     const footerPath = footer ? findFile(basePaths, `footer/${footer}.tsx`) : null;
     const uiPath = findFile(basePaths, "ui");
+        // Find linked page paths
+        const linkedPagePaths: { [key: string]: string } = {};
+        if (linkedPages && Array.isArray(linkedPages)) {
+          linkedPages.forEach((page: string) => {
+            const pagePath = findFile(basePaths, `pages/${page}.tsx`);
+            if (pagePath) {
+              linkedPagePaths[page] = pagePath;
+            }
+          });
+        }
 
-    console.log("📂 Selected Components:", { navbarPath, heroPath, projectPath, footerPath, uiPath });
+    console.log("📂 Selected Components:", { navbarPath, heroPath, projectPath, footerPath, uiPath, linkedPagePaths });
 
     if (!navbarPath && !hero && !projectPath && !footerPath) {
       return NextResponse.json({ error: "No components selected" }, { status: 400 });
@@ -95,7 +105,7 @@ export async function POST(req: Request): Promise<Response> {
       });
 
       archive.pipe(output);
-
+      
      const projectFiles = {
         "package.json": `{
           "name": "portfolio",

@@ -29,11 +29,6 @@ const Footer = () => {
             <h3 className="font-medium text-base">Highlights</h3>
             <ul className="space-y-2">
               <li>
-                <Link href="/portfolio" className="text-gray-500 hover:text-gray-700">
-                  Portfolio
-                </Link>
-              </li>
-              <li>
                 <Link href="/portfolio-templates" className="text-gray-500 hover:text-gray-700">
                   Portfolio Templates
                 </Link>
@@ -51,20 +46,15 @@ const Footer = () => {
             <h3 className="font-medium text-base">Help</h3>
             <ul className="space-y-2">
               <li>
-                <Link href="/learn" className="text-gray-500 hover:text-gray-700">
-                  Learn
-                </Link>
-              </li>
-              <li>
                 <Link href="/contact" className="text-gray-500 hover:text-gray-700">
                   Get in Touch
                 </Link>
               </li>
-              <li>
+              {/* <li>
                 <Link href="/blog" className="text-gray-500 hover:text-gray-700">
                   Blog
                 </Link>
-              </li>
+              </li> */}
               <li>
                 <Link href="/privacy" className="text-gray-500 hover:text-gray-700">
                   Privacy Policy
@@ -80,15 +70,15 @@ const Footer = () => {
 
           {/* Portfoliobox Column */}
           <div className="space-y-4">
-            <h3 className="font-medium text-base">Portfoliobox</h3>
+            <h3 className="font-medium text-base">PortBuilder</h3>
             <ul className="space-y-2">
               <li>
-                <Link href="/signup" className="text-gray-500 hover:text-gray-700">
+                <Link href="/sign-up" className="text-gray-500 hover:text-gray-700">
                   Sign Up
                 </Link>
               </li>
               <li>
-                <Link href="/login" className="text-gray-500 hover:text-gray-700">
+                <Link href="/sign-in" className="text-gray-500 hover:text-gray-700">
                   Log In
                 </Link>
               </li>
@@ -98,20 +88,11 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
-                <Link href="/examples" className="text-gray-500 hover:text-gray-700">
-                  Examples
-                </Link>
-              </li>
-              <li>
                 <Link href="/about" className="text-gray-500 hover:text-gray-700">
                   About
                 </Link>
               </li>
-              <li>
-                <Link href="/press" className="text-gray-500 hover:text-gray-700">
-                  Press
-                </Link>
-              </li>
+  
             </ul>
           </div>
         </div>
@@ -121,8 +102,8 @@ const Footer = () => {
           <div className="flex flex-col md:flex-row items-center justify-between">
             <Link href="/" className="mb-4 md:mb-0">
               <Image
-                src="/11.png"
-                alt="Portfoliobox Logo"
+                src="/logo.png"
+                alt="PortBuilder Logo"
                 width={150}
                 height={40}
                 className="h-8 w-auto"

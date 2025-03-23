@@ -10,6 +10,7 @@ import {
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
 import { UserButton } from "@clerk/nextjs";
+import Image from "next/image";
 
 const productItems = [
   { title: "Modern", href: "/template/template1?navbar=Navbar1&hero=Hero1" },
@@ -29,7 +30,14 @@ export function Navbar() {
     <header className="border-b">
       <div className="flex h-16 items-center px-4 md:px-6">
         <Link href="/" className="mr-6 flex items-center">
-          <span className="text-xl font-bold">LOGO</span>
+          {/* <span className="text-xl font-bold">LOGO</span> */}
+          <Image
+                          src="/logo.png"
+                          alt="PortBuilder Logo"
+                          width={250}
+                          height={60}
+                          className=" h-12 w-auto"
+                        />
         </Link>
         <NavigationMenu className="hidden md:flex items-center justify-center">
           <NavigationMenuList>
