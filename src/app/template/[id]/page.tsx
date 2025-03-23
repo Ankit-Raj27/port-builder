@@ -43,7 +43,7 @@ const TemplateEditor: React.FC = () => {
   const router = useRouter();
   const { navbar, hero, setNavbar, setHero, project, setProject, footer, setFooter, experience, setExperience } = usePortfolioStore();
   const [expandedSections, setExpandedSections] = useState<string[]>([]);
-  const [templateId, setTemplateId] = useState<string>("my-template");
+  const [templateId] = useState<string>("my-template");
   const [isDownloading, setIsDownloading] = useState(false);
 
  
@@ -64,7 +64,7 @@ const TemplateEditor: React.FC = () => {
         console.error("Error parsing saved state:", error);
       }
     }
-  }, [setFooter, setHero, setNavbar, setProject]);
+  }, [setFooter, setHero, setNavbar, setProject, experience, setExperience]);
 
   // Save state changes to localStorage (debounced)
   useEffect(() => {

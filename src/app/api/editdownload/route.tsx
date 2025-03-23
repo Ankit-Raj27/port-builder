@@ -70,7 +70,7 @@ export async function POST(req: Request): Promise<Response> {
 
       archive.pipe(output);
 
-      let tempFiles: string[] = [];
+      const tempFiles: string[] = [];
 
       // ✅ If edited navbar exists, create a temp file and add it to ZIP
       if (editedComponents?.navbar) {

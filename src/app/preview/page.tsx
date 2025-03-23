@@ -1,12 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import React from "react";
 import Navbar1 from "@/components/navbars/Navbar1";
 import Hero1 from "@/components/hero/Hero1";
 import Footer1 from "@/components/footer/Footer1";
 
 // Define Component Mapping
-const componentMap: any = {
+const componentMap = {
   navbar: {
     Navbar1,
   },
@@ -19,9 +20,9 @@ const componentMap: any = {
 };
 
 interface SelectedComponents {
-  navbar?: string;
-  hero?: string;
-  footer?: string;
+  navbar?: keyof typeof componentMap.navbar;
+  hero?: keyof typeof componentMap.hero;
+  footer?: keyof typeof componentMap.footer;
 }
 
 const PreviewPage = () => {
@@ -37,19 +38,19 @@ const PreviewPage = () => {
   return (
     <div className="w-full min-h-screen">
       {/* Navbar Preview */}
-      {selectedComponents.navbar && componentMap.navbar[selectedComponents.navbar] && (
-        <>{componentMap.navbar[selectedComponents.navbar]()}</>
-      )}
+      {selectedComponents.navbar &&
+        componentMap.navbar[selectedComponents.navbar] &&
+        React.createElement(componentMap.navbar[selectedComponents.navbar])}
 
       {/* Hero Preview */}
-      {selectedComponents.hero && componentMap.hero[selectedComponents.hero] && (
-        <>{componentMap.hero[selectedComponents.hero]()}</>
-      )}
+      {selectedComponents.hero &&
+        componentMap.hero[selectedComponents.hero] &&
+        React.createElement(componentMap.hero[selectedComponents.hero])}
 
       {/* Footer Preview */}
-      {selectedComponents.footer && componentMap.footer[selectedComponents.footer] && (
-        <>{componentMap.footer[selectedComponents.footer]()}</>
-      )}
+      {selectedComponents.footer &&
+        componentMap.footer[selectedComponents.footer] &&
+        React.createElement(componentMap.footer[selectedComponents.footer])}
     </div>
   );
 };

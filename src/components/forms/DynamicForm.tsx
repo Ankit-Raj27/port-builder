@@ -1,22 +1,20 @@
-"use client"
-
-import { useState } from "react"
-import { formFields } from "../forms/formFields"
+"use client";
+import { formFields } from "../forms/formFields";
 
 interface DynamicFormProps {
-  section: keyof typeof formFields
-  selectedComponent: string
-  formData: Record<string, any>
-  onChange: (section: string, field: string, value: any) => void
+  section: keyof typeof formFields;
+  selectedComponent: string;
+  formData: Record<string, string>;
+  onChange: (section: keyof typeof formFields, field: string, value: string) => void;
 }
 
 const DynamicForm: React.FC<DynamicFormProps> = ({ section, selectedComponent, formData, onChange }) => {
-  const fields = formFields[section]?.[selectedComponent as keyof typeof formFields[typeof section]] || []
+  const fields: string[] = formFields[section]?.[selectedComponent as keyof (typeof formFields)[typeof section]] || [];
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target
-    onChange(section, name, value)
-  }
+    const { name, value } = e.target;
+    onChange(section, name, value);
+  };
 
   return (
     <div className="space-y-4 bg-white p-4 shadow-md rounded-md">
@@ -38,7 +36,7 @@ const DynamicForm: React.FC<DynamicFormProps> = ({ section, selectedComponent, f
         ))
       )}
     </div>
-  )
-}
+  );
+};
 
-export default DynamicForm
+export default DynamicForm;
