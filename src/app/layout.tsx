@@ -11,6 +11,7 @@ import {
   UserButton
 } from '@clerk/nextjs'
 import "./globals.css";
+import { ThemeProvider } from "@/components/theme-provider";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -40,9 +41,17 @@ export default function RootLayout({
           unsafe_disableDevelopmentModeWarnings: true,
         },
       }}>
-      <html lang="en">
+      <html lang="en" suppressHydrationWarning>
+        <head />
         <body>
-          {children}
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            {children}
+          </ThemeProvider>
         </body>
       </html>
     </ClerkProvider>

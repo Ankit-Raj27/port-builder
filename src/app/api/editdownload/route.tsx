@@ -80,7 +80,7 @@ export async function POST(req: Request): Promise<Response> {
         fs.writeFileSync(tempNavbarPath, editedComponents.navbar, "utf-8");
 
         archive.append(fs.createReadStream(tempNavbarPath), { name: `components/navbars/${navbar}.tsx` });
-        tempFiles.push(tempNavbarPath); // Track temp files for cleanup
+        tempFiles.push(tempNavbarPath); 
       } else if (navbarPath) {
         console.log("📂 Adding Original Navbar File:", navbarPath);
         archive.append(fs.createReadStream(navbarPath), { name: `components/navbars/${navbar}.tsx` });

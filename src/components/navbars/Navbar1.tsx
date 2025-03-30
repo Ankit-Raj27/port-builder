@@ -20,7 +20,6 @@ const Navbar1: React.FC<NavbarProps> = ({ data }) => {
     { title: "Experience", href: "#experience" },
     { title: "Contact", href: "#contact" },
   ]
-  
 
   return (
     <header className="bg-background border-b">
@@ -46,8 +45,6 @@ const Navbar1: React.FC<NavbarProps> = ({ data }) => {
             </Link>
           ))}
         </nav>
-
-
         <div className="hidden md:block">
           <Button>{data?.buttonText || "Get in Touch"}</Button>
         </div>

@@ -91,8 +91,7 @@ export default function Home() {
     initial: { scale: 1 },
     hover: {
       scale: 1.05,
-      boxShadow: "0px 5px 15px rgba(0, 0, 0, 0.1)",
-      transition: {
+    transition: {
         type: "spring",
         stiffness: 400,
         damping: 10,
@@ -110,15 +109,16 @@ export default function Home() {
   }
 
   return (
-    <div>
-      <main>
+    <div >
         <Navbar />
+      <main className=" dark:bg-gradient-to-tr from-[#434343] to-[#000] " >
         {/* Welcome section */}
+        <div className="shadow-md shadow-gray-300"></div>
         <motion.section
           initial="hidden"
           animate="visible"
           variants={containerVariants}
-          className="max-w-[1200px] mx-auto px-4 py-20 md:py-22"
+          className="max-w-[1200px] mx-auto px-4 py-20 md:py-22 "
         >
           <div className="space-y-8">
             <motion.h1 variants={itemVariants} className="text-5xl md:text-6xl lg:text-7xl font-medium tracking-tight">
@@ -152,8 +152,9 @@ export default function Home() {
                 </motion.button>
               </Link>
             </motion.div>
-            <motion.div variants={itemVariants} className="w-full max-w-4xl mx-auto text-center">
-              <div className="flex justify-center gap-16 mb-12 mt-20">
+            
+            <motion.div variants={itemVariants} className="w-full max-w-4xl mx-auto text-center ">
+              <div className="flex justify-center gap-16 mb-12 mt-20 ">
                 {features.map((feature, index) => (
                   <motion.div
                     key={index}
@@ -176,28 +177,28 @@ export default function Home() {
                 ))}
               </div>
               <motion.div variants={buttonVariants} initial="initial" whileHover="hover" whileTap="tap">
-                <Button className="bg-black text-white px-8 py-2 rounded-full hover:bg-gray-700 transition-colors">
+                <Button className="bg-black text-white px-8 py-2 rounded-full hover:bg-gray-700 transition-colors ">
                   Create Your Portfolio
                 </Button>
               </motion.div>
             </motion.div>
           </div>
         </motion.section>
-
+        <div className="shadow-md shadow-gray-300"></div>
         {/* Template Section */}
-        <section className="w-full py-16 bg-gray-100">
+        <section className="w-full py-16 bg-gray-100 shadow-lg  dark:bg-gradient-to-tr from-[#434343] to-[#000]">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
-            className="mx-auto max-w-3xl text-center px-4 mb-20"
+            className="mx-auto max-w-3xl text-center px-4 mb-"
           >
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 mb-6">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold  mb-6">
               Choose the best templates for your portfolio website
             </h2>
             <p className="text-lg text-slate-600">
-              Portfoliobox offers a wide variety of templates for creatives looking to make their portfolio. You can
+              PortBuilder offers a wide variety of templates for creatives looking to make their portfolio. You can
               easily mix templates to create a digital portfolio that perfectly fits your needs.
             </p>
           </motion.div>
@@ -354,7 +355,7 @@ export default function Home() {
           whileInView={{ opacity: 1 }}
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
-          className="h-auto p-16 w-full bg-gradient-to-b from-blue-50 to-blue-400 flex flex-col items-center justify-center px-4"
+          className="h-auto p-16 w-full bg-gradient-to-b from-[#434343] to-[#181818] flex flex-col items-center justify-center px-4"
         >
           <motion.div
             initial={{ y: 50, opacity: 0 }}
@@ -398,7 +399,7 @@ export default function Home() {
                 <Button
                   asChild
                   size="lg"
-                  className="rounded-full px-8 py-6 text-lg font-medium bg-white text-navy-900 hover:bg-white"
+                  className="rounded-full px-8 py-6 text-lg font-medium bg-white text-navy-900 hover:bg-white dark:hover:"
                 >
                   <Link href="/sign-up">Get Started</Link>
                 </Button>
