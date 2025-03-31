@@ -1,7 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-
+import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import Navbar1 from "@/components/navbars/Navbar1";
 import Navbar2 from "@/components/navbars/Navbar2";
 import Navbar3 from "@/components/navbars/Navbar3";
@@ -35,27 +34,49 @@ import Experience2 from "@/components/experience/Experience2";
 import Experience3 from "@/components/experience/Experience3";
 import { Navbar } from "@/components/navbars/Navbar";
 
-
-
-
-
-
 const TemplateEditor: React.FC = () => {
   const router = useRouter();
-  const { navbar, hero, setNavbar, setHero, project, setProject, footer, setFooter, experience, setExperience } = usePortfolioStore();
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+  const {
+    navbar,
+    hero,
+    setNavbar,
+    setHero,
+    project,
+    setProject,
+    footer,
+    setFooter,
+    experience,
+    setExperience,
+  } = usePortfolioStore();
   const [expandedSections, setExpandedSections] = useState<string[]>([]);
-  const [templateId] = useState<string>("my-template");
+  const templateId = "my-template";
   const [isDownloading, setIsDownloading] = useState(false);
 
+  // Set default values using state and update URL parameters when selected
+  useEffect(() => {
+    const navbarParam = searchParams.get("navbar") || "Navbar1";
+    const heroParam = searchParams.get("hero") || "Hero1";
+    const projectParam = searchParams.get("project") || "Project1";
+    const footerParam = searchParams.get("footer") || "Footer1";
+    const experienceParam = searchParams.get("experience") || "Experience1";
 
+    setNavbar(navbarParam);
+    setHero(heroParam);
+    setProject(projectParam);
+    setFooter(footerParam);
+    setExperience(experienceParam);
 
+    router.push(`${pathname}?navbar=${navbarParam}&hero=${heroParam}&project=${projectParam}&footer=${footerParam}&experience=${experienceParam}`, { scroll: false });
+  }, [searchParams, setNavbar, setHero, setProject, setFooter, setExperience, router, pathname]);
 
   // Load saved user preferences on mount
   useEffect(() => {
     const savedState = localStorage.getItem("portfolioState");
     if (savedState) {
       try {
-        const { navbar, hero, project, footer } = JSON.parse(savedState);
+        const { navbar, hero, project, footer, experience } = JSON.parse(savedState);
         setNavbar(navbar);
         setHero(hero);
         setProject(project);
@@ -65,18 +86,18 @@ const TemplateEditor: React.FC = () => {
         console.error("Error parsing saved state:", error);
       }
     }
-  }, [setFooter, setHero, setNavbar, setProject, experience, setExperience]);
+  }, [setFooter, setHero, setNavbar, setProject, setExperience]);
 
   // Save state changes to localStorage (debounced)
   useEffect(() => {
     const timeout = setTimeout(() => {
       localStorage.setItem(
         "portfolioState",
-        JSON.stringify({ navbar, hero, project, footer })
+        JSON.stringify({ navbar, hero, project, footer, experience })
       );
     }, 300);
     return () => clearTimeout(timeout);
-  }, [navbar, hero, project, footer]);
+  }, [navbar, hero, project, footer, experience]);
 
   const toggleSection = (section: string) => {
     setExpandedSections((prev) =>
@@ -118,7 +139,6 @@ const TemplateEditor: React.FC = () => {
     }
   };
 
-
   const handleEdit = () => {
     const selectedComponents = { navbar, hero, project, footer, experience };
 
@@ -129,12 +149,9 @@ const TemplateEditor: React.FC = () => {
     router.push(`/template/${templateId}/editor`);
   };
 
-
-
-
   return (
     <>
-    <Navbar/>
+      <Navbar />
       <div className="flex h-screen">
         {/* Left Preview Section */}
         <div className="flex-1 bg-gray-50 p-6 border-r overflow-y-scroll max-h-screen">
@@ -146,7 +163,6 @@ const TemplateEditor: React.FC = () => {
             {navbar === "Navbar4" && <Navbar4 />}
             {navbar === "Navbar5" && <Navbar5 />}
             {navbar === "Navbar6" && <Navbar6 />}
-
 
             {hero === "Hero1" && <Hero1 />}
             {hero === "Hero2" && <Hero2 />}
@@ -177,12 +193,11 @@ const TemplateEditor: React.FC = () => {
         <div className="w-1/3 p-6 bg-white overflow-y-auto max-h-screen">
           <h2 className="text-2xl font-bold mb-6 text-gray-900">Customize Your Portfolio</h2>
 
-          {[
-            { name: "Navbar", options: ["Navbar1", "Navbar2", "Navbar3", "Navbar4", "Navbar5", "Navbar6"], setter: setNavbar, selected: navbar },
-            { name: "Hero", options: ["Hero1", "Hero2", "Hero3", "Hero4", "Hero5", "Hero6", "Hero7"], setter: setHero, selected: hero },
-            { name: "Experience", options: ["Experience1", "Experience2", "Experience3"], setter: setExperience, selected: experience },
-            { name: "Project", options: ["Project1", "Project2", "Project3", "Project4", "Project5", "Project6"], setter: setProject, selected: project },
-            { name: "Footer", options: ["Footer1", "Footer2", "Footer3"], setter: setFooter, selected: footer },
+          {[{ name: "Navbar", options: ["Navbar1", "Navbar2", "Navbar3", "Navbar4", "Navbar5", "Navbar6"], setter: setNavbar, selected: navbar },
+          { name: "Hero", options: ["Hero1", "Hero2", "Hero3", "Hero4", "Hero5", "Hero6", "Hero7"], setter: setHero, selected: hero },
+          { name: "Experience", options: ["Experience1", "Experience2", "Experience3"], setter: setExperience, selected: experience },
+          { name: "Project", options: ["Project1", "Project2", "Project3", "Project4", "Project5", "Project6"], setter: setProject, selected: project },
+          { name: "Footer", options: ["Footer1", "Footer2", "Footer3"], setter: setFooter, selected: footer },
           ].map(({ name, options, setter, selected }) => (
             <div key={name} className="mb-4">
               <button
@@ -198,8 +213,8 @@ const TemplateEditor: React.FC = () => {
                       key={option}
                       onClick={() => setter(selected === option ? "" : option)}
                       className={`px-4 py-2 rounded-lg shadow-sm transition-all duration-200 ${selected === option
-                          ? "bg-indigo-500 text-white shadow-md"
-                          : "bg-gray-200 text-gray-700 hover:bg-gray-300 hover:shadow-md"
+                        ? "bg-indigo-500 text-white shadow-md"
+                        : "bg-gray-200 text-gray-700 hover:bg-gray-300 hover:shadow-md"
                         }`}
                     >
                       {option}

@@ -1,13 +1,12 @@
 "use client"
-
 import type React from "react"
-
 import { Navbar } from "@/components/navbars/Navbar"
 import { useRouter } from "next/navigation"
 import { motion } from "framer-motion"
 import { Edit, Eye } from "lucide-react"
 import Image from "next/image"
 import { useState } from "react"
+import Footer from "@/components/common/Footer"
 
 type Template = {
   id: string
@@ -16,6 +15,9 @@ type Template = {
   category: string
   navbar: string
   hero: string
+  experience: string
+  project: string
+  footer: string
 }
 
 const templates: Template[] = [
@@ -26,6 +28,9 @@ const templates: Template[] = [
     category: "Personal",
     navbar: "Navbar1",
     hero: "Hero1",
+    experience: "Experience1",
+    project: "Project1",
+    footer: "Footer1",
   },
   {
     id: "template2",
@@ -33,79 +38,21 @@ const templates: Template[] = [
     description: "A stylish and colorful template.",
     category: "Creative",
     navbar: "Navbar2",
-    hero: "Hero1",
+    hero: "Hero2",
+    experience: "Experience2",
+    project: "Project2",
+    footer: "Footer2",
   },
   {
     id: "template3",
     name: "Business Portfolio",
     description: "A professional portfolio.",
     category: "Business",
-    navbar: "Navbar1",
-    hero: "Hero1",
-  },
-  {
-    id: "template4",
-    name: "Photography Portfolio",
-    description: "Showcase your visual work.",
-    category: "Creative",
-    navbar: "Navbar1",
-    hero: "Hero1",
-  },
-  {
-    id: "template5",
-    name: "Developer Portfolio",
-    description: "Highlight your coding projects.",
-    category: "Personal",
-    navbar: "Navbar1",
-    hero: "Hero1",
-  },
-  {
-    id: "template6",
-    name: "Minimalist CV",
-    description: "Clean and straightforward resume.",
-    category: "Personal",
-    navbar: "Navbar1",
-    hero: "Hero1",
-  },
-  {
-    id: "template7",
-    name: "Graphic Design",
-    description: "Bold and creative showcase.",
-    category: "Creative",
-    navbar: "Navbar1",
-    hero: "Hero1",
-  },
-  {
-    id: "template8",
-    name: "Freelancer Portfolio",
-    description: "Perfect for independent professionals.",
-    category: "Business",
-    navbar: "Navbar1",
-    hero: "Hero1",
-  },
-  {
-    id: "template9",
-    name: "Agency Template",
-    description: "Ideal for small teams and agencies.",
-    category: "Business",
-    navbar: "Navbar1",
-    hero: "Hero1",
-  },
-  {
-    id: "template10",
-    name: "Artist Portfolio",
-    description: "Showcase your artistic creations.",
-    category: "Creative",
-    navbar: "Navbar1",
-    hero: "Hero1",
-  },
-  {
-    id: "template11",
-    name: "Writer Portfolio",
-    description: "Highlight your written work.",
-    category: "Personal",
-    navbar: "Navbar1",
-    hero: "Hero1",
+    navbar: "Navbar3",
+    hero: "Hero3",
+    experience: "Experience3",
+    project: "Project3",
+    footer: "Footer3",
   },
 ]
 
@@ -115,13 +62,13 @@ const Templates: React.FC = () => {
   const router = useRouter()
   const [selectedCategory, setSelectedCategory] = useState("All")
 
-  const handleSelectTemplate = (template: Template) => {
-    router.push(`/template/${template.id}?navbar=${template.navbar}&hero=${template.hero}`)
-  }
+  const handleSelectTemplate = (id: string, navbar: string, hero: string, experience: string, project: string, footer: string) => {
+    router.push(`/template/${id}?navbar=${navbar}&hero=${hero}&experience=${experience}&project=${project}&footer=${footer}`);
+  };
 
   const handleEditTemplate = (template: Template, e: React.MouseEvent) => {
     e.stopPropagation()
-    router.push(`/template/edit/${template.id}?navbar=${template.navbar}&hero=${template.hero}`)
+    router.push(`/template/my-template/editor`)
   }
 
   const filteredTemplates =
@@ -132,19 +79,16 @@ const Templates: React.FC = () => {
       <Navbar />
       <div className="p-6 md:p-10 max-w-7xl mx-auto ">
         <h2 className="text-3xl font-bold mb-8 text-center md:text-lef  ">Choose a Template</h2>
-
         {/* Category Filter */}
         <div className="flex flex-wrap gap-3 mb-10">
           {categories.map((category) => (
             <motion.button
               key={category}
-              className={`px-4 py-2 rounded-md border text-sm font-medium transition-colors  ${
-                selectedCategory === category
+              className={`px-4 py-2 rounded-md border text-sm font-medium transition-colors  ${selectedCategory === category
                   ? "bg-black text-white border-black"
                   : "bg-white text-gray-700 border-gray-300 hover:border-gray-400"
-              }`}
+                }`}
               whileHover={{ y: -2 }}
-              whileTap={{ y: 0 }}
               onClick={() => setSelectedCategory(category)}
             >
               {category}
@@ -159,7 +103,7 @@ const Templates: React.FC = () => {
               className="group flex flex-col"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3 }}
+              transition={{ duration: .3 }}
             >
               {/* Browser Frame */}
               <div className="relative rounded-lg overflow-hidden border border-gray-200 shadow-md bg-white">
@@ -175,7 +119,7 @@ const Templates: React.FC = () => {
                 {/* Template Preview */}
                 <div className="relative h-[220px] overflow-hidden ">
                   <Image
-                    src={`/placeholder.svg?height=400&width=600&text=${template.name}`}
+                    src={`/images/template/${template.name}.png`}
                     alt={template.name}
                     fill
                     className="object-cover"
@@ -197,7 +141,7 @@ const Templates: React.FC = () => {
                       className="bg-white text-black px-6 py-2 rounded-full flex items-center gap-2 font-medium"
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
-                      onClick={() => handleSelectTemplate(template)}
+                      onClick={() => handleSelectTemplate(template.id, template.navbar, template.hero, template.experience, template.project, template.footer)}
                     >
                       <Eye size={16} />
                       View Details
@@ -215,6 +159,7 @@ const Templates: React.FC = () => {
           ))}
         </div>
       </div>
+      <Footer/>
     </div>
   )
 }
