@@ -5,13 +5,14 @@ import usePortfolioStore from "@/components/store/usePortfolioStore";
 import DynamicForm from "@/components/forms/DynamicForm";
 
 // Import Navbar components
+import {Navbar} from "@/components/navbars/Navbar";
 import Navbar1 from "@/components/navbars/Navbar1";
 import Navbar2 from "@/components/navbars/Navbar2";
 import Navbar3 from "@/components/navbars/Navbar3";
 import Navbar4 from "@/components/navbars/Navbar4";
 import Navbar5 from "@/components/navbars/Navbar5";
 import Navbar6 from "@/components/navbars/Navbar6";
-import { Navbar } from "@/components/navbars/Navbar";
+
 
 // Define TypeScript interfaces
 interface SelectedComponents {
@@ -28,19 +29,16 @@ const navbarComponents: Record<string, React.ElementType> = {
   Navbar3,
   Navbar4,
   Navbar5,
-  Navbar6,
+ 
 };
 
-const EditorPage = () => {
+const EditorPage: React.FC = () => {
   const { setNavbar } = usePortfolioStore();
 
-  // State for selected navbar
   const [selectedComponents, setSelectedComponents] = useState<SelectedComponents>({ navbar: "" });
-
-  // State for form data
   const [formData, setFormData] = useState<FormData>({ navbar: {} });
+  const [isDownloading, setIsDownloading] = useState(false);
 
-  // Load selected navbar from localStorage on mount
   useEffect(() => {
     const savedComponents = localStorage.getItem("selectedComponents");
     if (savedComponents) {
@@ -54,36 +52,40 @@ const EditorPage = () => {
     }
   }, [setNavbar]);
 
-  const [isDownloading, setIsDownloading] = useState(false);
-
   const handleEditDownload = async () => {
     setIsDownloading(true);
     try {
-      const updatedNavbarCode = JSON.stringify(formData.navbar, null, 2);
+      const basePaths = [
+        "src/components", // Use relative path as a string
+        "D:/Programming 2024/port-builder/src/components",
+        "/Users/apple/Downloads/port-builder/src/components"
+      ];
 
       const bodyData = {
-        navbar: selectedComponents.navbar,
-        editedComponents: { navbar: updatedNavbarCode },
+        components: [
+          {
+            name: selectedComponents.navbar,
+            type: "navbars",
+            editedComponents: formData.navbar,
+          }
+        ],
+        basePaths // Now you are including `basePaths` in your request body
       };
-
+  
       console.log("📤 Sending Edited Navbar for Download:", bodyData);
-
+  
       const response = await fetch("/api/editdownload", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(bodyData),
       });
-
+  
       if (!response.ok) {
         const errorText = await response.text();
         throw new Error(`Failed to download ZIP: ${errorText || response.statusText}`);
       }
-
+  
       const blob = await response.blob();
-      if (blob.size === 0) {
-        throw new Error("Received empty ZIP file");
-      }
-
       const link = document.createElement("a");
       link.href = URL.createObjectURL(blob);
       link.download = "edited-navbar.zip";
@@ -91,37 +93,34 @@ const EditorPage = () => {
       link.click();
       document.body.removeChild(link);
     } catch (error) {
-      console.error("❌ Download failed:", error instanceof Error ? error.message : error);
+      console.error("❌ Download failed:", error);
     } finally {
       setIsDownloading(false);
     }
   };
 
-  // Handle form changes with strong typing
+  
   const handleFormChange = (section: string, field: string, value: string) => {
     setFormData((prev) => ({
       ...prev,
       [section]: { ...prev[section], [field]: value },
     }));
   };
+  
   const SelectedNavbarComponent = navbarComponents[selectedComponents.navbar] || null;
 
   return (
     <>
-    <Navbar />
+      <Navbar />
       <div className="flex h-screen w-full">
-        {/* Left Side - Live Preview */}
         <div className="w-2/3 p-5 bg-gray-100 overflow-hidden">
           <div className="border bg-white p-5 shadow-lg rounded-md">
             {SelectedNavbarComponent && <SelectedNavbarComponent data={formData.navbar} />}
           </div>
         </div>
 
-        {/* Right Side - Form Editor */}
         <div className="w-1/3 h-full bg-gray-100 p-6 overflow-auto">
           <h2 className="text-lg font-bold mb-4">Customize Your Navbar</h2>
-
-          {/* Show DynamicForm only if a Navbar is selected */}
           {selectedComponents.navbar && (
             <>
               <h3 className="text-md font-semibold">Navbar Settings</h3>
