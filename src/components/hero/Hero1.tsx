@@ -35,7 +35,7 @@ export default function Hero1() {
           <div className="flex items-center justify-center">
             <div className="relative h-[400px] w-[400px] overflow-hidden rounded-full border-8 border-muted">
               <Image
-                src="/placeholder.svg?height=400&width=400"
+                src="/images/component/hero1.jpg?height=400&width=400"
                 alt="John Doe"
                 fill
                 className="object-cover"

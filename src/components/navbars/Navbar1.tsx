@@ -1,5 +1,4 @@
 "use client"
-
 import * as React from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
@@ -12,7 +11,6 @@ interface NavbarProps {
     avatarSrc?: string
   }
 }
-
 const Navbar1: React.FC<NavbarProps> = ({ data }) => {
   const navItems = [
     { title: "Home", href: "#" },
@@ -20,7 +18,6 @@ const Navbar1: React.FC<NavbarProps> = ({ data }) => {
     { title: "Experience", href: "#experience" },
     { title: "Contact", href: "#contact" },
   ]
-
   return (
     <header className="bg-background border-b">
       <div className="container flex h-16 items-center justify-between">
@@ -33,7 +30,6 @@ const Navbar1: React.FC<NavbarProps> = ({ data }) => {
             {data?.title || "John Doe"}
           </Link>
         </div>
-
         <nav className="hidden md:flex md:gap-6">
           {navItems.map((item) => (
             <Link
@@ -52,5 +48,4 @@ const Navbar1: React.FC<NavbarProps> = ({ data }) => {
     </header>
   )
 }
-
 export default Navbar1

@@ -284,16 +284,7 @@ export default function Home() {
                   width={240}
                   height={240}
                   alt="df"
-                  className="rounded-lg shadow-lg w-full h-full object-cover"
-                />
-              </motion.div>
-              <motion.div whileHover="hover" initial="initial" variants={imageHoverVariants}>
-                <Image
-                  src="/11.jpeg"
-                  width={240}
-                  height={240}
-                  alt="df"
-                  className="rounded-lg shadow-lg w-full h-full object-cover"
+                  className="rounded-lg  shadow-lg mt-12 object-cover"
                 />
               </motion.div>
               <motion.div whileHover="hover" initial="initial" variants={imageHoverVariants}>
@@ -355,7 +346,7 @@ export default function Home() {
           whileInView={{ opacity: 1 }}
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
-          className="h-auto p-16 w-full bg-gradient-to-b from-[#434343] to-[#181818] flex flex-col items-center justify-center px-4"
+          className="h-auto p-16 w-full dark:bg-gradient-to-b from-[#434343] to-[#181818] flex flex-col items-center justify-center px-4"
         >
           <motion.div
             initial={{ y: 50, opacity: 0 }}

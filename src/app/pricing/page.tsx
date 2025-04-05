@@ -7,6 +7,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Badge } from "@/components/ui/badge"
 import { Navbar } from "@/components/navbars/Navbar"
 import Footer from "@/components/common/Footer"
+import SubscriptionButton from "@/components/common/SubscriptionButton"
 
 // Animation variants
 const containerVariants = {
@@ -188,7 +189,7 @@ export default function PricingPage() {
                   transition={{ delay: 0.6, duration: 0.5 }}
                 >
                   <p className="text-5xl font-bold">
-                    $6995<span className="text-xl font-normal opacity-80">/mo</span>
+                    Rs.100<span className="text-xl font-normal opacity-80">/mo</span>
                   </p>
                 </motion.div>
                 <p className="text-primary-foreground/80">
@@ -222,9 +223,7 @@ export default function PricingPage() {
               </CardContent>
               <CardFooter>
                 <motion.div className="w-full" whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
-                  <Button variant="secondary" className="w-full">
-                    Get Started
-                  </Button>
+                <SubscriptionButton  planId="plan_QFXIdwsUUgIyGI" email="user@example.com" />
                 </motion.div>
               </CardFooter>
             </MotionCard>

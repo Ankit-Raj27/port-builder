@@ -1,10 +1,8 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
-import Link from "next/link"
 import { motion, useScroll, useTransform } from "framer-motion"
-import { ArrowRight, MousePointer } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import {  MousePointer } from "lucide-react"
 
 export default function Hero3() {
   const [, setScreenSize] = useState({ width: 0, height: 0 })
@@ -102,26 +100,6 @@ export default function Hero3() {
           experiences that push the boundaries of web design.
         </motion.p>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.6 }}
-          className="flex flex-col gap-4 sm:flex-row"
-        >
-          <Button size="lg" className="bg-white text-black hover:bg-white/90" asChild>
-            <Link href="/projects">
-              View My Work <ArrowRight className="ml-2 h-4 w-4" />
-            </Link>
-          </Button>
-          <Button
-            size="lg"
-            variant="outline"
-            className="border-white/20 text-white hover:bg-white/10"
-            asChild
-          >
-            <Link href="/contact">Get In Touch</Link>
-          </Button>
-        </motion.div>
       </motion.div>
 
       <motion.div

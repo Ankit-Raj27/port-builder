@@ -73,7 +73,6 @@ const Templates: React.FC = () => {
 
   const filteredTemplates =
     selectedCategory === "All" ? templates : templates.filter((template) => template.category === selectedCategory)
-
   return (
     <div className="dark:bg-gradient-to-tr from-[#000000] to-[#2D3436]">
       <Navbar />
@@ -95,7 +94,6 @@ const Templates: React.FC = () => {
             </motion.button>
           ))}
         </div>
-
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 " >
           {filteredTemplates.map((template) => (
             <motion.div

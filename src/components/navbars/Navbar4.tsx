@@ -8,11 +8,9 @@ import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import {
   NavigationMenu,
-  NavigationMenuContent,
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
-  NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu"
 import { useTheme } from "next-themes"
@@ -23,7 +21,7 @@ export default function Navbar4() {
   const pathname = usePathname()
 
   return (
-    <header className=" pl-10 pr-10 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <header className="  pl-10 pr-10 z-100 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center justify-between">
         <Link href="/" className="font-bold text-xl flex items-center gap-2">
           <Code className="h-6 w-6" />
@@ -41,54 +39,9 @@ export default function Navbar4() {
               </NavigationMenuItem>
 
               <NavigationMenuItem>
-                <NavigationMenuTrigger>Projects</NavigationMenuTrigger>
-                <NavigationMenuContent>
-                  <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
-                    <li className="row-span-3">
-                      <NavigationMenuLink asChild>
-                        <a
-                          className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
-                          href="/featured-project"
-                        >
-                          <div className="mb-2 mt-4 text-lg font-medium">Featured Project</div>
-                          <p className="text-sm leading-tight text-muted-foreground">
-                            Check out my latest featured web application built with Next.js and TypeScript.
-                          </p>
-                        </a>
-                      </NavigationMenuLink>
-                    </li>
-                    <li>
-                      <Link href="/projects/web" legacyBehavior passHref>
-                        <NavigationMenuLink className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
-                          <div className="text-sm font-medium leading-none">Web Development</div>
-                          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                            Frontend and full-stack web projects
-                          </p>
-                        </NavigationMenuLink>
-                      </Link>
-                    </li>
-                    <li>
-                      <Link href="/projects/mobile" legacyBehavior passHref>
-                        <NavigationMenuLink className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
-                          <div className="text-sm font-medium leading-none">Mobile Apps</div>
-                          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                            iOS and Android applications
-                          </p>
-                        </NavigationMenuLink>
-                      </Link>
-                    </li>
-                    <li>
-                      <Link href="/projects/design" legacyBehavior passHref>
-                        <NavigationMenuLink className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
-                          <div className="text-sm font-medium leading-none">UI/UX Design</div>
-                          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                            Design systems and interfaces
-                          </p>
-                        </NavigationMenuLink>
-                      </Link>
-                    </li>
-                  </ul>
-                </NavigationMenuContent>
+                <Link href="/projects" legacyBehavior passHref>
+                  <NavigationMenuLink className={navigationMenuTriggerStyle()}>Projects</NavigationMenuLink>
+                </Link>
               </NavigationMenuItem>
 
               <NavigationMenuItem>

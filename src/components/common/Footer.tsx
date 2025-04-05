@@ -29,7 +29,7 @@ const Footer = () => {
             <h3 className="font-medium text-base">Highlights</h3>
             <ul className="space-y-2">
               <li>
-                <Link href="/portfolio-templates" className="text-gray-500 hover:text-gray-700">
+                <Link href="/templates" className="text-gray-500 hover:text-gray-700">
                   Portfolio Templates
                 </Link>
               </li>
@@ -72,16 +72,6 @@ const Footer = () => {
           <div className="space-y-4">
             <h3 className="font-medium text-base">PortBuilder</h3>
             <ul className="space-y-2">
-              <li>
-                <Link href="/sign-up" className="text-gray-500 hover:text-gray-700">
-                  Sign Up
-                </Link>
-              </li>
-              <li>
-                <Link href="/sign-in" className="text-gray-500 hover:text-gray-700">
-                  Log In
-                </Link>
-              </li>
               <li>
                 <Link href="/pricing" className="text-gray-500 hover:text-gray-700">
                   Pricing

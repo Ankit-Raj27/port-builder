@@ -30,6 +30,7 @@ import Footer2 from "@/components/footer/Footer2";
 import Footer3 from "@/components/footer/Footer3";
 
 import usePortfolioStore from "@/components/store/usePortfolioStore";
+
 import Experience2 from "@/components/experience/Experience2";
 import Experience3 from "@/components/experience/Experience3";
 import { Navbar } from "@/components/navbars/Navbar";
@@ -54,7 +55,6 @@ const TemplateEditor: React.FC = () => {
   const templateId = "my-template";
   const [isDownloading, setIsDownloading] = useState(false);
 
-  // Set default values using state and update URL parameters when selected
   useEffect(() => {
     const navbarParam = searchParams.get("navbar") || "Navbar1";
     const heroParam = searchParams.get("hero") || "Hero1";
@@ -71,7 +71,6 @@ const TemplateEditor: React.FC = () => {
     router.push(`${pathname}?navbar=${navbarParam}&hero=${heroParam}&project=${projectParam}&footer=${footerParam}&experience=${experienceParam}`, { scroll: false });
   }, [searchParams, setNavbar, setHero, setProject, setFooter, setExperience, router, pathname]);
 
-  // Load saved user preferences on mount
   useEffect(() => {
     const savedState = localStorage.getItem("portfolioState");
     if (savedState) {
@@ -88,7 +87,6 @@ const TemplateEditor: React.FC = () => {
     }
   }, [setFooter, setHero, setNavbar, setProject, setExperience]);
 
-  // Save state changes to localStorage (debounced)
   useEffect(() => {
     const timeout = setTimeout(() => {
       localStorage.setItem(
@@ -142,10 +140,8 @@ const TemplateEditor: React.FC = () => {
   const handleEdit = () => {
     const selectedComponents = { navbar, hero, project, footer, experience };
 
-    // Save to localStorage or state management (Zustand)
     localStorage.setItem("selectedComponents", JSON.stringify(selectedComponents));
 
-    // Navigate to the editor page
     router.push(`/template/${templateId}/editor`);
   };
 
@@ -224,7 +220,6 @@ const TemplateEditor: React.FC = () => {
               )}
             </div>
           ))}
-
           <button
             onClick={handleDownload}
             disabled={isDownloading}
@@ -232,18 +227,16 @@ const TemplateEditor: React.FC = () => {
           >
             {isDownloading ? "Downloading..." : "Download ZIP"}
           </button>
-
           <button
             onClick={handleEdit}
             className="mt-6 w-full bg-blue-600 text-white px-4 py-3 rounded-lg shadow-md hover:bg-blue-700 transition"
           >
             Go to Editor
           </button>
-
         </div>
       </div>
     </>
-  );
-};
+  )
+}
 
 export default TemplateEditor;
