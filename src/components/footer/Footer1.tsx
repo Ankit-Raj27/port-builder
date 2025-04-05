@@ -6,8 +6,7 @@ import { Github, Twitter, Linkedin, Instagram, Mail, Phone, MapPin, Send } from 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
-import { toast } from "@/hooks/use-toast"
-import { ToastAction } from "@/components/ui/toast"
+import { toast } from "sonner"
 
 interface FormData {
     name: string
@@ -31,11 +30,7 @@ export default function Footer1() {
         e.preventDefault()
         console.log("Form submitted:", formData)
 
-        toast({
-            title: "Message sent!",
-            description: "Thanks for reaching out. I'll get back to you soon.",
-            action: <ToastAction altText="Dismiss">Dismiss</ToastAction>,
-        })
+        toast("Message sent successfully!")
 
         setFormData({ name: "", email: "", message: "" })
     }

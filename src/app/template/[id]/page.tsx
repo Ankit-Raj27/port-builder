@@ -16,7 +16,6 @@ import Hero5 from "@/components/hero/Hero5";
 import { Hero6 } from "@/components/hero/Hero6";
 import Hero7 from "@/components/hero/Hero7";
 
-import Experience1 from "@/components/experience/Experience1";
 
 import Project1 from "@/components/projects/Project1";
 import Project2 from "@/components/projects/Project2";
@@ -29,10 +28,12 @@ import Footer1 from "@/components/footer/Footer1";
 import Footer2 from "@/components/footer/Footer2";
 import Footer3 from "@/components/footer/Footer3";
 
-import usePortfolioStore from "@/components/store/usePortfolioStore";
-
+import Experience1 from "@/components/experience/Experience1";
 import Experience2 from "@/components/experience/Experience2";
 import Experience3 from "@/components/experience/Experience3";
+
+
+import usePortfolioStore from "@/components/store/usePortfolioStore";
 import { Navbar } from "@/components/navbars/Navbar";
 
 const TemplateEditor: React.FC = () => {

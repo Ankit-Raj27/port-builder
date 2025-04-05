@@ -40,7 +40,7 @@ function addFilesFromFolder(
 
 export async function POST(req: Request): Promise<Response> {
   try {
-    const { navbar, hero, project, footer, editedHero,linkedPages  } = await req.json();
+    const { navbar, hero,experience, project, footer, editedHero,linkedPages  } = await req.json();
     const basePaths = [
       path.resolve(process.cwd(), "src/components"),
       path.resolve("D:/Programming 2024/port-builder/src/components"),
@@ -49,6 +49,7 @@ export async function POST(req: Request): Promise<Response> {
 
     const navbarPath = navbar ? findFile(basePaths, `navbars/${navbar}.tsx`) : null;
     const heroPath = hero ? findFile(basePaths, `hero/${hero}.tsx`) : null;
+    const experiencePath = experience ? findFile(basePaths, `experience/${experience}.tsx`) : null;
     const projectPath = project ? findFile(basePaths, `projects/${project}.tsx`) : null;
     const footerPath = footer ? findFile(basePaths, `footer/${footer}.tsx`) : null;
     const uiPath = findFile(basePaths, "ui");
@@ -65,7 +66,7 @@ export async function POST(req: Request): Promise<Response> {
 
     console.log("📂 Selected Components:", { navbarPath, heroPath, projectPath, footerPath, uiPath, linkedPagePaths });
 
-    if (!navbarPath && !hero && !projectPath && !footerPath) {
+    if (!navbarPath && !hero && ! experiencePath && !projectPath && !footerPath) {
       return NextResponse.json({ error: "No components selected" }, { status: 400 });
     }
 
@@ -246,6 +247,7 @@ export async function POST(req: Request): Promise<Response> {
 
       if (uiPath) {addFilesFromFolder(archive, uiPath, "components/ui")};
       if (navbarPath) {archive.append(fs.createReadStream(navbarPath), { name: `components/navbars/${navbar}.tsx` })};
+      if (experiencePath) {archive.append(fs.createReadStream(experiencePath), { name: `components/experience/${experience}.tsx` })};
       if (projectPath) {archive.append(fs.createReadStream(projectPath), { name: `components/projects/${project}.tsx` })};
       if (footerPath) {archive.append(fs.createReadStream(footerPath), { name: `components/footer/${footer}.tsx` })};
 
