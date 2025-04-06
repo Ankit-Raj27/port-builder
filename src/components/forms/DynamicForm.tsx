@@ -9,7 +9,8 @@ interface DynamicFormProps {
 }
 
 const DynamicForm: React.FC<DynamicFormProps> = ({ section, selectedComponent, formData, onChange }) => {
-  const fields: string[] = formFields[section]?.[selectedComponent as keyof (typeof formFields)[typeof section]] || [];
+  const fields: string[] =
+    formFields[section]?.[selectedComponent as keyof (typeof formFields)[typeof section]] || [];
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -23,9 +24,11 @@ const DynamicForm: React.FC<DynamicFormProps> = ({ section, selectedComponent, f
       ) : (
         fields.map((field) => (
           <div key={field} className="flex flex-col">
-            <label className="font-medium text-sm text-gray-700">{field}</label>
+            <label className="font-medium text-sm text-gray-700 mb-1">
+              {field.replace(/([A-Z])/g, " $1").replace(/^./, (s) => s.toUpperCase())}
+            </label>
             <input
-              type="text"
+              type={field.toLowerCase().includes("url") || field.toLowerCase().includes("src") ? "url" : "text"}
               name={field}
               value={formData[field] || ""}
               onChange={handleChange}

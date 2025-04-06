@@ -1,15 +1,5 @@
 "use client"
 
-
-
-
-            const data = {
-              title: "saksham",
-              buttonText: "saksham",
-              avatarSrc: "/placeholder.svg",
-              navItems: []
-            };
-          
 import * as React from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
@@ -18,9 +8,9 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 const Navbar2: React.FC = () => {
   // Embed your desired props directly here
   const data = {
-    title: "My Portfolio",
-    buttonText: "Contact Me",
-    avatarSrc: "/my-avatar.png",
+    title: "Saksham",
+    buttonText: "Saksham",
+    avatarSrc: "/placeholder.svg",
     navItems: [
       { title: "Home", href: "/" },
       { title: "Blog", href: "/blog" },
@@ -35,10 +25,10 @@ const Navbar2: React.FC = () => {
         <div className="flex items-center gap-2">
           <Avatar>
             <AvatarImage src={data.avatarSrc || "/placeholder.svg"} alt="Avatar" />
-            <AvatarFallback>{data.title?.charAt(0) || "JD"}</AvatarFallback>
+            <AvatarFallback>{data.title?.charAt(0) || "S"}</AvatarFallback>
           </Avatar>
           <Link href="#" className="font-semibold">
-            {data.title || "John Doe"}
+            {data.title}
           </Link>
         </div>
 
@@ -55,7 +45,7 @@ const Navbar2: React.FC = () => {
         </nav>
 
         <div className="hidden md:block">
-          <Button>{data.buttonText || "Get in Touch"}</Button>
+          <Button>{data.buttonText}</Button>
         </div>
       </div>
     </header>
