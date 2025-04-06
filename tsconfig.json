@@ -22,6 +22,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/templates.js", "src/app/templates/index.js", "src/app/templates/editor.js", "src/app/templates/[id].js", "src/app/api/generate.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/templates.js", "src/app/templates/index.js", "src/app/templates/editor.js", "src/app/templates/[id].js", "src/app/api/generate.js", "src/app/api/razorpay-webhook.js"],
   "exclude": ["node_modules"]
 }

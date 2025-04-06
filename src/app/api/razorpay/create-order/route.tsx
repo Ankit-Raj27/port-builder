@@ -6,7 +6,6 @@ const razorpay = new Razorpay({
   key_id: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID!,
   key_secret: process.env.RAZORPAY_KEY_SECRET!,
 })
-
 export async function POST(req: Request) {
   try {
     const { userId } = await auth()
@@ -18,9 +17,8 @@ export async function POST(req: Request) {
     if (!amount) {
       return NextResponse.json({ error: 'Missing amount' }, { status: 400 })
     }
-
     const order = await razorpay.orders.create({
-      amount, // in paise
+      amount,
       currency: 'INR',
       payment_capture: true,
     })
@@ -33,7 +31,7 @@ export async function POST(req: Request) {
         ? err.message
         : 'Unknown error';
     return NextResponse.json(
-      { error: errorMessage },
+      { error: errorMessage }, 
       { status: 500 }
     )
   }

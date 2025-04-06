@@ -1,6 +1,9 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
+import { useUser } from "@clerk/nextjs";
+
+
 import Navbar1 from "@/components/navbars/Navbar1";
 import Navbar2 from "@/components/navbars/Navbar2";
 import Navbar3 from "@/components/navbars/Navbar3";
@@ -16,13 +19,12 @@ import Hero5 from "@/components/heroes/Hero5";
 import { Hero6 } from "@/components/heroes/Hero6";
 import Hero7 from "@/components/heroes/Hero7";
 
-
 import Project1 from "@/components/projects/Project1";
 import Project2 from "@/components/projects/Project2";
 import Project3 from "@/components/projects/Project3";
-import Projects4 from "@/components/projects/Project4";
-import Projects5 from "@/components/projects/Project5";
-import Projects6 from "@/components/projects/Project6";
+import Project4 from "@/components/projects/Project4";
+import Project5 from "@/components/projects/Project5";
+import Project6 from "@/components/projects/Project6";
 
 import Footer1 from "@/components/footer/Footer1";
 import Footer2 from "@/components/footer/Footer2";
@@ -32,7 +34,6 @@ import Experience1 from "@/components/experience/Experience1";
 import Experience2 from "@/components/experience/Experience2";
 import Experience3 from "@/components/experience/Experience3";
 
-
 import usePortfolioStore from "@/components/store/usePortfolioStore";
 import { Navbar } from "@/components/navbars/Navbar";
 
@@ -40,6 +41,8 @@ const TemplateEditor: React.FC = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const pathname = usePathname();
+  const { user, isLoaded } = useUser();
+
   const {
     navbar,
     hero,
@@ -52,9 +55,10 @@ const TemplateEditor: React.FC = () => {
     experience,
     setExperience,
   } = usePortfolioStore();
+
   const [expandedSections, setExpandedSections] = useState<string[]>([]);
-  const templateId = "my-template";
   const [isDownloading, setIsDownloading] = useState(false);
+  const templateId = "my-template";
 
   useEffect(() => {
     const navbarParam = searchParams.get("navbar") || "Navbar1";
@@ -105,13 +109,22 @@ const TemplateEditor: React.FC = () => {
   };
 
   const handleDownload = async () => {
+    if (!isLoaded) {return};
+
+    const isSubscribed = user?.publicMetadata?.isSubscribed;
+
+    if (!isSubscribed) {
+      router.push("/pricing");
+      return;
+    }
+
     setIsDownloading(true);
     try {
       const linkedPages: string[] = [];
 
-      if (project) { linkedPages.push("/projects/[id]") };
-      if (experience) { linkedPages.push("/experience") };
-      if (navbar) { linkedPages.push("/contact", "/about") };
+      if (project) {linkedPages.push("/projects/[id]")};
+      if (experience) {linkedPages.push("/experience")};
+      if (navbar) {linkedPages.push("/contact", "/about")};
 
       const bodyData = { navbar, hero, project, footer, experience, linkedPages };
       const response = await fetch("/api/download", {
@@ -120,9 +133,7 @@ const TemplateEditor: React.FC = () => {
         body: JSON.stringify(bodyData),
       });
 
-      if (!response.ok) {
-        throw new Error("Failed to download ZIP");
-      }
+      if (!response.ok) {throw new Error("Failed to download ZIP")};
 
       const blob = await response.blob();
       const link = document.createElement("a");
@@ -140,9 +151,7 @@ const TemplateEditor: React.FC = () => {
 
   const handleEdit = () => {
     const selectedComponents = { navbar, hero, project, footer, experience };
-
     localStorage.setItem("selectedComponents", JSON.stringify(selectedComponents));
-
     router.push(`/template/${templateId}/editor`);
   };
 
@@ -176,9 +185,9 @@ const TemplateEditor: React.FC = () => {
             {project === "Project1" && <Project1 />}
             {project === "Project2" && <Project2 />}
             {project === "Project3" && <Project3 />}
-            {project === "Project4" && <Projects4 />}
-            {project === "Project5" && <Projects5 />}
-            {project === "Project6" && <Projects6 />}
+            {project === "Project4" && <Project4 />}
+            {project === "Project5" && <Project5 />}
+            {project === "Project6" && <Project6 />}
 
             {footer === "Footer1" && <Footer1 />}
             {footer === "Footer2" && <Footer2 />}
@@ -209,10 +218,11 @@ const TemplateEditor: React.FC = () => {
                     <button
                       key={option}
                       onClick={() => setter(selected === option ? "" : option)}
-                      className={`px-4 py-2 rounded-lg shadow-sm transition-all duration-200 ${selected === option
-                        ? "bg-indigo-500 text-white shadow-md"
-                        : "bg-gray-200 text-gray-700 hover:bg-gray-300 hover:shadow-md"
-                        }`}
+                      className={`px-4 py-2 rounded-lg shadow-sm transition-all duration-200 ${
+                        selected === option
+                          ? "bg-indigo-500 text-white shadow-md"
+                          : "bg-gray-200 text-gray-700 hover:bg-gray-300 hover:shadow-md"
+                      }`}
                     >
                       {option}
                     </button>
@@ -230,14 +240,14 @@ const TemplateEditor: React.FC = () => {
           </button>
           <button
             onClick={handleEdit}
-            className="mt-6 w-full bg-blue-600 text-white px-4 py-3 rounded-lg shadow-md hover:bg-blue-700 transition"
+            className="mt-4 w-full bg-green-600 text-white px-4 py-3 rounded-lg shadow-md hover:bg-green-700 transition"
           >
             Go to Editor
           </button>
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
 export default TemplateEditor;
