@@ -2,7 +2,8 @@
 import { useState, useEffect } from "react";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { useUser } from "@clerk/nextjs";
-
+import { toast, ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 import Navbar1 from "@/components/navbars/Navbar1";
 import Navbar2 from "@/components/navbars/Navbar2";
@@ -109,6 +110,7 @@ const TemplateEditor: React.FC = () => {
   };
 
   const handleDownload = async () => {
+
     if (!isLoaded) { return };
     const userEmail = user?.publicMetadata?.email;
     const isSubscribed = user?.publicMetadata?.isSubscribed;
@@ -119,6 +121,7 @@ const TemplateEditor: React.FC = () => {
 
     if (!isSubscribed) {
       router.push("/pricing");
+      toast.info("Redirecting to pricing page...");
       return;
     }
 
@@ -249,6 +252,7 @@ const TemplateEditor: React.FC = () => {
           </button>
         </div>
       </div>
+      <ToastContainer position="top-right" autoClose={3000} />
     </>
   );
 };

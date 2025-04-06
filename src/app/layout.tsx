@@ -12,6 +12,7 @@ import {
 } from '@clerk/nextjs'
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
+import { ToastProvider } from "@radix-ui/react-toast";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -51,7 +52,9 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             {children}
+            <ToastProvider />
           </ThemeProvider>
+          
         </body>
       </html>
     </ClerkProvider>
