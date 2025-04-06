@@ -109,9 +109,13 @@ const TemplateEditor: React.FC = () => {
   };
 
   const handleDownload = async () => {
-    if (!isLoaded) {return};
-
+    if (!isLoaded) { return };
+    const userEmail = user?.publicMetadata?.email;
     const isSubscribed = user?.publicMetadata?.isSubscribed;
+    console.log("Webhook received:");
+    console.log("User email from Razorpay notes:", userEmail);
+    console.log("Clerk user lookup result:", user);
+
 
     if (!isSubscribed) {
       router.push("/pricing");
@@ -122,9 +126,9 @@ const TemplateEditor: React.FC = () => {
     try {
       const linkedPages: string[] = [];
 
-      if (project) {linkedPages.push("/projects/[id]")};
-      if (experience) {linkedPages.push("/experience")};
-      if (navbar) {linkedPages.push("/contact", "/about")};
+      if (project) { linkedPages.push("/projects/[id]") };
+      if (experience) { linkedPages.push("/experience") };
+      if (navbar) { linkedPages.push("/contact", "/about") };
 
       const bodyData = { navbar, hero, project, footer, experience, linkedPages };
       const response = await fetch("/api/download", {
@@ -133,7 +137,7 @@ const TemplateEditor: React.FC = () => {
         body: JSON.stringify(bodyData),
       });
 
-      if (!response.ok) {throw new Error("Failed to download ZIP")};
+      if (!response.ok) { throw new Error("Failed to download ZIP") };
 
       const blob = await response.blob();
       const link = document.createElement("a");
@@ -218,11 +222,10 @@ const TemplateEditor: React.FC = () => {
                     <button
                       key={option}
                       onClick={() => setter(selected === option ? "" : option)}
-                      className={`px-4 py-2 rounded-lg shadow-sm transition-all duration-200 ${
-                        selected === option
+                      className={`px-4 py-2 rounded-lg shadow-sm transition-all duration-200 ${selected === option
                           ? "bg-indigo-500 text-white shadow-md"
                           : "bg-gray-200 text-gray-700 hover:bg-gray-300 hover:shadow-md"
-                      }`}
+                        }`}
                     >
                       {option}
                     </button>
