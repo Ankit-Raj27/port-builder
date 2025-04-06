@@ -88,7 +88,7 @@ export default function PricingPage() {
     <>
       <Navbar />
       <section className="py-24 px-4 md:px-6 lg:py-32 bg-background overflow-hidden">
-        <div className="container mx-auto max-w-6xl">
+        <div className=" mx-auto max-w-6xl">
           <motion.div
             className="text-center space-y-4 mb-16"
             initial="hidden"
@@ -111,7 +111,7 @@ export default function PricingPage() {
           </motion.div>
 
           <motion.div
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8"
+            className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-8"
             initial="hidden"
             animate="visible"
             variants={containerVariants}
@@ -163,7 +163,7 @@ export default function PricingPage() {
             >
               <CardHeader>
                 <div className="flex justify-between items-center">
-                  <CardTitle>Pages</CardTitle>
+                  <CardTitle>Pro</CardTitle>
                   <motion.div
                     initial={{ scale: 0, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
@@ -189,10 +189,83 @@ export default function PricingPage() {
                   transition={{ delay: 0.6, duration: 0.5 }}
                 >
                   <p className="text-5xl font-bold">
-                    Rs.100<span className="text-xl font-normal opacity-80">/mo</span>
+                    Rs.99<span className="text-xl font-normal opacity-80">/mo</span>
                   </p>
                 </motion.div>
                 <p className="text-primary-foreground/80">
+                  Best for early-stage startups and businesses that need a marketing site and ongoing developmental
+                  work.
+                </p>
+                <motion.ul
+                  className="mt-6 space-y-2"
+                  initial="hidden"
+                  animate="visible"
+                  variants={containerVariants}
+                  transition={{ delayChildren: 0.8, staggerChildren: 0.1 }}
+                >
+                  <motion.li className="flex items-center gap-2" variants={listItemVariants}>
+                    <Check className="h-4 w-4" />
+                    <span>Everything in Custom Components</span>
+                  </motion.li>
+                  <motion.li className="flex items-center gap-2" variants={listItemVariants}>
+                    <Check className="h-4 w-4" />
+                    <span>Full page designs</span>
+                  </motion.li>
+                  <motion.li className="flex items-center gap-2" variants={listItemVariants}>
+                    <Check className="h-4 w-4" />
+                    <span>SEO optimization</span>
+                  </motion.li>
+                  <motion.li className="flex items-center gap-2" variants={listItemVariants}>
+                    <Check className="h-4 w-4" />
+                    <span>Ongoing support</span>
+                  </motion.li>
+                </motion.ul>
+              </CardContent>
+              <CardFooter>
+                <motion.div className="w-full" whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
+                <SubscriptionButton amount={1} />
+                </motion.div>
+              </CardFooter>
+            </MotionCard>
+            
+            <MotionCard
+              className="border-2  text-black flex flex-col"
+              variants={cardVariants}
+              whileHover={{
+                y: -10,
+                boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
+                transition: { duration: 0.3 },
+              }}
+            >
+              <CardHeader>
+                <div className="flex justify-between text-emerald-500 items-center">
+                  <CardTitle>Ultra</CardTitle>
+                  <motion.div
+                    initial={{ scale: 0, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{
+                      delay: 0.8,
+                      duration: 0.5,
+                      type: "spring",
+                      stiffness: 500,
+                    }}
+                  >
+                  </motion.div>
+                </div>
+                <CardDescription className="text-black">pause or cancel anytime</CardDescription>
+              </CardHeader>
+              <CardContent className="flex-1">
+                <motion.div
+                  className="mb-4"
+                  initial={{ scale: 0.9, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ delay: 0.6, duration: 0.5 }}
+                >
+                  <p className="text-5xl font-bold">
+                    Rs.199<span className="text-xl font-normal opacity-80">/mo</span>
+                  </p>
+                </motion.div>
+                <p className="text-black">
                   Best for early-stage startups and businesses that need a marketing site and ongoing developmental
                   work.
                 </p>

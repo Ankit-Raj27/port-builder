@@ -80,7 +80,7 @@ export default function PaymentButton({ amount }: Props) {
   }
 
   return (
-    <Button variant="outline" className="w-full dark:text-white" onClick={handlePayment}>
+    <Button variant="outline" className="w-full dark:text-white text-black" onClick={handlePayment}>
       Get Started
     </Button>
   )

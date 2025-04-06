@@ -16,7 +16,7 @@ const basePaths = [
 function findFile(paths: string[], subPath: string): string | null {
   for (const base of paths) {
     const fullPath = path.join(base, subPath);
-    if (fs.existsSync(fullPath)) return fullPath;
+    if (fs.existsSync(fullPath)) {return fullPath};
   }
   return null;
 }
