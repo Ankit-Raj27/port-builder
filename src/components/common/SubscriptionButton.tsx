@@ -36,6 +36,7 @@ export default function PaymentButton({ amount }: Props) {
     try {
       const { data } = await axios.post('/api/razorpay/create-order', {
         amount: amount * 100, // Convert to paise
+        email: user?.emailAddresses[0]?.emailAddress,
       })
 
       const razorpay = new (window as unknown as WindowWithRazorpay).Razorpay({
