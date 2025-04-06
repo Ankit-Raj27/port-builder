@@ -1,37 +1,38 @@
 import crypto from 'crypto';
+import { NextResponse } from 'next/server';
 
-export default async function handler(req, res) {
+export async function POST(req) {
   const secret = process.env.RAZORPAY_WEBHOOK_SECRET;
 
   if (!secret) {
-    return res.status(500).json({ message: 'Webhook secret is not configured.' });
+    return NextResponse.json({ message: 'Webhook secret is not configured.' }, { status: 500 });
   }
 
-  // Validate the Razorpay signature
-  const shasum = crypto.createHmac('sha256', secret);
-  shasum.update(JSON.stringify(req.body));
-  const digest = shasum.digest('hex');
+  const rawBody = await req.text();
+  const razorpaySignature = req.headers.get('x-razorpay-signature');
 
-  if (digest !== req.headers['x-razorpay-signature']) {
-    return res.status(400).json({ message: 'Invalid signature.' });
+  const expectedSignature = crypto
+    .createHmac('sha256', secret)
+    .update(rawBody)
+    .digest('hex');
+
+  if (expectedSignature !== razorpaySignature) {
+    return NextResponse.json({ message: 'Invalid signature.' }, { status: 400 });
   }
 
-  const event = req.body;
+  const event = JSON.parse(rawBody);
 
-  // Handle the event
   if (event.event === 'subscription.activated') {
     const razorpaySubscriptionId = event.payload.subscription.entity.id;
     const userEmail = event.payload.subscription.entity.notes.email;
 
-    // Update the user's subscription status in Clerk
     await updateClerkUserSubscription(userEmail, razorpaySubscriptionId);
   }
 
-  res.status(200).json({ received: true });
+  return NextResponse.json({ received: true });
 }
 
 async function updateClerkUserSubscription(email, subscriptionId) {
-  // Fetch the user from Clerk using their email
   const users = await fetch(
     `https://api.clerk.dev/v1/users?email_address=${email}`,
     {
@@ -41,14 +42,13 @@ async function updateClerkUserSubscription(email, subscriptionId) {
     }
   ).then((res) => res.json());
 
-  if (users.length === 0) {
+  if (!users || users.length === 0) {
     console.error('User not found in Clerk.');
     return;
   }
 
   const userId = users[0].id;
 
-  // Update the user's metadata in Clerk
   await fetch(`https://api.clerk.dev/v1/users/${userId}/metadata`, {
     method: 'PATCH',
     headers: {
