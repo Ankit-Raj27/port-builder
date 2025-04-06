@@ -8,13 +8,13 @@ import Navbar4 from "@/components/navbars/Navbar4";
 import Navbar5 from "@/components/navbars/Navbar5";
 import Navbar6 from "@/components/navbars/Navbar6";
 
-import Hero1 from "@/components/hero/Hero1";
-import Hero2 from "@/components/hero/Hero2";
-import Hero3 from "@/components/hero/Hero3";
-import Hero4 from "@/components/hero/Hero4";
-import Hero5 from "@/components/hero/Hero5";
-import { Hero6 } from "@/components/hero/Hero6";
-import Hero7 from "@/components/hero/Hero7";
+import Hero1 from "@/components/heroes/Hero1";
+import Hero2 from "@/components/heroes/Hero2";
+import Hero3 from "@/components/heroes/Hero3";
+import Hero4 from "@/components/heroes/Hero4";
+import Hero5 from "@/components/heroes/Hero5";
+import { Hero6 } from "@/components/heroes/Hero6";
+import Hero7 from "@/components/heroes/Hero7";
 
 
 import Project1 from "@/components/projects/Project1";

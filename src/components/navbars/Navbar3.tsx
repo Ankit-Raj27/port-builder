@@ -5,23 +5,32 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { motion } from "framer-motion"
 import { Menu, X } from "lucide-react"
-
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 
-const navItems = [
-  { name: "Home", href: "/" },
-  { name: "Projects", href: "/projects" },
-  { name: "About", href: "/about" },
-  { name: "Contact", href: "/contact" },
-]
+interface NavbarProps {
+  data?: {
+    title?: string
+    buttonText?: string
+    navItems?: { name: string; href: string }[]
+  }
+}
 
-export default function Navbar3() {
+const Navbar3: React.FC<NavbarProps> = ({ data }) => {
   const pathname = usePathname()
   const [isOpen, setIsOpen] = React.useState(false)
 
+  const title = data?.title || "Creative"
+  const buttonText = data?.buttonText || "Let's Talk"
+  const navItems = data?.navItems || [
+    { name: "Home", href: "/" },
+    { name: "Projects", href: "/projects" },
+    { name: "About", href: "/about" },
+    { name: "Contact", href: "/contact" },
+  ]
+
   return (
-    <header className=" z-50 ml-10 mr-10 max-w-full">
+    <header className="z-50 ml-10 mr-10 max-w-full">
       <div className="container flex h-20 items-center justify-between">
         <Link href="/" className="font-bold text-2xl relative z-50">
           <motion.div
@@ -35,7 +44,7 @@ export default function Navbar3() {
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
             />
-            <span>Creative</span>
+            <span>{title}</span>
           </motion.div>
         </Link>
 
@@ -75,7 +84,7 @@ export default function Navbar3() {
           className="hidden md:block"
         >
           <Button variant="default" size="sm" className="rounded-full px-6" asChild>
-            <Link href="/contact">Let Talk</Link>
+            <Link href="/contact">{buttonText}</Link>
           </Button>
         </motion.div>
 
@@ -127,7 +136,7 @@ export default function Navbar3() {
             className="mt-4"
           >
             <Button variant="default" size="lg" className="rounded-full px-8" asChild onClick={() => setIsOpen(false)}>
-              <Link href="/contact">Let us Talk</Link>
+              <Link href="/contact">{buttonText}</Link>
             </Button>
           </motion.div>
         </motion.div>
@@ -136,3 +145,4 @@ export default function Navbar3() {
   )
 }
 
+export default Navbar3

@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import React from "react";
 import Navbar1 from "@/components/navbars/Navbar1";
-import Hero1 from "@/components/hero/Hero1";
+import Hero1 from "@/components/heroes/Hero1";
 import Footer1 from "@/components/footer/Footer1";
 
 // Define Component Mapping

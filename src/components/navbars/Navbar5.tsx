@@ -1,4 +1,5 @@
 "use client"
+
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { Menu } from "lucide-react"
@@ -7,12 +8,16 @@ import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 
-const navItems = [
-  { name: "Home", href: "/" },
-  { name: "Projects", href: "/projects" },
-  { name: "About", href: "/about" },
-  { name: "Contact", href: "/contact" },
-]
+// ✅ Editable data object
+const data = {
+  title: "Portfolio",
+  navItems: [
+    { name: "Home", href: "/" },
+    { name: "Projects", href: "/projects" },
+    { name: "About", href: "/about" },
+    { name: "Contact", href: "/contact" },
+  ],
+}
 
 export default function Navbar5() {
   const pathname = usePathname()
@@ -21,12 +26,12 @@ export default function Navbar5() {
     <header className="pr-10 pl-10 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center justify-between">
         <Link href="/" className="font-bold text-xl">
-          Portfolio
+          {data.title}
         </Link>
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex gap-6">
-          {navItems.map((item) => (
+          {data.navItems.map((item) => (
             <Link
               key={item.href}
               href={item.href}
@@ -50,7 +55,7 @@ export default function Navbar5() {
           </SheetTrigger>
           <SheetContent side="right">
             <nav className="flex flex-col gap-4 mt-8">
-              {navItems.map((item) => (
+              {data.navItems.map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}
@@ -69,4 +74,3 @@ export default function Navbar5() {
     </header>
   )
 }
-

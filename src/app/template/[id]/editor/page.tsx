@@ -10,9 +10,19 @@ import Navbar2 from "@/components/navbars/Navbar2";
 import Navbar3 from "@/components/navbars/Navbar3";
 import Navbar4 from "@/components/navbars/Navbar4";
 import Navbar5 from "@/components/navbars/Navbar5";
+import Navbar6 from "@/components/navbars/Navbar6";
+
+import Hero1 from "@/components/heroes/Hero1";
+import Hero2 from "@/components/heroes/Hero2";
+import Hero3 from "@/components/heroes/Hero3";
+import Hero4 from "@/components/heroes/Hero4";
+import Hero5 from "@/components/heroes/Hero5";
+import {Hero6} from "@/components/heroes/Hero6";
+import Hero7 from "@/components/heroes/Hero7";
 
 interface SelectedComponents {
   navbar: string;
+  hero: string;
 }
 
 interface FormData {
@@ -25,13 +35,32 @@ const navbarComponents: Record<string, React.ElementType> = {
   Navbar3,
   Navbar4,
   Navbar5,
+  Navbar6,
+};
+
+const heroComponents: Record<string, React.ElementType> = {
+  Hero1,
+  Hero2,
+  Hero3,
+  Hero4,
+  Hero5,
+  Hero6,
+  Hero7,
 };
 
 export default function EditorPage() {
   const { setNavbar } = usePortfolioStore();
 
-  const [selectedComponents, setSelectedComponents] = useState<SelectedComponents>({ navbar: "" });
-  const [formData, setFormData] = useState<FormData>({ navbar: {} });
+  const [selectedComponents, setSelectedComponents] = useState<SelectedComponents>({
+    navbar: "",
+    hero: "",
+  });
+
+  const [formData, setFormData] = useState<FormData>({
+    navbar: {},
+    hero: {},
+  });
+
   const [isDownloading, setIsDownloading] = useState(false);
 
   useEffect(() => {
@@ -40,7 +69,7 @@ export default function EditorPage() {
       try {
         const parsedData = JSON.parse(savedComponents) as SelectedComponents;
         setNavbar(parsedData.navbar);
-        setSelectedComponents({ navbar: parsedData.navbar });
+        setSelectedComponents(parsedData);
       } catch (error) {
         console.error("Error loading selected components:", error);
       }
@@ -48,29 +77,35 @@ export default function EditorPage() {
   }, [setNavbar]);
 
   const handleEditDownload = async () => {
-    if (!selectedComponents.navbar) {
-      console.warn("⚠️ No navbar selected.");
+    if (!selectedComponents.navbar && !selectedComponents.hero) {
+      console.warn("⚠️ No components selected.");
       return;
     }
 
     setIsDownloading(true);
     try {
-      const bodyData = {
-        components: [
-          {
-            name: selectedComponents.navbar,
-            type: "navbars",
-            editedComponents: formData.navbar,
-          },
-        ],
-      };
+      const components = [];
 
-      console.log("📤 Sending Edited Navbar for Download:", bodyData);
+      if (selectedComponents.navbar) {
+        components.push({
+          name: selectedComponents.navbar,
+          type: "navbars",
+          editedComponents: formData.navbar,
+        });
+      }
+
+      if (selectedComponents.hero) {
+        components.push({
+          name: selectedComponents.hero,
+          type: "heroes",
+          editedComponents: formData.hero,
+        });
+      }
 
       const response = await fetch("/api/editdownload", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(bodyData),
+        body: JSON.stringify({ components }),
       });
 
       if (!response.ok) {
@@ -81,7 +116,7 @@ export default function EditorPage() {
       const blob = await response.blob();
       const link = document.createElement("a");
       link.href = URL.createObjectURL(blob);
-      link.download = "edited-navbar.zip";
+      link.download = "edited-components.zip";
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -101,20 +136,31 @@ export default function EditorPage() {
   };
 
   const SelectedNavbarComponent = navbarComponents[selectedComponents.navbar] || null;
+  const SelectedHeroComponent = heroComponents[selectedComponents.hero] || null;
 
   return (
     <>
       <Navbar />
       <div className="flex h-screen w-full">
-        <div className="w-2/3 p-5 bg-gray-100 overflow-hidden">
-          <div className="border bg-white p-5 shadow-lg rounded-md">
-            {SelectedNavbarComponent && <SelectedNavbarComponent data={formData.navbar} />}
-          </div>
+        {/* Preview Area */}
+        <div className="w-2/3 p-5 bg-gray-100 overflow-y-auto space-y-6">
+          {SelectedNavbarComponent && (
+            <div className="border bg-white p-5 shadow-lg rounded-md">
+              <SelectedNavbarComponent data={formData.navbar} />
+            </div>
+          )}
+          {SelectedHeroComponent && (
+            <div className="border bg-white p-5 shadow-lg rounded-md">
+              <SelectedHeroComponent data={formData.hero} />
+            </div>
+          )}
         </div>
 
+        {/* Editor Panel */}
         <div className="w-1/3 h-full bg-gray-100 p-6 overflow-auto">
-          <h2 className="text-lg font-bold mb-4">Customize Your Navbar</h2>
-          {selectedComponents.navbar ? (
+          <h2 className="text-lg font-bold mb-4">Customize Your Components</h2>
+
+          {selectedComponents.navbar && (
             <>
               <h3 className="text-md font-semibold">Navbar Settings</h3>
               <DynamicForm
@@ -124,14 +170,24 @@ export default function EditorPage() {
                 onChange={handleFormChange}
               />
             </>
-          ) : (
-            <p className="text-sm text-gray-500">Please select a navbar from the template screen.</p>
+          )}
+
+          {selectedComponents.hero && (
+            <>
+              <h3 className="text-md font-semibold mt-6">Hero Settings</h3>
+              <DynamicForm
+                section="hero"
+                selectedComponent={selectedComponents.hero}
+                formData={formData.hero}
+                onChange={handleFormChange}
+              />
+            </>
           )}
 
           <button
             onClick={handleEditDownload}
-            className="px-4 py-2 bg-blue-500 text-white rounded-lg mt-4 disabled:opacity-50"
-            disabled={isDownloading || !selectedComponents.navbar}
+            className="px-4 py-2 bg-blue-500 text-white rounded-lg mt-6 disabled:opacity-50"
+            disabled={isDownloading || (!selectedComponents.navbar && !selectedComponents.hero)}
           >
             {isDownloading ? "Downloading..." : "Download Edited Components"}
           </button>

@@ -7,27 +7,31 @@ import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer"
 
-const navItems = [
-  { title: "Home", href: "#" },
-  { title: "Projects", href: "#projects" },
-  { title: "Experience", href: "#experience" },
-  { title: "Contact", href: "#contact" },
-]
+// ✅ Editable data object
+const data = {
+  title: "Portfolio",
+  navItems: [
+    { title: "Home", href: "#" },
+    { title: "Projects", href: "#projects" },
+    { title: "Experience", href: "#experience" },
+    { title: "Contact", href: "#contact" },
+  ],
+}
 
 export default function Navbar6() {
   const [theme, setTheme] = React.useState<"light" | "dark">("light")
-
 
   return (
     <header className="bg-background/80 backdrop-blur-md top-0 z-50 border-b">
       <div className="container flex h-16 items-center">
         <Link href="#" className="mr-6 flex items-center space-x-2">
           <div className="h-6 w-6 rounded-full bg-primary" />
-          <span className="font-bold">Portfolio</span>
+          <span className="font-bold">{data.title}</span>
         </Link>
 
+        {/* Desktop Navigation */}
         <nav className="hidden md:flex md:flex-1 md:justify-center md:gap-10">
-          {navItems.map((item) => (
+          {data.navItems.map((item) => (
             <Link
               key={item.title}
               href={item.href}
@@ -38,6 +42,7 @@ export default function Navbar6() {
           ))}
         </nav>
 
+        {/* Theme toggle & Mobile Nav */}
         <div className="flex items-center gap-2 ml-auto">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -66,6 +71,7 @@ export default function Navbar6() {
             </DropdownMenuContent>
           </DropdownMenu>
 
+          {/* Mobile Menu */}
           <div className="md:hidden">
             <Drawer>
               <DrawerTrigger asChild>
@@ -77,7 +83,7 @@ export default function Navbar6() {
               <DrawerContent>
                 <div className="p-6">
                   <nav className="flex flex-col gap-4">
-                    {navItems.map((item) => (
+                    {data.navItems.map((item) => (
                       <Link
                         key={item.title}
                         href={item.href}
@@ -96,4 +102,3 @@ export default function Navbar6() {
     </header>
   )
 }
-

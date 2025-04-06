@@ -1,4 +1,5 @@
 "use client"
+
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { Code, Moon, Sun, Menu } from "lucide-react"
@@ -16,45 +17,43 @@ import {
 import { useTheme } from "next-themes"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 
+// ✅ Injected editable data
+const data = {
+  title: "DevPortfolio", // fallback
+  buttonText: "Hire Me",
+  navItems: [
+    { name: "Home", href: "/" },
+    { name: "Projects", href: "/projects" },
+    { name: "About", href: "/about" },
+    { name: "Contact", href: "/contact" },
+  ]
+}
+
 export default function Navbar4() {
   const { setTheme } = useTheme()
   const pathname = usePathname()
 
   return (
-    <header className="  pl-10 pr-10 z-100 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <header className="pl-10 pr-10 z-100 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center justify-between">
         <Link href="/" className="font-bold text-xl flex items-center gap-2">
           <Code className="h-6 w-6" />
-          <span>DevPortfolio</span>
+          <span>{data.title}</span>
         </Link>
 
         {/* Desktop Navigation */}
         <div className="hidden md:flex items-center gap-6">
           <NavigationMenu>
             <NavigationMenuList>
-              <NavigationMenuItem>
-                <Link href="/" legacyBehavior passHref>
-                  <NavigationMenuLink className={navigationMenuTriggerStyle()}>Home</NavigationMenuLink>
-                </Link>
-              </NavigationMenuItem>
-
-              <NavigationMenuItem>
-                <Link href="/projects" legacyBehavior passHref>
-                  <NavigationMenuLink className={navigationMenuTriggerStyle()}>Projects</NavigationMenuLink>
-                </Link>
-              </NavigationMenuItem>
-
-              <NavigationMenuItem>
-                <Link href="/about" legacyBehavior passHref>
-                  <NavigationMenuLink className={navigationMenuTriggerStyle()}>About</NavigationMenuLink>
-                </Link>
-              </NavigationMenuItem>
-
-              <NavigationMenuItem>
-                <Link href="/contact" legacyBehavior passHref>
-                  <NavigationMenuLink className={navigationMenuTriggerStyle()}>Contact</NavigationMenuLink>
-                </Link>
-              </NavigationMenuItem>
+              {data.navItems.map((item) => (
+                <NavigationMenuItem key={item.href}>
+                  <Link href={item.href} legacyBehavior passHref>
+                    <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                      {item.name}
+                    </NavigationMenuLink>
+                  </Link>
+                </NavigationMenuItem>
+              ))}
             </NavigationMenuList>
           </NavigationMenu>
 
@@ -75,7 +74,7 @@ export default function Navbar4() {
             </DropdownMenu>
 
             <Button variant="default" size="sm" asChild>
-              <Link href="/contact">Hire Me</Link>
+              <Link href="/contact">{data.buttonText}</Link>
             </Button>
           </div>
         </div>
@@ -107,48 +106,24 @@ export default function Navbar4() {
             <SheetContent side="right">
               <Link href="/" className="font-bold text-xl flex items-center gap-2 mb-8">
                 <Code className="h-6 w-6" />
-                <span>DevPortfolio</span>
+                <span>{data.title}</span>
               </Link>
               <nav className="flex flex-col gap-4">
-                <Link
-                  href="/"
-                  className={cn(
-                    "text-sm font-medium transition-colors hover:text-primary",
-                    pathname === "/" ? "text-foreground" : "text-muted-foreground",
-                  )}
-                >
-                  Home
-                </Link>
-                <Link
-                  href="/projects"
-                  className={cn(
-                    "text-sm font-medium transition-colors hover:text-primary",
-                    pathname === "/projects" ? "text-foreground" : "text-muted-foreground",
-                  )}
-                >
-                  Projects
-                </Link>
-                <Link
-                  href="/about"
-                  className={cn(
-                    "text-sm font-medium transition-colors hover:text-primary",
-                    pathname === "/about" ? "text-foreground" : "text-muted-foreground",
-                  )}
-                >
-                  About
-                </Link>
-                <Link
-                  href="/contact"
-                  className={cn(
-                    "text-sm font-medium transition-colors hover:text-primary",
-                    pathname === "/contact" ? "text-foreground" : "text-muted-foreground",
-                  )}
-                >
-                  Contact
-                </Link>
+                {data.navItems.map((item) => (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className={cn(
+                      "text-sm font-medium transition-colors hover:text-primary",
+                      pathname === item.href ? "text-foreground" : "text-muted-foreground",
+                    )}
+                  >
+                    {item.name}
+                  </Link>
+                ))}
                 <div className="mt-4">
                   <Button className="w-full" asChild>
-                    <Link href="/contact">Hire Me</Link>
+                    <Link href="/contact">{data.buttonText}</Link>
                   </Button>
                 </div>
               </nav>
@@ -159,4 +134,3 @@ export default function Navbar4() {
     </header>
   )
 }
-

@@ -58,24 +58,25 @@ export async function POST(req: Request): Promise<Response> {
 
       let code = await readFile(componentPath, "utf-8");
 
-      // Inject edited props into the component
+      // ✅ Inject any provided edited props into the component
       if (editedComponents) {
-        const { title, buttonText, avatarSrc, navItems } = editedComponents;
+        const entries = Object.entries(editedComponents).map(([key, value]) => {
+          if (Array.isArray(value)) {
+            return `${key}: ${JSON.stringify(value, null, 2)}`;
+          } else {
+            return `${key}: ${JSON.stringify(value)}`;
+          }
+        });
 
         const overrideProps = `
           // Injected edited data
           const data = {
-            title: "${title || "John Doe"}",
-            buttonText: "${buttonText || "Get in Touch"}",
-            avatarSrc: "${avatarSrc || "/placeholder.svg"}",
-            navItems: ${JSON.stringify(navItems || [], null, 2)}
+            ${entries.join(",\n")}
           };
         `;
 
         code = code
-          // Inject after "use client"
           .replace(/("use client"\s*;?\s*)/, `$1\n\n${overrideProps}`)
-          // Replace prop destructuring to force use of injected `data`
           .replace(/const (\w+): React\.FC<[\w<>{} ,]+> = \(\{ data }\)/, `const $1: React.FC = ()`);
       }
 
