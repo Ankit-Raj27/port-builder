@@ -223,7 +223,7 @@ export default function PricingPage() {
               </CardContent>
               <CardFooter>
                 <motion.div className="w-full" whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
-                <SubscriptionButton  planId="plan_QFXIdwsUUgIyGI" email="user@example.com" />
+                <SubscriptionButton amount={1} />
                 </motion.div>
               </CardFooter>
             </MotionCard>

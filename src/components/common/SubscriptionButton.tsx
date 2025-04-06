@@ -4,15 +4,16 @@ import { useEffect, useState } from 'react'
 import axios from 'axios'
 import { Button } from '@/components/ui/button'
 import { useRouter } from 'next/navigation'
+import { useUser } from '@clerk/nextjs'
 
 interface Props {
-  planId: string
-  email: string
+  amount: number // Amount in INR
 }
 
-export default function SubscriptionButton({ planId, email }: Props) {
+export default function PaymentButton({ amount }: Props) {
   const router = useRouter()
   const [isRazorpayLoaded, setIsRazorpayLoaded] = useState(false)
+  const { user } = useUser()
 
   useEffect(() => {
     const script = document.createElement('script')
@@ -20,102 +21,103 @@ export default function SubscriptionButton({ planId, email }: Props) {
     script.async = true
     script.onload = () => setIsRazorpayLoaded(true)
     document.body.appendChild(script)
+
+    return () => {
+      document.body.removeChild(script)
+    }
   }, [])
 
-  const handleSubscribe = async () => {
+  const handlePayment = async () => {
     if (!isRazorpayLoaded) {
       alert('Razorpay not loaded. Please try again.')
       return
     }
 
     try {
-      const { data } = await axios.post('/api/razorpay/create-subscription', {
-        planId,
-        customerEmail: email,
+      const { data } = await axios.post('/api/razorpay/create-order', {
+        amount: amount * 100, // Convert to paise
       })
 
-      const options: RazorpayOptions = {
+      const razorpay = new (window as unknown as WindowWithRazorpay).Razorpay({
         key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID!,
-        subscription_id: data.subscriptionId,
+        amount: data.amount,
+        currency: data.currency,
         name: 'PortBuilder',
-        description: 'Monthly Subscription',
-        handler(response) {
-          alert('✅ Subscription started successfully!')
-          console.log('Subscription response:', response)
+        description: 'One-Time Payment',
+        order_id: data.id,
+        handler: (response) => {
+          console.log('✅ Payment successful!', response)
+          alert('✅ Payment successful!')
           router.push('/template')
         },
         prefill: {
-          name: '',
-          email,
+          name: `${user?.firstName ?? ''} ${user?.lastName ?? ''}`.trim(),
+          email: user?.emailAddresses[0]?.emailAddress ?? '',
           contact: '',
         },
+        theme: {
+          color: '#6366F1',
+        },
         method: {
-          upi: true,        
           card: true,
           netbanking: true,
+          upi: true,
           wallet: true,
         },
-        upi: {
-          flow: 'collect', 
-        },
-        theme: { color: '#000' },
-      }
+      })
 
-      const razorpay = new ((window as unknown) as WindowWithRazorpay).Razorpay(options)
       razorpay.open()
     } catch (error: unknown) {
-      if (axios.isAxiosError(error) && error.response?.data) {
-        console.error('❌ Subscription error:', error.response.data)
-      } else if (error instanceof Error) {
-        console.error('❌ Subscription error:', error.message)
-      } else {
-        console.error('❌ Subscription error:', error)
-      }
-      alert('Something went wrong while subscribing. Please try again.')
+      const msg =
+        axios.isAxiosError(error) && error.response?.data?.error !== undefined
+          ? error.response.data.error
+          : error instanceof Error
+          ? error.message
+          : 'Unknown error occurred'
+      console.error('❌ Error:', msg)
+      alert(`❌ ${msg}`)
     }
   }
 
   return (
-    <Button variant="outline" className="w-full dark:text-white" onClick={handleSubscribe}>
+    <Button variant="outline" className="w-full dark:text-white" onClick={handlePayment}>
       Get Started
     </Button>
   )
 }
 
 interface WindowWithRazorpay extends Window {
-  Razorpay: new (options: RazorpayOptions) => RazorpayInstance
+  Razorpay: new (options: RazorpayOrderOptions) => RazorpayInstance
 }
 
 interface RazorpayInstance {
   open: () => void
 }
 
-interface RazorpayOptions {
+interface RazorpayOrderOptions {
   key: string
-  subscription_id: string
+  amount: number
+  currency: string
   name: string
   description: string
+  order_id: string
   handler: (response: {
     razorpay_payment_id: string
-    razorpay_subscription_id: string
+    razorpay_order_id: string
     razorpay_signature: string
   }) => void
   prefill: {
-    name: string
+    name?: string
     email: string
-    contact: string
+    contact?: string
+  }
+  theme?: {
+    color?: string
   }
   method?: {
     card?: boolean
     netbanking?: boolean
     upi?: boolean
     wallet?: boolean
-  }
-  upi?: {
-    flow?: 'collect' | 'intent'
-    vpa?: string
-  }
-  theme: {
-    color: string
   }
 }
