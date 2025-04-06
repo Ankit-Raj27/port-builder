@@ -1,5 +1,5 @@
 "use client"
-import { Check } from "lucide-react"
+import {  CheckCheck, CircleOff } from "lucide-react"
 import { motion } from "framer-motion"
 
 import { Button } from "@/components/ui/button"
@@ -138,9 +138,31 @@ export default function PricingPage() {
                 >
                   <p className="text-5xl font-bold">Free</p>
                 </motion.div>
-                <p className="text-muted-foreground">
-                  All the components that are freely available on the website are free to use.
-                </p>
+                <p>For the curious minds who want to browse, play, and dream big.</p>
+                <motion.ul
+                  className="mt-6 space-y-2"
+                  initial="hidden"
+                  animate="visible"
+                  variants={containerVariants}
+                  transition={{ delayChildren: 0.8, staggerChildren: 0.1 }}
+                >
+                  <motion.li className="flex items-center gap-2" variants={listItemVariants}>
+                    <CheckCheck className="h-4 w-4" />
+                    <span> Browse all component templates</span>
+                  </motion.li>
+                  <motion.li className="flex items-center gap-2" variants={listItemVariants}>
+                    <CheckCheck className="h-4 w-4" />
+                    <span>Preview complete portfolio themes</span>
+                  </motion.li>
+                  <motion.li className="flex items-center gap-2" variants={listItemVariants}>
+                    <CircleOff className="h-4 w-4" />
+                    <span>No editing or downloading</span>
+                  </motion.li>
+                  <motion.li className="flex items-center gap-2" variants={listItemVariants}>
+                    <CircleOff className="h-4 w-4" />
+                    <span> No hosting options</span>
+                  </motion.li>
+                </motion.ul>
               </CardContent>
               <CardFooter>
                 <motion.div className="w-full" whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
@@ -163,7 +185,7 @@ export default function PricingPage() {
             >
               <CardHeader>
                 <div className="flex justify-between items-center">
-                  <CardTitle>Pro</CardTitle>
+                  <CardTitle>Upgrade to Pro</CardTitle>
                   <motion.div
                     initial={{ scale: 0, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
@@ -193,8 +215,7 @@ export default function PricingPage() {
                   </p>
                 </motion.div>
                 <p className="text-primary-foreground/80">
-                  Best for early-stage startups and businesses that need a marketing site and ongoing developmental
-                  work.
+                For makers who want to build, tweak, and launch their personal brand.
                 </p>
                 <motion.ul
                   className="mt-6 space-y-2"
@@ -204,30 +225,30 @@ export default function PricingPage() {
                   transition={{ delayChildren: 0.8, staggerChildren: 0.1 }}
                 >
                   <motion.li className="flex items-center gap-2" variants={listItemVariants}>
-                    <Check className="h-4 w-4" />
-                    <span>Everything in Custom Components</span>
+                    <CheckCheck className="h-4 w-4" />
+                    <span>Edit any component in real-time</span>
                   </motion.li>
                   <motion.li className="flex items-center gap-2" variants={listItemVariants}>
-                    <Check className="h-4 w-4" />
-                    <span>Full page designs</span>
+                    <CheckCheck className="h-4 w-4" />
+                    <span> Download your complete custom portfolio</span>
                   </motion.li>
                   <motion.li className="flex items-center gap-2" variants={listItemVariants}>
-                    <Check className="h-4 w-4" />
-                    <span>SEO optimization</span>
+                    <CircleOff className="h-4 w-4" />
+                    <span>Build with full creative control</span>
                   </motion.li>
                   <motion.li className="flex items-center gap-2" variants={listItemVariants}>
-                    <Check className="h-4 w-4" />
-                    <span>Ongoing support</span>
+                    <CircleOff className="h-4 w-4" />
+                    <span> No hosting included</span>
                   </motion.li>
                 </motion.ul>
               </CardContent>
               <CardFooter>
                 <motion.div className="w-full" whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
-                <SubscriptionButton amount={1} />
+                  <SubscriptionButton amount={1} />
                 </motion.div>
               </CardFooter>
             </MotionCard>
-            
+
             <MotionCard
               className="border-2  text-black flex flex-col"
               variants={cardVariants}
@@ -239,7 +260,7 @@ export default function PricingPage() {
             >
               <CardHeader>
                 <div className="flex justify-between text-emerald-500 items-center">
-                  <CardTitle>Ultra</CardTitle>
+                  <CardTitle>Go Ultra</CardTitle>
                   <motion.div
                     initial={{ scale: 0, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
@@ -266,8 +287,7 @@ export default function PricingPage() {
                   </p>
                 </motion.div>
                 <p className="text-black">
-                  Best for early-stage startups and businesses that need a marketing site and ongoing developmental
-                  work.
+                For the ones who want it all — build, edit, download, and go live.
                 </p>
                 <motion.ul
                   className="mt-6 space-y-2"
@@ -277,26 +297,26 @@ export default function PricingPage() {
                   transition={{ delayChildren: 0.8, staggerChildren: 0.1 }}
                 >
                   <motion.li className="flex items-center gap-2" variants={listItemVariants}>
-                    <Check className="h-4 w-4" />
-                    <span>Everything in Custom Components</span>
+                    <CheckCheck className="h-4 w-4" />
+                    <span>Host your portfolio right from the site</span>
                   </motion.li>
                   <motion.li className="flex items-center gap-2" variants={listItemVariants}>
-                    <Check className="h-4 w-4" />
-                    <span>Full page designs</span>
+                    <CheckCheck className="h-4 w-4" />
+                    <span>Lightning-fast global CDN</span>
                   </motion.li>
                   <motion.li className="flex items-center gap-2" variants={listItemVariants}>
-                    <Check className="h-4 w-4" />
-                    <span>SEO optimization</span>
+                    <CheckCheck className="h-4 w-4" />
+                    <span> Free HTTPS and subdomain</span>
                   </motion.li>
                   <motion.li className="flex items-center gap-2" variants={listItemVariants}>
-                    <Check className="h-4 w-4" />
-                    <span>Ongoing support</span>
+                    <CheckCheck className="h-4 w-4" />
+                    <span>Priority support from the devs (yup, that’s us!)</span>
                   </motion.li>
                 </motion.ul>
               </CardContent>
               <CardFooter>
                 <motion.div className="w-full" whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
-                <SubscriptionButton amount={1} />
+                  <SubscriptionButton amount={1} />
                 </motion.div>
               </CardFooter>
             </MotionCard>
