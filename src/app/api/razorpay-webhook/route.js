@@ -28,8 +28,21 @@ export async function POST(req) {
 
     await updateClerkUserSubscription(userEmail, razorpaySubscriptionId);
   }
+  if (event.event === 'subscription.activated') {
+    const razorpaySubscriptionId = event.payload.subscription.entity.id;
+    const userEmail = event.payload.subscription.entity.notes.email;
+  
+    console.log("✅ Subscription Activated");
+    console.log("📧 User Email:", userEmail);
+    console.log("🆔 Razorpay Subscription ID:", razorpaySubscriptionId);
+  
+    await updateClerkUserSubscription(userEmail, razorpaySubscriptionId);
+    console.log("🔄 Updating Clerk metadata for:", email, subscriptionId);
+
+  }
 
   return NextResponse.json({ received: true });
+  
 }
 
 async function updateClerkUserSubscription(email, subscriptionId) {
