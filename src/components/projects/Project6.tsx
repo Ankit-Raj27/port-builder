@@ -10,7 +10,7 @@ const featuredProject = {
   title: "E-commerce Platform",
   description:
     "A comprehensive e-commerce solution with product management, cart functionality, payment processing, and order management.",
-  image: "/placeholder.svg?height=600&width=1200",
+  image: "/images/project/p41.jpg?height=600&width=800",
   technologies: ["Next.js", "TypeScript", "Tailwind CSS", "Prisma", "PostgreSQL", "Stripe"],
   url: "#",
 }
