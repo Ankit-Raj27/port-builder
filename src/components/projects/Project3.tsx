@@ -21,7 +21,7 @@ const projects = [
     title: "Minimalist Portfolio Website",
     description:
       "A clean, minimalist portfolio website for a photographer showcasing their work with a focus on visual content.",
-    image: "/a.jpg",
+    image: "/images/project/p42.png?height=600&width=800",
     category: "Web Design",
     height: "tall", // tall, medium, or short
     link: "/projects/portfolio-website",
@@ -31,7 +31,7 @@ const projects = [
     title: "Mobile Banking App",
     description:
       "A user-friendly mobile banking application with intuitive navigation and secure transaction features.",
-    image: "/placeholder.svg?height=400&width=600",
+    image: "/images/project/p11.png?height=600&width=800",
     category: "UI/UX Design",
     height: "medium",
     link: "/projects/banking-app",
@@ -41,7 +41,7 @@ const projects = [
     title: "E-commerce Platform",
     description:
       "A comprehensive e-commerce solution with product management, cart functionality, and secure checkout.",
-    image: "/placeholder.svg?height=300&width=600",
+    image:"/images/project/p41.jpg?height=600&width=800",
     category: "Web Development",
     height: "short",
     link: "/projects/ecommerce-platform",
@@ -51,7 +51,7 @@ const projects = [
     title: "Health & Fitness Tracker",
     description:
       "A mobile application for tracking fitness activities, nutrition, and health metrics with data visualization.",
-    image: "/placeholder.svg?height=600&width=400",
+    image:"/images/project/p26.png?height=600&width=800",
     category: "Mobile App",
     height: "tall",
     link: "/projects/fitness-tracker",
@@ -61,7 +61,7 @@ const projects = [
     title: "Corporate Brand Identity",
     description:
       "Complete brand identity design including logo, color palette, typography, and brand guidelines for a corporate client.",
-    image: "/placeholder.svg?height=400&width=600",
+    image: "/images/project/p24.png?height=600&width=800",
     category: "Branding",
     height: "medium",
     link: "/projects/brand-identity",
@@ -71,7 +71,7 @@ const projects = [
     title: "Social Media Dashboard",
     description:
       "An analytics dashboard for tracking social media performance across multiple platforms with data visualization.",
-    image: "/placeholder.svg?height=300&width=600",
+    image: "/images/project/p43.jpg?height=600&width=800",
     category: "Web Development",
     height: "short",
     link: "/projects/social-dashboard",
@@ -81,7 +81,7 @@ const projects = [
     title: "Travel Booking App",
     description:
       "A comprehensive travel booking application for flights, hotels, and experiences with personalized recommendations.",
-    image: "/placeholder.svg?height=400&width=600",
+    image:"/images/project/p23.png?height=600&width=800",
     category: "UI/UX Design",
     height: "medium",
     link: "/projects/travel-app",

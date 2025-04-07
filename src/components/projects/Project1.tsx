@@ -15,7 +15,7 @@ const projects = [
     id: 1,
     title: "Modern Banking App",
     description: "A sleek, user-friendly banking application with advanced security features and intuitive interface.",
-    image: "/placeholder.svg",
+    image: "/images/project/p11.png",
     category: "UI/UX Design",
     client: "FinTech Corp",
     year: "2023",
