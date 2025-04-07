@@ -18,7 +18,7 @@ export default function Home() {
 
   useEffect(() => {
     if (isSignedIn) {
-      router.replace("/template") 
+      router.replace("/template")
     }
   }, [isSignedIn, router])
 
@@ -91,7 +91,7 @@ export default function Home() {
     initial: { scale: 1 },
     hover: {
       scale: 1.05,
-    transition: {
+      transition: {
         type: "spring",
         stiffness: 400,
         damping: 10,
@@ -110,7 +110,7 @@ export default function Home() {
 
   return (
     <div >
-        <Navbar />
+      <Navbar />
       <main className=" dark:bg-gradient-to-tr from-[#434343] to-[#000] " >
         {/* Welcome section */}
         <div className="shadow-md shadow-gray-300"></div>
@@ -152,7 +152,7 @@ export default function Home() {
                 </motion.button>
               </Link>
             </motion.div>
-            
+
             <motion.div variants={itemVariants} className="w-full max-w-4xl mx-auto text-center ">
               <div className="flex justify-center gap-16 mb-12 mt-20 ">
                 {features.map((feature, index) => (
@@ -209,33 +209,43 @@ export default function Home() {
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, staggerChildren: 0.1 }}
               viewport={{ once: true }}
-              className="grid grid-cols-2 gap-4 p-4"
+              className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4"
             >
+              {/* Top-left image (normal position) */}
               <motion.div whileHover="hover" initial="initial" variants={imageHoverVariants}>
                 <Image
-                  src="/11.jpeg"
+                  src="/images/portfolio2.png"
                   width={240}
                   height={240}
-                  alt="df"
+                  alt="portfolio2"
                   className="rounded-lg shadow-lg w-full h-full object-cover"
                 />
               </motion.div>
+
+              {/* Top-right image (shifted down on md and up) */}
               <motion.div whileHover="hover" initial="initial" variants={imageHoverVariants}>
                 <Image
-                  src="/11.jpeg"
+                  src="/images/portfolio1.png"
                   width={240}
                   height={240}
-                  alt="df"
-                  className="rounded-lg shadow-lg mt-12 object-cover"
+                  alt="portfolio1"
+                  className="rounded-lg shadow-lg object-cover md:mt-12"
                 />
               </motion.div>
-              <motion.div whileHover="hover" initial="initial" variants={imageHoverVariants}>
+
+              {/* Bottom image (centered below, slight overlap on md+) */}
+              <motion.div
+                whileHover="hover"
+                initial="initial"
+                variants={imageHoverVariants}
+                className="md:col-span-2 flex justify-center md:-mt-8"
+              >
                 <Image
-                  src="/11.jpeg"
+                  src="/images/portfolio3.png"
                   width={240}
                   height={240}
-                  alt="df"
-                  className="rounded-lg shadow-lg w-full h-full object-cover"
+                  alt="portfolio3"
+                  className="rounded-lg shadow-lg object-cover"
                 />
               </motion.div>
             </motion.div>
@@ -247,11 +257,10 @@ export default function Home() {
               viewport={{ once: true }}
               className="flex flex-col justify-center"
             >
-              <h2 className="text-3xl font-bold tracking-tighter sm:text-3xl md:text-4xl">Text and contact form</h2>
+              <h2 className="text-3xl font-bold tracking-tighter sm:text-3xl md:text-4xl">Choose from Stunning Templates</h2>
               <h3 className="text font-medium sm:text-2xl mt-2">Create web pages easily</h3>
               <p className="mt-2 max-w-[600px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed l:text-l/relaxed dark:text-gray-400">
-                You can easily add text pages and contact forms to your portfolio. Choose from a variety of templates
-                and customize each page to create the perfect design for your website.
+                PortBuilder gives you the freedom to mix and match beautifully designed sections—from navbars and hero sections to project showcases, experience timelines, and footers. Whether you are a designer, developer, or creative, you’ll find the perfect fit.
               </p>
             </motion.div>
 
@@ -262,11 +271,10 @@ export default function Home() {
               viewport={{ once: true }}
               className="flex flex-col justify-center"
             >
-              <h2 className="text-3xl font-bold tracking-tighter sm:text-3xl md:text-4xl">Text and contact form</h2>
-              <h3 className="text font-medium sm:text-2xl mt-2">Create web pages easily</h3>
+              <h2 className="text-3xl font-bold tracking-tighter sm:text-3xl md:text-4xl"> Fully Customizable Layouts</h2>
+              <h3 className="text font-medium sm:text-2xl mt-2">Craft your unique digital presence with ease.</h3>
               <p className="mt-2 max-w-[600px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed l:text-l/relaxed dark:text-gray-400">
-                You can easily add text pages and contact forms to your portfolio. Choose from a variety of templates
-                and customize each page to create the perfect design for your website.
+                Select from a variety of layout options for every section of your portfolio—no code required. Want a minimal navbar and a bold hero? Go for it. Prefer a dark footer with animated project cards? You’re in control.
               </p>
             </motion.div>
 
@@ -276,49 +284,75 @@ export default function Home() {
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, staggerChildren: 0.1 }}
               viewport={{ once: true }}
-              className="grid grid-cols-2 gap-4 p-4"
+              className="grid grid-cols-2 gap-2 p-4"
             >
+              {/* Top-left - slightly lowered */}
               <motion.div whileHover="hover" initial="initial" variants={imageHoverVariants}>
                 <Image
-                  src="/11.jpeg"
+                  src="/images/editor1.png"
                   width={240}
                   height={240}
                   alt="df"
-                  className="rounded-lg  shadow-lg mt-12 object-cover"
+                  className="rounded-lg shadow-lg mt-6 object-cover"
                 />
               </motion.div>
+
+              {/* Top-right - slightly higher and overlaps left */}
               <motion.div whileHover="hover" initial="initial" variants={imageHoverVariants}>
                 <Image
-                  src="/11.jpeg"
+                  src="/images/editor2.png"
                   width={240}
                   height={240}
                   alt="df"
-                  className="rounded-lg shadow-lg w-full h-full object-cover"
+                  className="rounded-lg shadow-lg -mt-2 -ml-4 object-cover"
                 />
               </motion.div>
-              <motion.div whileHover="hover" initial="initial" variants={imageHoverVariants}>
+
+              {/* Bottom - centered and overlapping top images slightly */}
+              <motion.div
+                whileHover="hover"
+                initial="initial"
+                variants={imageHoverVariants}
+                className="col-span-2 flex justify-center -mt-8"
+              >
                 <Image
-                  src="/11.jpeg"
-                  width={240}
-                  height={240}
+                  src="/images/editor3.png"
+                  width={260}
+                  height={260}
                   alt="df"
-                  className="rounded-lg shadow-lg w-full h-full object-cover"
+                  className="rounded-lg shadow-xl object-cover"
                 />
               </motion.div>
             </motion.div>
 
             {/* Third image section with grid */}
             <motion.div
-              initial={{ opacity: 0, x: -50 }}
+              initial={{ opacity: 0, x: 30 }}
               whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6 }}
+              transition={{ duration: 0.5, staggerChildren: 0.1 }}
               viewport={{ once: true }}
-              className="gap-4"
+              className="grid grid-cols-2 gap-2 p-4 relative"
             >
               <motion.div whileHover="hover" initial="initial" variants={imageHoverVariants}>
-                <Image src="/11.jpeg" width={400} height={400} alt="df" className="rounded-lg shadow-lg object-cover" />
+                <Image
+                  src="/images/hosting2.png"
+                  width={250}
+                  height={250}
+                  alt="img1"
+                  className="rounded-lg shadow-lg mt-4 object-cover "
+                />
+              </motion.div>
+              <motion.div whileHover="hover" initial="initial" variants={imageHoverVariants}>
+                <Image
+                  src="/images/hosting1.png"
+                  width={250}
+                  height={250}
+                  alt="img2"
+                  className="rounded-lg shadow-xl -mt-6 -ml-6 object-cover z-20 relative"
+                />
               </motion.div>
             </motion.div>
+
 
             <motion.div
               initial={{ opacity: 0, x: 50 }}
@@ -327,11 +361,10 @@ export default function Home() {
               viewport={{ once: true }}
               className="flex flex-col justify-center"
             >
-              <h2 className="text-3xl font-bold tracking-tighter sm:text-3xl md:text-4xl">Web Hosting</h2>
+              <h2 className="text-3xl font-bold tracking-tighter sm:text-3xl md:text-4xl"> Built-in Web Hosting</h2>
               <h3 className="text font-medium sm:text-2xl mt-2">Host your portfolio easily</h3>
               <p className="mt-2 max-w-[600px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed l:text-l/relaxed dark:text-gray-400">
-                Say goodbye to hosting companies and domain settings. Create your portfolio in your browser, and
-                PortBuilder will handle everything else.
+                No more wrestling with hosting providers or DNS settings. Your portfolio lives on the web the moment you publish it—secure, fast, and hassle-free.
               </p>
             </motion.div>
           </div>
