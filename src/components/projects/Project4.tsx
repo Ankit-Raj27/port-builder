@@ -10,7 +10,7 @@ const projects = [
   {
     title: "E-commerce Platform",
     description: "A full-featured e-commerce platform with product management, cart, and checkout functionality.",
-    image: "/placeholder.svg?height=300&width=600",
+    image: "/images/project/p41.jpg?height=300&width=600",
     tags: ["Next.js", "TypeScript", "Tailwind CSS", "Stripe"],
     demoUrl: "#",
     githubUrl: "#",
@@ -18,7 +18,7 @@ const projects = [
   {
     title: "Portfolio Website",
     description: "A modern portfolio website with dark mode, animations, and contact form.",
-    image: "/placeholder.svg?height=300&width=600",
+    image: "/images/project/p42.png?height=300&width=600",
     tags: ["React", "Framer Motion", "Tailwind CSS"],
     demoUrl: "#",
     githubUrl: "#",
@@ -26,7 +26,7 @@ const projects = [
   {
     title: "Task Management App",
     description: "A drag-and-drop task management application with user authentication and real-time updates.",
-    image: "/placeholder.svg?height=300&width=600",
+    image: "/images/project/p43.jpg?height=300&width=600",
     tags: ["React", "Firebase", "Tailwind CSS", "dnd-kit"],
     demoUrl: "#",
     githubUrl: "#",

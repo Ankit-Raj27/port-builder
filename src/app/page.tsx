@@ -111,82 +111,87 @@ export default function Home() {
   return (
     <div >
       <Navbar />
-      <main className=" dark:bg-gradient-to-tr from-[#434343] to-[#000] " >
+      <main className=" font-Space Grotesk bg-gray-100 shadow-lg dark:bg-gradient-to-tr from-[#434343] to-[#000] " >
         {/* Welcome section */}
-        <div className="shadow-md shadow-gray-300"></div>
-        <motion.section
-          initial="hidden"
-          animate="visible"
-          variants={containerVariants}
-          className="max-w-[1200px] mx-auto px-4 py-20 md:py-22 "
-        >
-          <div className="space-y-8">
-            <motion.h1 variants={itemVariants} className="text-5xl md:text-6xl lg:text-7xl font-medium tracking-tight">
-              Welcome to the Port-Builder!
-            </motion.h1>
-            <motion.p variants={itemVariants} className="text-xl md:text-2xl text-muted-foreground max-w-[600px]">
-              Our enterprise solution offers advanced site management, highly-efficient portfolio site creation, and the
-              customization options you require.
-            </motion.p>
-            <motion.div variants={itemVariants}>
-              <Link href="/sign-up">
-                <motion.button
-                  variants={buttonVariants}
-                  initial="initial"
-                  whileHover="hover"
-                  whileTap="tap"
-                  className="inline-flex h-12 items-center justify-center rounded-full bg-black px-8 text-sm font-medium text-white hover:bg-gray-800 transition-colors"
-                >
-                  Create an account!
-                </motion.button>
-              </Link>
-              <Link href="/sign-in">
-                <motion.button
-                  variants={buttonVariants}
-                  initial="initial"
-                  whileHover="hover"
-                  whileTap="tap"
-                  className="inline-flex ml-4 h-12 items-center justify-center rounded-full bg-black px-8 text-sm font-medium text-white hover:bg-gray-800 transition-colors"
-                >
-                  Already have an account?
-                </motion.button>
-              </Link>
-            </motion.div>
+        <section className="shadow-lg ">
 
-            <motion.div variants={itemVariants} className="w-full max-w-4xl mx-auto text-center ">
-              <div className="flex justify-center gap-16 mb-12 mt-20 ">
-                {features.map((feature, index) => (
-                  <motion.div
-                    key={index}
-                    custom={index}
-                    variants={featureVariants}
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{ once: true, amount: 0.8 }}
-                    whileHover={{ y: -5, transition: { duration: 0.2 } }}
-                    className="flex flex-col items-center"
+          <div className="shadow-lg shadow-gray-300"></div>
+          <motion.section
+            initial="hidden"
+            animate="visible"
+            variants={containerVariants}
+            className="max-w-[1200px] mx-auto px-4 py-20 md:py-22 "
+          >
+            <div className="space-y-8">
+              <motion.h1 variants={itemVariants} className="text-5xl md:text-6xl lg:text-7xl font-medium tracking-tight">
+                Welcome to the Port-Builder!
+              </motion.h1>
+              <motion.p variants={itemVariants} className="text-xl md:text-2xl text-muted-foreground max-w-[600px]">
+                Our enterprise solution offers advanced site management, highly-efficient portfolio site creation, and the
+                customization options you require.
+              </motion.p>
+              <motion.div variants={itemVariants}>
+                <Link href="/sign-up">
+                  <motion.button
+                    variants={buttonVariants}
+                    initial="initial"
+                    whileHover="hover"
+                    whileTap="tap"
+                    className="inline-flex h-12 items-center justify-center rounded-full bg-black px-8 text-sm font-medium text-white hover:bg-gray-800 transition-colors"
                   >
-                    <motion.div
-                      className="mb-4"
-                      whileHover={{ rotate: [0, -10, 10, -10, 0], transition: { duration: 0.5 } }}
-                    >
-                      {feature.icon}
-                    </motion.div>
-                    <p className="text-gray-600 text-sm">{feature.title}</p>
-                  </motion.div>
-                ))}
-              </div>
-              <motion.div variants={buttonVariants} initial="initial" whileHover="hover" whileTap="tap">
-                <Button className="bg-black text-white px-8 py-2 rounded-full hover:bg-gray-700 transition-colors ">
-                  Create Your Portfolio
-                </Button>
+                    Create an account!
+                  </motion.button>
+                </Link>
+                <Link href="/sign-in">
+                  <motion.button
+                    variants={buttonVariants}
+                    initial="initial"
+                    whileHover="hover"
+                    whileTap="tap"
+                    className="inline-flex ml-4 h-12 items-center justify-center rounded-full bg-black px-8 text-sm font-medium text-white hover:bg-gray-800 transition-colors"
+                  >
+                    Already have an account?
+                  </motion.button>
+                </Link>
               </motion.div>
-            </motion.div>
-          </div>
-        </motion.section>
+
+              <motion.div variants={itemVariants} className="w-full max-w-4xl mx-auto text-center ">
+                <div className="flex justify-center gap-16 mb-12 mt-20 ">
+                  {features.map((feature, index) => (
+                    <motion.div
+                      key={index}
+                      custom={index}
+                      variants={featureVariants}
+                      initial="hidden"
+                      whileInView="visible"
+                      viewport={{ once: true, amount: 0.8 }}
+                      whileHover={{ y: -5, transition: { duration: 0.2 } }}
+                      className="flex flex-col items-center"
+                    >
+                      <motion.div
+                        className="mb-4"
+                        whileHover={{ rotate: [0, -10, 10, -10, 0], transition: { duration: 0.5 } }}
+                      >
+                        {feature.icon}
+                      </motion.div>
+                      <p className="text-gray-600 text-sm">{feature.title}</p>
+                    </motion.div>
+                  ))}
+                </div>
+                <motion.div variants={buttonVariants} initial="initial" whileHover="hover" whileTap="tap">
+                  <Button className="bg-black text-white px-8 py-2 rounded-full hover:bg-gray-700 transition-colors ">
+                    Create Your Portfolio
+                  </Button>
+                </motion.div>
+              </motion.div>
+            </div>
+          </motion.section>
+
+        </section>
         <div className="shadow-md shadow-gray-300"></div>
+
         {/* Template Section */}
-        <section className="w-full py-16 bg-gray-100 shadow-lg  dark:bg-gradient-to-tr from-[#434343] to-[#000]">
+        <section className="w-full py-16 shadow-lg  dark:bg-gradient-to-tr from-[#434343] to-[#000]">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -370,8 +375,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Carousel Section */}
-        <section>{/* Empty section preserved as in original */}</section>
+
 
         {/* CAT Section */}
         <motion.section
@@ -379,7 +383,7 @@ export default function Home() {
           whileInView={{ opacity: 1 }}
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
-          className="h-auto p-16 w-full dark:bg-gradient-to-b from-[#434343] to-[#181818] flex flex-col items-center justify-center px-4"
+          className="h-auto shadow-lg  p-16 w-full dark:bg-gradient-to-b from-[#434343] to-[#181818] flex flex-col items-center justify-center px-4"
         >
           <motion.div
             initial={{ y: 50, opacity: 0 }}
@@ -388,13 +392,13 @@ export default function Home() {
             viewport={{ once: true }}
             className="max-4xl mx-auto text-center space-y-8"
           >
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-medium tracking-tight text-navy-900">
+            <h1 className="text-4xl md:text-5xl lg:text-7xl  font-medium tracking-tight text-navy-900">
               <motion.span
                 initial={{ y: 20, opacity: 0 }}
                 whileInView={{ y: 0, opacity: 1 }}
                 transition={{ duration: 0.5 }}
                 viewport={{ once: true }}
-                className="block"
+                className="block dark:text-white"
               >
                 Your vision. Your goals.
               </motion.span>
@@ -403,7 +407,7 @@ export default function Home() {
                 whileInView={{ y: 0, opacity: 1 }}
                 transition={{ duration: 0.5, delay: 0.2 }}
                 viewport={{ once: true }}
-                className="block"
+                className="block dark:text-gray-400"
               >
                 Your website.
               </motion.span>
@@ -423,7 +427,7 @@ export default function Home() {
                 <Button
                   asChild
                   size="lg"
-                  className="rounded-full px-8 py-6 text-lg font-medium bg-white text-navy-900 hover:bg-white dark:hover:"
+                  className="rounded-full px-8 py-6 text-lg bg-gray font-medium dark:bg-[#1A1A1A] text-navy-900  dark:hover:"
                 >
                   <Link href="/sign-up">Get Started</Link>
                 </Button>
@@ -431,8 +435,6 @@ export default function Home() {
             </motion.div>
           </motion.div>
         </motion.section>
-
-        {/* Footer Section */}
         <Footer />
       </main>
     </div>
