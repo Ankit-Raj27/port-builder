@@ -230,7 +230,7 @@ export default function PricingPage() {
                       <span> Download your complete custom portfolio</span>
                     </motion.li>
                     <motion.li className="flex items-center gap-2" variants={listItemVariants}>
-                      <CircleOff className="h-4 w-4" />
+                      <CheckCheck className="h-4 w-4" />
                       <span>Build with full creative control</span>
                     </motion.li>
                     <motion.li className="flex items-center gap-2" variants={listItemVariants}>
