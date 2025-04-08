@@ -241,7 +241,7 @@ export default function PricingPage() {
                 </CardContent>
                 <CardFooter>
                   <motion.div className="w-full" whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
-                    <SubscriptionButton setLoading={setLoading} amount={99} />
+                    <SubscriptionButton setLoading={setLoading} amount={1} />
                   </motion.div>
                 </CardFooter>
               </MotionCard>

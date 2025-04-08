@@ -8,8 +8,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 const Navbar2: React.FC = () => {
   // Embed your desired props directly here
   const data = {
-    title: "Saksham",
-    buttonText: "Saksham",
+    title: "Ankit",
+    buttonText: "Resume",
     avatarSrc: "/placeholder.svg",
     navItems: [
       { title: "Home", href: "/" },
