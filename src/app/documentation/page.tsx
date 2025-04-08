@@ -17,6 +17,10 @@ import {
 import { ArrowRight, Copy, Check, Menu, X, Moon, Sun, SearchIcon } from "lucide-react"
 import { ThemeProvider } from "@/components/theme-provider"
 import { useTheme } from "next-themes"
+import Link from "next/link"
+import Image from "next/image"
+import { DialogTitle } from "@/components/ui/dialog"
+import {VisuallyHidden} from "@radix-ui/react-visually-hidden";
 
 // Data for documentation sections
 const sections = [
@@ -248,13 +252,23 @@ function Search() {
                     <span className="text-xs">⌘</span>K
                 </kbd>
             </Button>
+           
+
             <CommandDialog open={open} onOpenChange={setOpen}>
+                <DialogTitle>
+                    <VisuallyHidden>Search Documentation</VisuallyHidden>
+                </DialogTitle>
+
                 <CommandInput placeholder="Search documentation..." />
                 <CommandList>
                     <CommandEmpty>No results found.</CommandEmpty>
                     <CommandGroup heading="Documentation">
                         {sections.map((section) => (
-                            <CommandItem key={section.id} value={section.title} onSelect={() => handleSelect(section.id)}>
+                            <CommandItem
+                                key={section.id}
+                                value={section.title}
+                                onSelect={() => handleSelect(section.id)}
+                            >
                                 <span className="mr-2">{section.emoji}</span>
                                 {section.title}
                             </CommandItem>
@@ -262,6 +276,7 @@ function Search() {
                     </CommandGroup>
                 </CommandList>
             </CommandDialog>
+
         </>
     )
 }
@@ -344,9 +359,16 @@ export default function DocumentationPage() {
                 >
                     <div className="container flex h-14 items-center justify-between">
                         <div className="flex items-center gap-2 md:gap-4">
-                            <a href="#" className="flex items-center gap-2 font-semibold">
-                                <span className="hidden sm:inline-block">Portfolio Builder</span>
-                            </a>
+                            <Link href="/" className="mr-6 flex items-center">
+
+                                <Image
+                                    src="/logo.png"
+                                    alt="PortBuilder Logo"
+                                    width={250}
+                                    height={60}
+                                    className=" h-12 w-auto"
+                                />
+                            </Link>
                             <div className="hidden md:flex">
                                 <Search />
                             </div>
@@ -501,7 +523,7 @@ export default function DocumentationPage() {
                                                     </motion.ul>
                                                 )
                                             } else if (item.type === "code") {
-                                                return <CodeBlock key={index} language={item.language || ""} value={item.value||""} />
+                                                return <CodeBlock key={index} language={item.language || ""} value={item.value || ""} />
                                             }
                                             return null
                                         })}
