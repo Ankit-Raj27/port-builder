@@ -305,7 +305,7 @@ export default function Home() {
               {/* Top-right - slightly higher and overlaps left */}
               <motion.div whileHover="hover" initial="initial" variants={imageHoverVariants}>
                 <Image
-                  src="/images/editor2.png"
+                  src="/images/editor2.jpg"
                   width={240}
                   height={240}
                   alt="df"
@@ -321,7 +321,7 @@ export default function Home() {
                 className="col-span-2 flex justify-center -mt-8"
               >
                 <Image
-                  src="/images/editor3.png"
+                  src="/images/editor3.jpg"
                   width={260}
                   height={260}
                   alt="df"
@@ -340,7 +340,7 @@ export default function Home() {
             >
               <motion.div whileHover="hover" initial="initial" variants={imageHoverVariants}>
                 <Image
-                  src="/images/hosting2.png"
+                  src="/images/hosting1.png"
                   width={250}
                   height={250}
                   alt="img1"
@@ -349,7 +349,7 @@ export default function Home() {
               </motion.div>
               <motion.div whileHover="hover" initial="initial" variants={imageHoverVariants}>
                 <Image
-                  src="/images/hosting1.png"
+                  src="/images/hosting2.png"
                   width={250}
                   height={250}
                   alt="img2"
