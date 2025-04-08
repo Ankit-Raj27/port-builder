@@ -219,7 +219,7 @@ export default function Home() {
               {/* Top-left image (normal position) */}
               <motion.div whileHover="hover" initial="initial" variants={imageHoverVariants}>
                 <Image
-                  src="/images/portfolio2.png"
+                  src="/images/portfolio1.png"
                   width={240}
                   height={240}
                   alt="portfolio2"
@@ -230,7 +230,7 @@ export default function Home() {
               {/* Top-right image (shifted down on md and up) */}
               <motion.div whileHover="hover" initial="initial" variants={imageHoverVariants}>
                 <Image
-                  src="/images/portfolio1.png"
+                  src="/images/portfolio2.png"
                   width={240}
                   height={240}
                   alt="portfolio1"
