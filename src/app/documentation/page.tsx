@@ -20,7 +20,7 @@ import { useTheme } from "next-themes"
 import Link from "next/link"
 import Image from "next/image"
 import { DialogTitle } from "@/components/ui/dialog"
-import {VisuallyHidden} from "@radix-ui/react-visually-hidden";
+import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 
 // Data for documentation sections
 const sections = [
@@ -252,7 +252,7 @@ function Search() {
                     <span className="text-xs">⌘</span>K
                 </kbd>
             </Button>
-           
+
 
             <CommandDialog open={open} onOpenChange={setOpen}>
                 <DialogTitle>
@@ -534,11 +534,16 @@ export default function DocumentationPage() {
                                         animate={{ opacity: 1, y: 0 }}
                                         transition={{ duration: 0.5, delay: 0.5 }}
                                     >
-                                        <Button variant="default" className="text-lg px-6 py-2">
-                                            Go to Dashboard <ArrowRight className="ml-2 h-4 w-4" />
+                                        <Button asChild variant="default" className="text-lg px-6 py-2">
+                                            <Link href="/">
+                                                Go to Dashboard <ArrowRight className="ml-2 h-4 w-4" />
+                                            </Link>
                                         </Button>
-                                        <Button variant="outline" className="text-lg px-6 py-2">
-                                            View Pricing
+
+                                        <Button asChild variant="outline" className="text-lg px-6 py-2">
+                                            <Link href="/pricing">
+                                                View Pricing
+                                            </Link>
                                         </Button>
                                     </motion.div>
                                 </div>

@@ -1,18 +1,13 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+// app/layout.tsx
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-//import ThemeProvider from "@/components/ThemeProvider"; // ✅ Import ThemeProvider
 import "./globals.css";
 import {
   ClerkProvider,
-  // SignInButton,
-  SignedIn,
-  SignedOut,
-  UserButton
-} from '@clerk/nextjs'
-import "./globals.css";
+} from "@clerk/nextjs";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ToastProvider } from "@radix-ui/react-toast";
+import ClientWrapper from "@/components/common/ClientWrapper";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -41,8 +36,13 @@ export default function RootLayout({
         layout: {
           unsafe_disableDevelopmentModeWarnings: true,
         },
-      }}>
-      <html lang="en" suppressHydrationWarning>
+      }}
+    >
+      <html
+        lang="en"
+        className={`${geistSans.variable} ${geistMono.variable}`}
+        suppressHydrationWarning
+      >
         <head />
         <body>
           <ThemeProvider
@@ -51,15 +51,13 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            {children}
-            <ToastProvider />
+            <ClientWrapper>
+              <main>{children}</main>
+              <ToastProvider />
+            </ClientWrapper>
           </ThemeProvider>
-          
         </body>
       </html>
     </ClerkProvider>
-  )
+  );
 }
-
-
-

@@ -7,6 +7,7 @@ import { Edit, Eye } from "lucide-react"
 import Image from "next/image"
 import { useState } from "react"
 import Footer from "@/components/common/Footer"
+import LoadingPage from "@/components/common/Loading"
 
 type Template = {
   id: string
@@ -59,14 +60,17 @@ const templates: Template[] = [
 const categories = ["All", "Personal", "Business", "Creative"]
 
 const Templates: React.FC = () => {
+  const [isLoading,setIsLoading] = useState(false);
   const router = useRouter()
   const [selectedCategory, setSelectedCategory] = useState("All")
 
   const handleSelectTemplate = (id: string, navbar: string, hero: string, experience: string, project: string, footer: string) => {
+    setIsLoading(true)
     router.push(`/template/${id}?navbar=${navbar}&hero=${hero}&experience=${experience}&project=${project}&footer=${footer}`);
   };
 
   const handleEditTemplate = (template: Template, e: React.MouseEvent) => {
+    setIsLoading(true)
     e.stopPropagation()
     router.push(`/template/my-template/editor`)
   }
@@ -76,6 +80,7 @@ const Templates: React.FC = () => {
   return (
     <div className="dark:bg-gradient-to-tr from-[#000000] to-[#2D3436]">
       <Navbar />
+      {isLoading && <LoadingPage />}
       <div className="p-6 md:p-10 max-w-7xl mx-auto ">
         <h2 className="text-3xl font-bold mb-8 text-center md:text-lef  ">Choose a Template</h2>
         {/* Category Filter */}

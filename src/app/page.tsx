@@ -11,8 +11,12 @@ import { useAuth } from "@clerk/nextjs"
 import { useRouter } from "next/navigation"
 import { useEffect } from "react"
 import { motion } from "framer-motion"
+import LoadingPage from "@/components/common/Loading"
+import { useState } from "react"
 
 export default function Home() {
+  const [isLoading, setIsLoading] = useState(false);
+
   const { isSignedIn } = useAuth()
   const router = useRouter()
 
@@ -111,6 +115,7 @@ export default function Home() {
   return (
     <div >
       <Navbar />
+      {isLoading && <LoadingPage />}
       <main className=" font-Space Grotesk bg-gray-100 shadow-lg dark:bg-gradient-to-tr from-[#434343] to-[#000] " >
         {/* Welcome section */}
         <section className="shadow-lg ">
@@ -133,6 +138,7 @@ export default function Home() {
               <motion.div variants={itemVariants}>
                 <Link href="/sign-up">
                   <motion.button
+                    onClick={() => { setIsLoading(true) }}
                     variants={buttonVariants}
                     initial="initial"
                     whileHover="hover"
@@ -144,6 +150,7 @@ export default function Home() {
                 </Link>
                 <Link href="/sign-in">
                   <motion.button
+                    onClick={() => { setIsLoading(true) }}
                     variants={buttonVariants}
                     initial="initial"
                     whileHover="hover"

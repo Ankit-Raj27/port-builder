@@ -11,7 +11,6 @@ import {
 } from "@/components/ui/navigation-menu";
 import { UserButton } from "@clerk/nextjs";
 import Image from "next/image";
-
 import { Moon, Sun } from "lucide-react"
 import { useTheme } from "next-themes"
 
