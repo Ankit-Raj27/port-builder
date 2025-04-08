@@ -5,12 +5,14 @@ import axios from 'axios'
 import { Button } from '@/components/ui/button'
 import { useRouter } from 'next/navigation'
 import { useUser } from '@clerk/nextjs'
+import { toast } from 'react-toastify'
 
 interface Props {
   amount: number // Amount in INR
+  setLoading: (value: boolean) => void
 }
 
-export default function PaymentButton({ amount }: Props) {
+export default function PaymentButton({ setLoading, amount }: Props) {
   const router = useRouter()
   const [isRazorpayLoaded, setIsRazorpayLoaded] = useState(false)
   const { user } = useUser()
@@ -28,8 +30,17 @@ export default function PaymentButton({ amount }: Props) {
   }, [])
 
   const handlePayment = async () => {
+    setLoading(true)
+
+    if (!user) {
+      alert('Please log in to proceed with payment.')
+      setLoading(false)
+      return
+    }
+
     if (!isRazorpayLoaded) {
       alert('Razorpay not loaded. Please try again.')
+      setLoading(false)
       return
     }
 
@@ -46,9 +57,9 @@ export default function PaymentButton({ amount }: Props) {
         name: 'PortBuilder',
         description: 'One-Time Payment',
         order_id: data.id,
-        handler: (response) => {
-          console.log('✅ Payment successful!', response)
-          alert('✅ Payment successful!')
+        handler: () => {
+          toast.success('Payment successful!')
+          setLoading(false)
           router.push('/template')
         },
         prefill: {
@@ -57,13 +68,19 @@ export default function PaymentButton({ amount }: Props) {
           contact: '',
         },
         theme: {
-          color: '#6366F1',
+          color: '#000',
         },
         method: {
           card: true,
           netbanking: true,
           upi: true,
           wallet: true,
+        },
+        modal: {
+          ondismiss: () => {
+           toast.error('Payment popup closed without completing the payment')
+            setLoading(false)
+          },
         },
       })
 
@@ -77,11 +94,16 @@ export default function PaymentButton({ amount }: Props) {
           : 'Unknown error occurred'
       console.error('❌ Error:', msg)
       alert(`❌ ${msg}`)
+      setLoading(false)
     }
   }
 
   return (
-    <Button variant="outline" className="w-full dark:text-white text-black" onClick={handlePayment}>
+    <Button
+      variant="outline"
+      className="w-full dark:text-white text-black"
+      onClick={handlePayment}
+    >
       Get Started
     </Button>
   )
@@ -120,5 +142,8 @@ interface RazorpayOrderOptions {
     netbanking?: boolean
     upi?: boolean
     wallet?: boolean
+  }
+  modal?: {
+    ondismiss?: () => void
   }
 }

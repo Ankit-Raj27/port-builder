@@ -2,7 +2,10 @@ import Razorpay from 'razorpay'
 import { NextResponse } from 'next/server'
 import { auth  } from '@clerk/nextjs/server'
 import { createClerkClient } from '@clerk/backend'
+
 const clerkClient = createClerkClient({ secretKey: process.env.CLERK_SECRET_KEY })
+
+
 const razorpay = new Razorpay({
   key_id: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
   key_secret: process.env.RAZORPAY_KEY_SECRET,
