@@ -29,7 +29,7 @@ const productItems = [
 ];
 
 const resourceItems = [
-  { title: "Documentation", href: "#" },
+  { title: "Documentation", href: "/documentation" },
   { title: "Community", href: "#" },
   { title: "Help Center", href: "#" },
   { title: "API Reference", href: "#" },
