@@ -1,4 +1,6 @@
-# 🚀 Portfolio Builder – Custom Portfolio Generator using Next.js + Tailwind CSS
+#  PortBuilder – Custom Portfolio Generator using Next.js + Tailwind CSS
+
+Too bored to create your own portfolio websites?
 
 Welcome to **Portfolio Builder**, your all-in-one tool to **design**, **customize**, and **download** personal portfolios without writing a single line of code — unless you want to! 🧩
 
@@ -6,7 +8,7 @@ Welcome to **Portfolio Builder**, your all-in-one tool to **design**, **customiz
 
 ---
 
-## 🔧 Tech Stack
+##  Tech Stack
 
 - **Frontend:** Next.js, TypeScript, Tailwind CSS, Framer Motion
 - **Authentication:** Clerk
@@ -17,7 +19,7 @@ Welcome to **Portfolio Builder**, your all-in-one tool to **design**, **customiz
 
 ---
 
-## ✨ Features
+##  Features
 
 ### 🧭 Navigation
 - Responsive sidebar with animated section switching.
@@ -56,4 +58,38 @@ Welcome to **Portfolio Builder**, your all-in-one tool to **design**, **customiz
 ## 📂 What's Inside the Download?
 
 When you download your portfolio, you'll receive a zip with:
+
+portfolio-download/ ├── public/ │ └── assets/ ├── src/ │ ├── components/ │ ├── pages/ │ └── styles/ ├── package.json ├── tailwind.config.js └── README.md
+
+---
+
+## ⚙️ How to Run Downloaded Portfolio Locally
+
+After downloading and extracting the `.zip` file of your desired portfolio:
+
+### 1. Extract the Zip File
+
+Unzip the downloaded project folder.
+
+### 2. Install Dependencies
+
+```bash
+npm install
+```
+
+## 3. Setup shadcn/ui (Only for First Time)
+During installation, you'll be prompted to configure shadcn:
+
+Click Y when asked to proceed with the shadcn installation.
+
+Use the default options provided (just press Enter).
+
+When asked for component selection, press A to select all and hit Enter.
+
+## Run Development Server
+```bash
+npm run dev
+```
+Open your browser and visit:
+📍 http://localhost:3000
 
