@@ -1,36 +1,59 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🚀 Portfolio Builder – Custom Portfolio Generator using Next.js + Tailwind CSS
 
-## Getting Started
+Welcome to **Portfolio Builder**, your all-in-one tool to **design**, **customize**, and **download** personal portfolios without writing a single line of code — unless you want to! 🧩
 
-First, run the development server:
+> This project helps you generate stunning developer portfolios using pre-built templates and customizable sections. It supports user authentication, theme toggling, Razorpay payments, and downloadable code.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+---
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🔧 Tech Stack
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Frontend:** Next.js, TypeScript, Tailwind CSS, Framer Motion
+- **Authentication:** Clerk
+- **Payments:** Razorpay
+- **UI Library:** shadcn/ui
+- **Icons:** Lucide React
+- **Dark Mode Support:** `next-themes`
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## ✨ Features
 
-To learn more about Next.js, take a look at the following resources:
+### 🧭 Navigation
+- Responsive sidebar with animated section switching.
+- Dynamic hash-based routing to specific documentation sections.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 🔐 Authentication
+- Built-in Clerk auth to log in or sign up via email.
+- Subscription tied to authenticated accounts.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### 🎨 Templates & Customization
+- Choose from multiple portfolio templates.
+- Live customization with real-time preview.
+- Editable sections:
+  - Hero Section
+  - About Section
+  - Projects Gallery
+  - Contact Form
+  - Skills & Experience
 
-## Deploy on Vercel
+### 💾 Portfolio Download
+- Authenticated users with active subscriptions can download a fully functional **Next.js + Tailwind CSS** project.
+- Users without subscriptions are redirected to the **Pricing Page**.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### 💳 Payments & Subscription
+- Integrated Razorpay one-time payment.
+- Once subscribed, users get **lifetime access** to portfolio downloads.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### 🌙 Theme Toggle
+- Switch between light, dark, and system modes using the dropdown menu.
+
+### 🔍 Command-Based Search
+- `⌘ + K` style documentation search using a command dialog.
+
+---
+
+## 📂 What's Inside the Download?
+
+When you download your portfolio, you'll receive a zip with:
+
