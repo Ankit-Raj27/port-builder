@@ -247,8 +247,6 @@ export async function POST(req: Request): Promise<Response> {
 
       if (uiPath) {addFilesFromFolder(archive, uiPath, "components/ui")};
       if (navbarPath) {archive.append(fs.createReadStream(navbarPath), { name: `components/navbars/${navbar}.tsx` })};
-      if (hero) {archive.append(fs.createReadStream(hero), { name: `components/hero/${hero}.tsx` })};
-
       if (experiencePath) {archive.append(fs.createReadStream(experiencePath), { name: `components/experience/${experience}.tsx` })};
       if (projectPath) {archive.append(fs.createReadStream(projectPath), { name: `components/projects/${project}.tsx` })};
       if (footerPath) {archive.append(fs.createReadStream(footerPath), { name: `components/footer/${footer}.tsx` })};
