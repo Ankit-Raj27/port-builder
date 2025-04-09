@@ -9,18 +9,19 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
-import { UserButton } from "@clerk/nextjs";
+import { UserButton, useUser, SignInButton } from "@clerk/nextjs";
 import Image from "next/image";
-import { Moon, Sun } from "lucide-react"
-import { useTheme } from "next-themes"
-
-import { Button } from "@/components/ui/button"
+import { Moon, Sun } from "lucide-react";
+import { useTheme } from "next-themes";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+} from "@/components/ui/dropdown-menu";
+import { useRouter } from "next/navigation";
+
 const productItems = [
   { title: "Personal", href: "/template/template1?navbar=Navbar1&hero=Hero1" },
   { title: "Business", href: "/template/template2?navbar=Navbar2&hero=Hero1" },
@@ -35,26 +36,34 @@ const resourceItems = [
 ];
 
 export function Navbar() {
-  const { setTheme } = useTheme()
+  const { setTheme } = useTheme();
+  const { isSignedIn } = useUser();
+  const router = useRouter();
+
+  const handleProtectedRoute = (e: React.MouseEvent) => {
+    if (!isSignedIn) {
+      e.preventDefault();
+      router.push("/sign-in");
+    }
+  };
+
   return (
     <header className="border-b dark:bg-gradient-to-tr from-[#000000] to-[#434343]">
       <div className="flex h-16 items-center px-4 md:px-6">
         <Link href="/" className="mr-6 flex items-center">
-          {/* <span className="text-xl font-bold">LOGO</span> */}
           <Image
             src="/logo.png"
             alt="PortBuilder Logo"
             width={250}
             height={60}
-            className=" h-12 w-auto"
+            className="h-12 w-auto"
           />
         </Link>
+
         <NavigationMenu className="hidden md:flex items-center justify-center">
           <NavigationMenuList>
             <NavigationMenuItem>
-              <Link href={"/template"}>
-                <NavigationMenuTrigger>Template</NavigationMenuTrigger>
-              </Link>
+              <NavigationMenuTrigger><Link onClick={(e) => handleProtectedRoute(e)} href={"/template"}>Template</Link></NavigationMenuTrigger>
               <NavigationMenuContent>
                 <ul className="grid w-48 gap-1 p-2">
                   {productItems.map((item) => (
@@ -62,6 +71,7 @@ export function Navbar() {
                       <NavigationMenuLink asChild>
                         <Link
                           href={item.href}
+                          onClick={(e) => handleProtectedRoute(e)}
                           className="block select-none rounded-md p-2 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
                         >
                           {item.title}
@@ -72,6 +82,7 @@ export function Navbar() {
                 </ul>
               </NavigationMenuContent>
             </NavigationMenuItem>
+
             <NavigationMenuItem>
               <NavigationMenuTrigger>Resources</NavigationMenuTrigger>
               <NavigationMenuContent>
@@ -81,6 +92,7 @@ export function Navbar() {
                       <NavigationMenuLink asChild>
                         <Link
                           href={item.href}
+                          onClick={(e) => handleProtectedRoute(e)}
                           className="block select-none rounded-md p-2 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
                         >
                           {item.title}
@@ -91,18 +103,26 @@ export function Navbar() {
                 </ul>
               </NavigationMenuContent>
             </NavigationMenuItem>
+
             <NavigationMenuItem>
-              <Link href="/pricing" legacyBehavior passHref>
-                <NavigationMenuLink className="group in line-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50">
+              <NavigationMenuLink asChild>
+                <Link
+                  href="/pricing"
+                  onClick={(e) => handleProtectedRoute(e)}
+                  className="inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50"
+                >
                   Pricing
-                </NavigationMenuLink>
-              </Link>
+                </Link>
+              </NavigationMenuLink>
             </NavigationMenuItem>
           </NavigationMenuList>
         </NavigationMenu>
-        <div className="ml-auto mr-5  flex items-center gap-4">
-          <UserButton />
+
+        <div className="ml-auto mr-5 flex items-center gap-4">
+          <UserButton /> {!isSignedIn && <SignInButton />}
         </div>
+
+
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" size="icon">
@@ -112,15 +132,9 @@ export function Navbar() {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuItem onClick={() => setTheme("light")}>
-              Light
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => setTheme("dark")}>
-              Dark
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => setTheme("system")}>
-              System
-            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setTheme("light")}>Light</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setTheme("dark")}>Dark</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setTheme("system")}>System</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
