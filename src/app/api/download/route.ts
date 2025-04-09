@@ -6,7 +6,6 @@ import { promisify } from "util";
 
 const readFile = promisify(fs.readFile);
 
-
 // Function to find file paths
 function findFile(basePaths: string[], subPath: string): string | null {
   for (const basePath of basePaths) {
@@ -40,34 +39,65 @@ function addFilesFromFolder(
 
 export async function POST(req: Request): Promise<Response> {
   try {
-    const { navbar, hero,experience, project, footer, editedHero,linkedPages  } = await req.json();
+    const {
+      navbar,
+      hero,
+      experience,
+      project,
+      footer,
+      linkedPages,
+    } = await req.json();
     const basePaths = [
       path.resolve(process.cwd(), "src/components"),
       path.resolve("D:/Programming 2024/port-builder/src/components"),
       path.resolve("/Users/apple/Downloads/port-builder/src/components"),
     ];
 
-    const navbarPath = navbar ? findFile(basePaths, `navbars/${navbar}.tsx`) : null;
-    const heroPath = hero ? findFile(basePaths, `hero/${hero}.tsx`) : null;
-    const experiencePath = experience ? findFile(basePaths, `experience/${experience}.tsx`) : null;
-    const projectPath = project ? findFile(basePaths, `projects/${project}.tsx`) : null;
-    const footerPath = footer ? findFile(basePaths, `footer/${footer}.tsx`) : null;
+    const navbarPath = navbar
+      ? findFile(basePaths, `navbars/${navbar}.tsx`)
+      : null;
+    const heroPath = hero ? findFile(basePaths, `heroes/${hero}.tsx`) : null;
+    const experiencePath = experience
+      ? findFile(basePaths, `experience/${experience}.tsx`)
+      : null;
+    const projectPath = project
+      ? findFile(basePaths, `projects/${project}.tsx`)
+      : null;
+    const footerPath = footer
+      ? findFile(basePaths, `footer/${footer}.tsx`)
+      : null;
     const uiPath = findFile(basePaths, "ui");
-        // Find linked page paths
-        const linkedPagePaths: { [key: string]: string } = {};
-        if (linkedPages && Array.isArray(linkedPages)) {
-          linkedPages.forEach((page: string) => {
-            const pagePath = findFile(basePaths, `pages/${page}.tsx`);
-            if (pagePath) {
-              linkedPagePaths[page] = pagePath;
-            }
-          });
+    // Find linked page paths
+    const linkedPagePaths: { [key: string]: string } = {};
+    if (linkedPages && Array.isArray(linkedPages)) {
+      linkedPages.forEach((page: string) => {
+        const pagePath = findFile(basePaths, `pages/${page}.tsx`);
+        if (pagePath) {
+          linkedPagePaths[page] = pagePath;
         }
+      });
+    }
 
-    console.log("📂 Selected Components:", { navbarPath, heroPath, projectPath, footerPath, uiPath, linkedPagePaths });
+    console.log("📂 Selected Components:", {
+      navbarPath,
+      heroPath,
+      projectPath,
+      footerPath,
+      uiPath,
+      linkedPagePaths,
+    });
 
-    if (!navbarPath && !hero && ! experiencePath && !projectPath && !footerPath) {
-      return NextResponse.json({ error: "No components selected" }, { status: 400 });
+    if (
+      !navbarPath &&
+      !hero &&
+      !experiencePath &&
+      !projectPath &&
+      !footerPath
+    ) {
+      return NextResponse.json(
+        { error: "No components selected" },
+        { status: 400 }
+      );
     }
 
     const tmpDir = "/tmp";
@@ -83,7 +113,9 @@ export async function POST(req: Request): Promise<Response> {
       output.on("close", async () => {
         console.log(`✅ ZIP finalized with ${archive.pointer()} bytes`);
         if (archive.pointer() === 0) {
-          return resolve(NextResponse.json({ error: "ZIP file is empty" }, { status: 500 }));
+          return resolve(
+            NextResponse.json({ error: "ZIP file is empty" }, { status: 500 })
+          );
         }
         try {
           const fileBuffer = await readFile(zipPath);
@@ -96,18 +128,25 @@ export async function POST(req: Request): Promise<Response> {
             })
           );
         } catch {
-          reject(NextResponse.json({ error: "Failed to read ZIP file" }, { status: 500 }));
+          reject(
+            NextResponse.json(
+              { error: "Failed to read ZIP file" },
+              { status: 500 }
+            )
+          );
         }
       });
 
       archive.on("error", (err) => {
         console.error("❌ Archiver Error:", err);
-        reject(NextResponse.json({ error: "ZIP creation failed" }, { status: 500 }));
+        reject(
+          NextResponse.json({ error: "ZIP creation failed" }, { status: 500 })
+        );
       });
 
       archive.pipe(output);
-      
-     const projectFiles = {
+
+      const projectFiles = {
         "package.json": `{
           "name": "portfolio",
           "version": "1.0.0",
@@ -226,7 +265,11 @@ export async function POST(req: Request): Promise<Response> {
         }`,
         "app/page.tsx": `import Navbar from "../components/navbars/${navbar}";
         ${hero ? `import Hero from "../components/hero/${hero}";` : ""}
-        ${project ? `import Project from "../components/projects/${project}";` : ""}
+        ${
+          project
+            ? `import Project from "../components/projects/${project}";`
+            : ""
+        }
         ${footer ? `import Footer from "../components/footer/${footer}";` : ""}
 
         export default function Home() {
@@ -238,24 +281,41 @@ export async function POST(req: Request): Promise<Response> {
               ${footer ? `<Footer />` : ""}
             </div>
           );
-        }`
+        }`,
       };
 
       Object.entries(projectFiles).forEach(([fileName, content]) => {
         archive.append(content, { name: fileName });
       });
 
-      if (uiPath) {addFilesFromFolder(archive, uiPath, "components/ui")};
-      if (navbarPath) {archive.append(fs.createReadStream(navbarPath), { name: `components/navbars/${navbar}.tsx` })};
-      if (experiencePath) {archive.append(fs.createReadStream(experiencePath), { name: `components/experience/${experience}.tsx` })};
-      if (projectPath) {archive.append(fs.createReadStream(projectPath), { name: `components/projects/${project}.tsx` })};
-      if (footerPath) {archive.append(fs.createReadStream(footerPath), { name: `components/footer/${footer}.tsx` })};
+      if (uiPath) {
+        addFilesFromFolder(archive, uiPath, "components/ui");
+      }
+      if (navbarPath) {
+        archive.append(fs.createReadStream(navbarPath), {
+          name: `components/navbars/${navbar}.tsx`,
+        });
+      }
+      if (experiencePath) {
+        archive.append(fs.createReadStream(experiencePath), {
+          name: `components/experience/${experience}.tsx`,
+        });
+      }
+      if (projectPath) {
+        archive.append(fs.createReadStream(projectPath), {
+          name: `components/projects/${project}.tsx`,
+        });
+      }
+      if (footerPath) {
+        archive.append(fs.createReadStream(footerPath), {
+          name: `components/footer/${footer}.tsx`,
+        });
+      }
 
-      if (hero && editedHero) {
-        console.log("✅ Adding Edited Hero Component");
-        archive.append(editedHero, { name: `components/hero/${hero}.tsx` });
-      } else if (heroPath) {
-        archive.append(fs.createReadStream(heroPath), { name: `components/hero/${hero}.tsx` });
+      if (heroPath) {
+        archive.append(fs.createReadStream(heroPath), {
+          name: `components/hero/${hero}.tsx`,
+        });
       } else {
         console.warn("⚠️ Hero component not found!");
       }
@@ -264,6 +324,9 @@ export async function POST(req: Request): Promise<Response> {
     });
   } catch (error) {
     console.error("❌ Unexpected Server Error:", error);
-    return NextResponse.json({ error: "Unexpected server error" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Unexpected server error" },
+      { status: 500 }
+    );
   }
 }
