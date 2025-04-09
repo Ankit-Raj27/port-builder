@@ -21,6 +21,7 @@ import Link from "next/link"
 import Image from "next/image"
 import { DialogTitle } from "@/components/ui/dialog"
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
+import { Navbar } from "@/components/navbars/Navbar"
 
 // Data for documentation sections
 const sections = [
@@ -349,6 +350,7 @@ export default function DocumentationPage() {
 
     return (
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+            <Navbar />
             <div className="flex min-h-screen flex-col">
                 {/* Header */}
                 <motion.header
