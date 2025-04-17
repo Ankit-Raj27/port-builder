@@ -21,6 +21,53 @@ function findFile(paths: string[], subPath: string): string | null {
   return null;
 }
 
+// Function to dynamically generate the page.tsx content
+function generatePageCode(components: any[]): string {
+  const imports: string[] = [];
+  const componentTags: string[] = [];
+
+  components.forEach(({ name, type }) => {
+    console.log(`Processing component: ${name} (${type})`); // Debugging the component processing
+    
+    if (type === "navbars") {
+      imports.push(`import Navbar from "../components/navbars/edited_${name}";`);
+      componentTags.push(`<Navbar />`);
+    }
+    if (type === "heroes") {  // Update the type check to handle "heroes"
+      console.log("Including Hero component: ", name); // Debugging Hero inclusion
+      imports.push(`import Hero from "../components/heroes/edited_${name}";`);
+      componentTags.push(`<Hero />`);
+    }
+    if (type === "projects") {
+      imports.push(`import Project from "../components/projects/edited_${name}";`);
+      componentTags.push(`<Project />`);
+    }
+    if (type === "footer") {
+      imports.push(`import Footer from "../components/footer/edited_${name}";`);
+      componentTags.push(`<Footer />`);
+    }
+  });
+
+  console.log("Generated imports:", imports); // Log imports to ensure Hero is included
+  console.log("Generated component tags:", componentTags); // Log tags to check if Hero is added
+  
+  const importsSection = imports.join("\n");
+  const componentTagsSection = componentTags.join("\n  ");
+
+  return `
+import React from 'react';
+${importsSection}
+
+export default function Home() {
+  return (
+    <div>
+      ${componentTagsSection}
+    </div>
+  );
+}
+  `;
+}
+
 export async function POST(req: Request): Promise<Response> {
   try {
     console.log("📥 Receiving download request...");
@@ -48,6 +95,7 @@ export async function POST(req: Request): Promise<Response> {
 
     archive.pipe(output);
 
+    // Process components
     for (const { name, type, editedComponents } of components) {
       console.log(`🔧 Processing: ${name} (${type})`);
       const componentPath = findFile(validBasePaths, `${type}/${name}.tsx`);
@@ -58,7 +106,7 @@ export async function POST(req: Request): Promise<Response> {
 
       let code = await readFile(componentPath, "utf-8");
 
-      // ✅ Inject any provided edited props into the component
+      // Inject edited components data if provided
       if (editedComponents) {
         const entries = Object.entries(editedComponents).map(([key, value]) => {
           if (Array.isArray(value)) {
@@ -67,7 +115,7 @@ export async function POST(req: Request): Promise<Response> {
             return `${key}: ${JSON.stringify(value)}`;
           }
         });
-        
+
         const overrideProps = `
           // Injected edited data
           const data = {
@@ -88,16 +136,140 @@ export async function POST(req: Request): Promise<Response> {
       archive.file(editedPath, { name: `components/${type}/edited_${name}.tsx` });
     }
 
-    // Optional: include app/page.tsx if it exists
-    const pagePath = findFile(validBasePaths, "app/page.tsx");
-    if (pagePath) {
-      const pageCode = await readFile(pagePath, "utf-8");
-      const pageFilePath = path.join(componentsDir, "app", "page.tsx");
-      fs.mkdirSync(path.dirname(pageFilePath), { recursive: true });
-      fs.writeFileSync(pageFilePath, pageCode, "utf-8");
-      archive.file(pageFilePath, { name: "app/page.tsx" });
+    // Generate the page.tsx content
+    const pageCode = generatePageCode(components);
+
+    // Save the generated page.tsx
+    const pageFilePath = path.join(componentsDir, "app", "page.tsx");
+    fs.mkdirSync(path.dirname(pageFilePath), { recursive: true });
+    fs.writeFileSync(pageFilePath, pageCode, "utf-8");
+
+    archive.file(pageFilePath, { name: "app/page.tsx" });
+
+    // ⬇️ Add core Next.js project files
+    const projectFiles = {
+      "package.json": `{
+        "name": "portfolio",
+        "version": "1.0.0",
+        "scripts": {
+          "dev": "next dev",
+          "build": "next build",
+          "start": "next start",
+          "postinstall": "npx shadcn@latest init -y && npx shadcn@latest add"
+        },
+        "dependencies": {
+          "@hookform/resolvers": "^4.1.0",
+              "@radix-ui/react-accordion": "^1.2.3",
+              "@radix-ui/react-alert-dialog": "^1.1.6",
+              "@radix-ui/react-aspect-ratio": "^1.1.2",
+              "@radix-ui/react-avatar": "^1.1.3",
+              "@radix-ui/react-checkbox": "^1.1.4",
+              "@radix-ui/react-collapsible": "^1.1.3",
+              "@radix-ui/react-context-menu": "^2.2.6",
+              "@radix-ui/react-dialog": "^1.1.6",
+              "@radix-ui/react-dropdown-menu": "^2.1.6",
+              "@radix-ui/react-hover-card": "^1.1.6",
+              "@radix-ui/react-label": "^2.1.2",
+              "@radix-ui/react-menubar": "^1.1.6",
+              "@radix-ui/react-navigation-menu": "^1.2.5",
+              "@radix-ui/react-popover": "^1.1.6",
+              "@radix-ui/react-progress": "^1.1.2",
+              "@radix-ui/react-radio-group": "^1.2.3",
+              "@radix-ui/react-scroll-area": "^1.2.3",
+              "@radix-ui/react-select": "^2.1.6",
+              "@radix-ui/react-separator": "^1.1.2",
+              "@radix-ui/react-slider": "^1.2.3",
+              "@radix-ui/react-slot": "^1.1.2",
+              "@radix-ui/react-switch": "^1.1.3",
+              "@radix-ui/react-tabs": "^1.1.3",
+              "@radix-ui/react-toast": "^1.2.6",
+              "@radix-ui/react-toggle": "^1.1.2",
+              "@radix-ui/react-toggle-group": "^1.1.2",
+              "@radix-ui/react-tooltip": "^1.1.8",
+              "archiver": "^7.0.1",
+              "class-variance-authority": "^0.7.1",
+              "clsx": "^2.1.1",
+              "cmdk": "^1.0.0",
+              "date-fns": "^3.6.0",
+              "embla-carousel-react": "^8.5.2",
+              "framer-motion": "^12.4.2",
+              "input-otp": "^1.4.2",
+              "jszip": "^3.10.1",
+              "lucide-react": "^0.462.0",
+              "next-themes": "^0.4.4",
+              "react-day-picker": "^8.10.1",
+              "react-hook-form": "^7.54.2",
+               "react-icons": "^5.4.0",
+              "react-resizable-panels": "^2.1.7",
+              "recharts": "^2.15.1",
+              "sonner": "^2.0.0",
+              "tailwind-merge": "^2.6.0",
+              "tailwindcss-animate": "^1.0.7",
+              "vaul": "^1.1.2",
+              "zod": "^3.24.2",
+              "zustand": "^5.0.3",
+
+            "next": "^15.1.7",
+            "react": "^18.3.1",
+            "react-dom": "^18.3.1",
+            "tailwindcss": "^3.4.0",
+            "postcss": "^8.4.0",
+            "autoprefixer": "^10.4.0"
+        }
+      }`,
+      "tsconfig.json": `{
+        "compilerOptions": {
+          "target": "es5",
+          "lib": ["dom", "dom.iterable", "esnext"],
+          "allowJs": true,
+          "skipLibCheck": true,
+          "strict": false,
+          "forceConsistentCasingInFileNames": true,
+          "noEmit": true,
+          "incremental": true,
+          "module": "esnext",
+          "moduleResolution": "node",
+          "resolveJsonModule": true,
+          "isolatedModules": true,
+          "jsx": "preserve",
+          "baseUrl": ".",
+          "paths": {
+            "@/": ["./"]
+          }
+        }
+      }`,
+      "tailwind.config.js": `module.exports = {
+        content: ["./app/**/*.{js,ts,jsx,tsx}", "./components/**/*.{js,ts,jsx,tsx}"],
+        theme: { extend: {} },
+        plugins: [],
+      };`,
+      "postcss.config.js": `module.exports = {
+        plugins: {
+          tailwindcss: {},
+          autoprefixer: {},
+        },
+      };`,
+      "app/globals.css": `@tailwind base;
+      @tailwind components;
+      @tailwind utilities;`,
+      "next.config.js": `module.exports = { reactStrictMode: true };`,
+      "app/layout.tsx": `import React from "react";
+      import "./globals.css"; 
+      export default function RootLayout({ children }: { children: React.ReactNode }) {
+        return (
+          <html lang="en">
+            <body>{children}</body>
+          </html>
+        );
+      }`
+    };
+
+    // Add core project files to archive
+    for (const [fileName, content] of Object.entries(projectFiles)) {
+      archive.append(content, { name: fileName });
     }
 
+    // Finalize the archive
     archive.finalize();
 
     return new Promise<Response>((resolve, reject) => {
