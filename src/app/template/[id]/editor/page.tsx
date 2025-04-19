@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import usePortfolioStore from "@/components/store/usePortfolioStore";
 import DynamicForm from "@/components/forms/DynamicForm";
-
 import { Navbar } from "@/components/navbars/Navbar";
 import Navbar1 from "@/components/navbars/Navbar1";
 import Navbar2 from "@/components/navbars/Navbar2";
@@ -11,13 +10,12 @@ import Navbar3 from "@/components/navbars/Navbar3";
 import Navbar4 from "@/components/navbars/Navbar4";
 import Navbar5 from "@/components/navbars/Navbar5";
 import Navbar6 from "@/components/navbars/Navbar6";
-
 import Hero1 from "@/components/heroes/Hero1";
 import Hero2 from "@/components/heroes/Hero2";
 import Hero3 from "@/components/heroes/Hero3";
 import Hero4 from "@/components/heroes/Hero4";
 import Hero5 from "@/components/heroes/Hero5";
-import {Hero6} from "@/components/heroes/Hero6";
+import { Hero6 } from "@/components/heroes/Hero6";
 import Hero7 from "@/components/heroes/Hero7";
 
 interface SelectedComponents {
@@ -62,6 +60,7 @@ export default function EditorPage() {
   });
 
   const [isDownloading, setIsDownloading] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
 
   useEffect(() => {
     const savedComponents = localStorage.getItem("selectedComponents");
@@ -128,6 +127,73 @@ export default function EditorPage() {
     }
   };
 
+  const handleUploadToVercel = async () => {
+    if (!selectedComponents.navbar && !selectedComponents.hero) {
+      console.warn("⚠️ No components selected.");
+      return;
+    }
+  
+    setIsUploading(true);
+    try {
+      const files: Record<string, string> = {};
+  
+      if (selectedComponents.navbar) {
+        const filePath = `components/${selectedComponents.navbar}.tsx`;
+        files[filePath] = `export default function ${selectedComponents.navbar}() {
+    return <nav>${JSON.stringify(formData.navbar)}</nav>;
+  }`;
+      }
+  
+      if (selectedComponents.hero) {
+        const filePath = `components/${selectedComponents.hero}.tsx`;
+        files[filePath] = `export default function ${selectedComponents.hero}() {
+    return <section>${JSON.stringify(formData.hero)}</section>;
+  }`;
+      }
+  
+      // STEP 1: Upload to GitHub
+      const githubUploadRes = await fetch("/api/github/upload-files", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          accessToken: "user_github_token", // 🔒 Replace with real token
+          repoName: "username/portfolio-site", // ✅ Correct field name now
+          files, // ✅ Actual file content now
+        }),
+      });
+  
+      if (!githubUploadRes.ok) {
+        const errText = await githubUploadRes.text();
+        throw new Error(`GitHub upload failed: ${errText}`);
+      }
+  
+      // STEP 2: Trigger Vercel deploy
+      const vercelTriggerRes = await fetch("/api/vercel/trigger-vercel-deployment", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          vercelToken: "user_vercel_token", // 🔒 Replace with real token
+          projectName: "portfolio-site",
+          userGitHubRepo: "username/portfolio-site",
+        }),
+      });
+  
+      if (!vercelTriggerRes.ok) {
+        const errText = await vercelTriggerRes.text();
+        throw new Error(`Vercel deployment failed: ${errText}`);
+      }
+  
+      const result = await vercelTriggerRes.json();
+      console.log("✅ Vercel deployment triggered:", result);
+      alert("Deployment triggered successfully!");
+    } catch (err) {
+      console.error("❌ Upload/Deploy failed:", err);
+      alert("Upload/Deploy failed. See console.");
+    } finally {
+      setIsUploading(false);
+    }
+  };
+  
   const handleFormChange = (section: string, field: string, value: string) => {
     setFormData((prev) => ({
       ...prev,
@@ -190,6 +256,15 @@ export default function EditorPage() {
             disabled={isDownloading || (!selectedComponents.navbar && !selectedComponents.hero)}
           >
             {isDownloading ? "Downloading..." : "Download Edited Components"}
+          </button>
+
+          {/* New Button to Upload to Vercel */}
+          <button
+            onClick={handleUploadToVercel}
+            className="px-4 py-2 bg-green-500 text-white rounded-lg mt-6 disabled:opacity-50"
+            disabled={isUploading || (!selectedComponents.navbar && !selectedComponents.hero)}
+          >
+            {isUploading ? "Uploading..." : "Upload to Vercel"}
           </button>
         </div>
       </div>
