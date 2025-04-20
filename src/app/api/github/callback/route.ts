@@ -9,11 +9,10 @@ export async function GET(req: Request) {
   const code = searchParams.get('code');
 
   if (!code) {
-    return NextResponse.json({ error: 'Missing code parameter' }, { status: 400 });
+    return NextResponse.redirect(`${process.env.NEXT_PUBLIC_APP_URL}/error?reason=missing_code`);
   }
 
   try {
-    // Exchange the code for an access token
     const tokenRes = await axios.post(
       'https://github.com/login/oauth/access_token',
       {
@@ -29,25 +28,15 @@ export async function GET(req: Request) {
     const accessToken = tokenRes.data.access_token;
 
     if (!accessToken) {
-      return NextResponse.json({ error: 'No access token received' }, { status: 500 });
+      return NextResponse.redirect(`${process.env.NEXT_PUBLIC_APP_URL}/error?reason=no_token`);
     }
 
-    // Optional: fetch GitHub user to confirm access
-    const userRes = await axios.get('https://api.github.com/user', {
-      headers: { Authorization: `Bearer ${accessToken}` },
-    });
-
-    const user = userRes.data;
-
-    // TODO: Store access token in session or database as needed
-
-    return NextResponse.json({
-      success: true,
-      accessToken,
-      user,
-    });
-  } catch (error: any) {
-    console.error('GitHub OAuth Error:', error.response?.data || error.message);
-    return NextResponse.json({ error: 'GitHub OAuth failed' }, { status: 500 });
+    // Redirect back to frontend with token in URL (safe for demo, but ideally use a cookie/session)
+    return NextResponse.redirect(
+      `${process.env.NEXT_PUBLIC_APP_URL}/deploy-success?access_token=${accessToken}`
+    );
+  } catch (error) {
+    console.error('GitHub OAuth Error:', error);
+    return NextResponse.redirect(`${process.env.NEXT_PUBLIC_APP_URL}/error?reason=unexpected_error`);
   }
 }

@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Badge } from "@/components/ui/badge"
 import { Navbar } from "@/components/navbars/Navbar"
 import Footer from "@/components/common/Footer"
-import SubscriptionButton from "@/components/common/SubscriptionButton"
+import SubscriptionButton from "@/components/common/button/SubscriptionButton"
 import LoadingPage from "@/components/common/Loading"
 import { useState } from "react"
 

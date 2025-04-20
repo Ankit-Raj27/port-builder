@@ -192,7 +192,7 @@ const Templates: React.FC = () => {
                     </div>
                   </div>
                 </div>
-
+                
                 {/* Template Info */}
                 <div className="mt-4">
                   <h3 className="text-lg font-semibold">{template.name}</h3>

@@ -66,18 +66,25 @@ export async function POST(req: Request) {
 
     if (!accessToken || !repoName || !files || typeof files !== "object") {
       return NextResponse.json(
-        { error: "Missing or invalid required fields: accessToken, repoName, or files." },
+        {
+          error:
+            "Missing or invalid required fields: accessToken, repoName, or files.",
+        },
         { status: 400 }
       );
     }
 
     const result = await updateGitHubRepo(repoName, files, accessToken);
 
-    return NextResponse.json({ message: "Files uploaded successfully", result });
-  } catch (error: any) {
+    return NextResponse.json({
+      message: "Files uploaded successfully",
+      result,
+    });
+  } catch (error: unknown) {
     console.error("❌ Error uploading files to GitHub:", error);
+    const errorMessage = error instanceof Error ? error.message : "Failed to upload files";
     return NextResponse.json(
-      { error: error.message || "Failed to upload files" },
+      { error: errorMessage },
       { status: 500 }
     );
   }

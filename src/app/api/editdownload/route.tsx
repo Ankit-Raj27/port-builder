@@ -22,7 +22,12 @@ function findFile(paths: string[], subPath: string): string | null {
 }
 
 // Function to dynamically generate the page.tsx content
-function generatePageCode(components: any[]): string {
+interface Component {
+  name: string;
+  type: string;
+}
+
+function generatePageCode(components: Component[]): string {
   const imports: string[] = [];
   const componentTags: string[] = [];
 
@@ -147,6 +152,7 @@ export async function POST(req: Request): Promise<Response> {
     archive.file(pageFilePath, { name: "app/page.tsx" });
 
     // ⬇️ Add core Next.js project files
+
     const projectFiles = {
       "package.json": `{
         "name": "portfolio",
@@ -158,63 +164,63 @@ export async function POST(req: Request): Promise<Response> {
           "postinstall": "npx shadcn@latest init -y && npx shadcn@latest add"
         },
         "dependencies": {
-          "@hookform/resolvers": "^4.1.0",
-              "@radix-ui/react-accordion": "^1.2.3",
-              "@radix-ui/react-alert-dialog": "^1.1.6",
-              "@radix-ui/react-aspect-ratio": "^1.1.2",
-              "@radix-ui/react-avatar": "^1.1.3",
-              "@radix-ui/react-checkbox": "^1.1.4",
-              "@radix-ui/react-collapsible": "^1.1.3",
-              "@radix-ui/react-context-menu": "^2.2.6",
-              "@radix-ui/react-dialog": "^1.1.6",
-              "@radix-ui/react-dropdown-menu": "^2.1.6",
-              "@radix-ui/react-hover-card": "^1.1.6",
-              "@radix-ui/react-label": "^2.1.2",
-              "@radix-ui/react-menubar": "^1.1.6",
-              "@radix-ui/react-navigation-menu": "^1.2.5",
-              "@radix-ui/react-popover": "^1.1.6",
-              "@radix-ui/react-progress": "^1.1.2",
-              "@radix-ui/react-radio-group": "^1.2.3",
-              "@radix-ui/react-scroll-area": "^1.2.3",
-              "@radix-ui/react-select": "^2.1.6",
-              "@radix-ui/react-separator": "^1.1.2",
-              "@radix-ui/react-slider": "^1.2.3",
-              "@radix-ui/react-slot": "^1.1.2",
-              "@radix-ui/react-switch": "^1.1.3",
-              "@radix-ui/react-tabs": "^1.1.3",
-              "@radix-ui/react-toast": "^1.2.6",
-              "@radix-ui/react-toggle": "^1.1.2",
-              "@radix-ui/react-toggle-group": "^1.1.2",
-              "@radix-ui/react-tooltip": "^1.1.8",
-              "archiver": "^7.0.1",
-              "class-variance-authority": "^0.7.1",
-              "clsx": "^2.1.1",
-              "cmdk": "^1.0.0",
-              "date-fns": "^3.6.0",
-              "embla-carousel-react": "^8.5.2",
-              "framer-motion": "^12.4.2",
-              "input-otp": "^1.4.2",
-              "jszip": "^3.10.1",
-              "lucide-react": "^0.462.0",
-              "next-themes": "^0.4.4",
-              "react-day-picker": "^8.10.1",
-              "react-hook-form": "^7.54.2",
-               "react-icons": "^5.4.0",
-              "react-resizable-panels": "^2.1.7",
-              "recharts": "^2.15.1",
-              "sonner": "^2.0.0",
-              "tailwind-merge": "^2.6.0",
-              "tailwindcss-animate": "^1.0.7",
-              "vaul": "^1.1.2",
-              "zod": "^3.24.2",
-              "zustand": "^5.0.3",
+        "@hookform/resolvers": "^4.1.0",
+            "@radix-ui/react-accordion": "^1.2.3",
+            "@radix-ui/react-alert-dialog": "^1.1.6",
+            "@radix-ui/react-aspect-ratio": "^1.1.2",
+            "@radix-ui/react-avatar": "^1.1.3",
+            "@radix-ui/react-checkbox": "^1.1.4",
+            "@radix-ui/react-collapsible": "^1.1.3",
+            "@radix-ui/react-context-menu": "^2.2.6",
+            "@radix-ui/react-dialog": "^1.1.6",
+            "@radix-ui/react-dropdown-menu": "^2.1.6",
+            "@radix-ui/react-hover-card": "^1.1.6",
+            "@radix-ui/react-label": "^2.1.2",
+            "@radix-ui/react-menubar": "^1.1.6",
+            "@radix-ui/react-navigation-menu": "^1.2.5",
+            "@radix-ui/react-popover": "^1.1.6",
+            "@radix-ui/react-progress": "^1.1.2",
+            "@radix-ui/react-radio-group": "^1.2.3",
+            "@radix-ui/react-scroll-area": "^1.2.3",
+            "@radix-ui/react-select": "^2.1.6",
+            "@radix-ui/react-separator": "^1.1.2",
+            "@radix-ui/react-slider": "^1.2.3",
+            "@radix-ui/react-slot": "^1.1.2",
+            "@radix-ui/react-switch": "^1.1.3",
+            "@radix-ui/react-tabs": "^1.1.3",
+            "@radix-ui/react-toast": "^1.2.6",
+            "@radix-ui/react-toggle": "^1.1.2",
+            "@radix-ui/react-toggle-group": "^1.1.2",
+            "@radix-ui/react-tooltip": "^1.1.8",
+            "archiver": "^7.0.1",
+            "class-variance-authority": "^0.7.1",
+            "clsx": "^2.1.1",
+            "cmdk": "^1.0.0",
+            "date-fns": "^3.6.0",
+            "embla-carousel-react": "^8.5.2",
+            "framer-motion": "^12.4.2",
+            "input-otp": "^1.4.2",
+            "jszip": "^3.10.1",
+            "lucide-react": "^0.462.0",
+            "next-themes": "^0.4.4",
+            "react-day-picker": "^8.10.1",
+            "react-hook-form": "^7.54.2",
+             "react-icons": "^5.4.0",
+            "react-resizable-panels": "^2.1.7",
+            "recharts": "^2.15.1",
+            "sonner": "^2.0.0",
+            "tailwind-merge": "^2.6.0",
+            "tailwindcss-animate": "^1.0.7",
+            "vaul": "^1.1.2",
+            "zod": "^3.24.2",
+            "zustand": "^5.0.3",
 
-            "next": "^15.1.7",
-            "react": "^18.3.1",
-            "react-dom": "^18.3.1",
-            "tailwindcss": "^3.4.0",
-            "postcss": "^8.4.0",
-            "autoprefixer": "^10.4.0"
+          "next": "^15.1.7",
+          "react": "^18.3.1",
+          "react-dom": "^18.3.1",
+          "tailwindcss": "^3.4.0",
+          "postcss": "^8.4.0",
+          "autoprefixer": "^10.4.0"
         }
       }`,
       "tsconfig.json": `{
@@ -238,7 +244,8 @@ export async function POST(req: Request): Promise<Response> {
           }
         }
       }`,
-      "tailwind.config.js": `module.exports = {
+      "tailwind.config.js": `/** @type {import('tailwindcss').Config} */
+      module.exports = {
         content: ["./app/**/*.{js,ts,jsx,tsx}", "./components/**/*.{js,ts,jsx,tsx}"],
         theme: { extend: {} },
         plugins: [],
@@ -255,13 +262,14 @@ export async function POST(req: Request): Promise<Response> {
       "next.config.js": `module.exports = { reactStrictMode: true };`,
       "app/layout.tsx": `import React from "react";
       import "./globals.css"; 
+
       export default function RootLayout({ children }: { children: React.ReactNode }) {
         return (
           <html lang="en">
             <body>{children}</body>
           </html>
         );
-      }`
+      }`,
     };
 
     // Add core project files to archive

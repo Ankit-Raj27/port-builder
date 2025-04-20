@@ -37,6 +37,9 @@ import Experience3 from "@/components/experience/Experience3";
 
 import usePortfolioStore from "@/components/store/usePortfolioStore";
 import { Navbar } from "@/components/navbars/Navbar";
+// import HostButton from "@/components/common/button/HostButton";
+import DeployWithGithub from "@/components/common/button/DeployWithGithub";
+import GitHubLoginButton from "@/components/common/button/GitHubLoginButton";
 
 const TemplateEditor: React.FC = () => {
   const router = useRouter();
@@ -250,6 +253,9 @@ const TemplateEditor: React.FC = () => {
           >
             Go to Editor
           </button>
+          {/* <HostButton /> */}
+          <DeployWithGithub />
+          <GitHubLoginButton/>
         </div>
       </div>
       <ToastContainer position="top-right" autoClose={3000} />
