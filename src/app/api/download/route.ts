@@ -39,14 +39,8 @@ function addFilesFromFolder(
 
 export async function POST(req: Request): Promise<Response> {
   try {
-    const {
-      navbar,
-      hero,
-      experience,
-      project,
-      footer,
-      linkedPages,
-    } = await req.json();
+    const { navbar, hero, experience, project, footer, linkedPages } =
+      await req.json();
     const basePaths = [
       path.resolve(process.cwd(), "src/components"),
       path.resolve("D:/Programming 2024/port-builder/src/components"),
@@ -284,49 +278,46 @@ export async function POST(req: Request): Promise<Response> {
         }`,
       };
 
-      Object.entries(projectFiles).forEach(([fileName, content]) => {
-        archive.append(content, { name: fileName });
+      Object.entries(projectFiles).forEach(([fileName, fileContent]) => {
+        archive.append(fileContent, { name: fileName });
       });
 
-      if (uiPath) {
-        addFilesFromFolder(archive, uiPath, "components/ui");
-      }
+      // Add selected component files
       if (navbarPath) {
-        archive.append(fs.createReadStream(navbarPath), {
-          name: `components/navbars/${navbar}.tsx`,
-        });
+        archive.file(navbarPath, { name: `components/navbars/${navbar}.tsx` });
+      }
+      if (heroPath) {
+        archive.file(heroPath, { name: `components/hero/${hero}.tsx` });
       }
       if (experiencePath) {
-        archive.append(fs.createReadStream(experiencePath), {
+        archive.file(experiencePath, {
           name: `components/experience/${experience}.tsx`,
         });
       }
       if (projectPath) {
-        archive.append(fs.createReadStream(projectPath), {
+        archive.file(projectPath, {
           name: `components/projects/${project}.tsx`,
         });
       }
       if (footerPath) {
-        archive.append(fs.createReadStream(footerPath), {
-          name: `components/footer/${footer}.tsx`,
-        });
+        archive.file(footerPath, { name: `components/footer/${footer}.tsx` });
       }
 
-      if (heroPath) {
-        archive.append(fs.createReadStream(heroPath), {
-          name: `components/hero/${hero}.tsx`,
-        });
-      } else {
-        console.warn("⚠️ Hero component not found!");
+      // Add all linked pages
+      Object.entries(linkedPagePaths).forEach(([pageName, pagePath]) => {
+        archive.file(pagePath, { name: `components/pages/${pageName}.tsx` });
+      });
+
+      // Add UI folder recursively
+      if (uiPath) {
+        addFilesFromFolder(archive, uiPath, "components/ui");
       }
 
+      // Finalize ZIP
       archive.finalize();
     });
   } catch (error) {
-    console.error("❌ Unexpected Server Error:", error);
-    return NextResponse.json(
-      { error: "Unexpected server error" },
-      { status: 500 }
-    );
+    console.error("❌ Server Error:", error);
+    return NextResponse.json({ error: "Server Error" }, { status: 500 });
   }
 }
