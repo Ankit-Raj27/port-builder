@@ -182,7 +182,7 @@ export default function PricingPage() {
               >
                 <CardHeader>
                   <div className="flex justify-between items-center">
-                    <CardTitle>Upgrade to Pro</CardTitle>
+                    <CardTitle>Go Ultra</CardTitle>
                     <motion.div
                       initial={{ scale: 0, opacity: 0 }}
                       animate={{ scale: 1, opacity: 1 }}
@@ -257,7 +257,7 @@ export default function PricingPage() {
               >
                 <CardHeader>
                   <div className="flex justify-between text-emerald-500 items-center">
-                    <CardTitle>Go Ultra</CardTitle>
+                    <CardTitle>Plus Ultra</CardTitle>
                     <motion.div
                       initial={{ scale: 0, opacity: 0 }}
                       animate={{ scale: 1, opacity: 1 }}

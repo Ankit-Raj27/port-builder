@@ -1,24 +1,10 @@
 // app/layout.tsx
 import type { Metadata } from "next";
-import localFont from "next/font/local";
-import "./globals.css";
-import {
-  ClerkProvider,
-} from "@clerk/nextjs";
+import { ClerkProvider } from "@clerk/nextjs";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ToastProvider } from "@radix-ui/react-toast";
 import ClientWrapper from "@/components/common/ClientWrapper";
-
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
-});
+import "./globals.css"; // Global styles
 
 export const metadata: Metadata = {
   title: "Port Builder",
@@ -38,16 +24,18 @@ export default function RootLayout({
         },
       }}
     >
-      <html
-        lang="en"
-        className={`${geistSans.variable} ${geistMono.variable}`}
-        suppressHydrationWarning
-      >
-        <head />
+      <html lang="en" suppressHydrationWarning>
+        <head>
+          {/* Add your Google Fonts link here */}
+          <link
+            href="https://fonts.googleapis.com/css2?family=Nunito:wght@300..800&family=Plus+Jakarta+Sans:wght@300..800&display=swap"
+            rel="stylesheet"
+          />
+        </head>
         <body>
           <ThemeProvider
             attribute="class"
-            defaultTheme="system"
+            defaultTheme="dark"
             enableSystem
             disableTransitionOnChange
           >

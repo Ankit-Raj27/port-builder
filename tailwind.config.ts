@@ -10,6 +10,17 @@ module.exports = {
   ],
   theme: {
     extend: {
+      backgroundImage: {
+        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
+        "gradient-conic": "conic-gradient(var(--tw-gradient-stops))",
+        // Custom gradient for the DeFi background
+
+        "radial-bottom": 'radial-gradient(circle at bottom, var(--tw-gradient-stops))',
+      },
+       fontFamily: {
+        nunito: ['Nunito', 'sans-serif'],
+        plusJakarta: ['Plus Jakarta Sans', 'sans-serif'],
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -56,5 +67,4 @@ module.exports = {
     },
   },
   plugins: [require("tailwindcss-animate")],
-}
-
+};
