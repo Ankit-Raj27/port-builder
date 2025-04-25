@@ -5,7 +5,6 @@ import { motion, AnimatePresence } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import {
     CommandDialog,
     CommandEmpty,
@@ -14,11 +13,8 @@ import {
     CommandItem,
     CommandList,
 } from "@/components/ui/command"
-import { ArrowRight, Copy, Check, Menu, X, Moon, Sun, SearchIcon } from "lucide-react"
-import { ThemeProvider } from "@/components/theme-provider"
-import { useTheme } from "next-themes"
+import { ArrowRight, Copy, Check, Menu, X, SearchIcon } from "lucide-react"
 import Link from "next/link"
-import Image from "next/image"
 import { DialogTitle } from "@/components/ui/dialog"
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { Navbar } from "@/components/navbars/Navbar"
@@ -208,27 +204,6 @@ const sections = [
     },
 ]
 
-// Mode Toggle Component
-function ModeToggle() {
-    const { setTheme } = useTheme()
-
-    return (
-        <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-                <Button variant="outline" size="icon">
-                    <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-                    <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-                    <span className="sr-only">Toggle theme</span>
-                </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-                <DropdownMenuItem onClick={() => setTheme("light")}>Light</DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setTheme("dark")}>Dark</DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setTheme("system")}>System</DropdownMenuItem>
-            </DropdownMenuContent>
-        </DropdownMenu>
-    )
-}
 
 // Search Component
 function Search() {
@@ -349,211 +324,196 @@ export default function DocumentationPage() {
     }
 
     return (
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+        <div>
             <Navbar />
-            <div className="flex min-h-screen flex-col">
-                {/* Header */}
-                <motion.header
-                    className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60"
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.3 }}
-                >
-                    <div className="container flex h-14 items-center justify-between">
-                        <div className="flex items-center gap-2 md:gap-4">
-                            <Link href="/" className="mr-6 flex items-center">
-
-                                <Image
-                                    src="/logo.png"
-                                    alt="PortBuilder Logo"
-                                    width={250}
-                                    height={60}
-                                    className=" h-12 w-auto"
-                                />
-                            </Link>
-                            <div className="hidden md:flex">
-                                <Search />
-                            </div>
-                        </div>
-                        <div className="flex items-center gap-2">
-                            <ModeToggle />
+            {/* Header */}
+            <motion.header
+                className=" top-0 z-50 w-fit border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60"
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3 }}
+            >
+                <div className=" flex h-14 items-center  justify-between">
+                    <div className=" ml-2 flex items-center gap-2 md:gap-4">
+                        <div className="hidden md:flex">
+                            <Search />
                         </div>
                     </div>
-                </motion.header>
-
-                {/* Main Content */}
-                <div className="container flex-1 items-start md:grid md:grid-cols-[220px_minmax(0,1fr)] md:gap-6 lg:grid-cols-[240px_minmax(0,1fr)] lg:gap-10">
-                    {/* Sidebar - Desktop */}
-                    <motion.aside
-                        className="fixed top-14 z-30 -ml-2 hidden h-[calc(100vh-3.5rem)] w-full shrink-0 md:sticky md:block"
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 0.4 }}
-                    >
-                        <ScrollArea className="h-full py-6 pr-6 lg:py-8">
-                            <div className="flex flex-col gap-2">
-                                {sections.map((section) => (
-                                    <Button
-                                        key={section.id}
-                                        variant={activeSection === section.id ? "secondary" : "ghost"}
-                                        className={`justify-start ${activeSection === section.id ? "bg-muted font-medium" : ""}`}
-                                        onClick={() => handleNavItemClick(section.id)}
-                                    >
-                                        <span className="mr-2">{section.emoji}</span>
-                                        {section.title}
-                                    </Button>
-                                ))}
-                            </div>
-                        </ScrollArea>
-                    </motion.aside>
-
-                    {/* Mobile Sidebar Trigger */}
-                    <div className="fixed bottom-4 right-4 z-40 md:hidden">
-                        <Sheet open={isOpen} onOpenChange={setIsOpen}>
-                            <SheetTrigger asChild>
-                                <Button size="icon" variant="outline">
-                                    {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-                                </Button>
-                            </SheetTrigger>
-                            <SheetContent side="left" className="w-[300px] sm:w-[400px]">
-                                <ScrollArea className="h-[calc(100vh-3.5rem)] pb-10">
-                                    <div className="flex flex-col gap-2 pt-6">
-                                        {sections.map((section) => (
-                                            <Button
-                                                key={section.id}
-                                                variant={activeSection === section.id ? "secondary" : "ghost"}
-                                                className={`justify-start ${activeSection === section.id ? "bg-muted font-medium" : ""}`}
-                                                onClick={() => handleNavItemClick(section.id)}
-                                            >
-                                                <span className="mr-2">{section.emoji}</span>
-                                                {section.title}
-                                            </Button>
-                                        ))}
-                                    </div>
-                                </ScrollArea>
-                            </SheetContent>
-                        </Sheet>
-                    </div>
-
-                    {/* Main Content Area */}
-                    <motion.main
-                        className="relative py-6 lg:gap-10 lg:py-8 xl:grid xl:grid-cols-[1fr_300px]"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ duration: 0.5, delay: 0.2 }}
-                    >
-                        <AnimatePresence mode="wait">
-                            <motion.div
-                                key={activeSection}
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                exit={{ opacity: 0, y: -20 }}
-                                transition={{ duration: 0.3 }}
-                                className="mx-auto w-full min-w-0"
-                            >
-                                <div className="mb-4 flex items-center space-x-1 text-sm text-muted-foreground">
-                                    <div className="overflow-hidden text-ellipsis whitespace-nowrap">Docs</div>
-                                    <span>/</span>
-                                    <div className="font-medium text-foreground">{currentSection.title.replace(/^[^ ]+ /, "")}</div>
-                                </div>
-                                <div className="space-y-2">
-                                    <motion.h1
-                                        className="scroll-m-20 text-4xl font-bold tracking-tight"
-                                        initial={{ opacity: 0 }}
-                                        animate={{ opacity: 1 }}
-                                        transition={{ duration: 0.3, delay: 0.1 }}
-                                    >
-                                        {currentSection.emoji} {currentSection.title}
-                                    </motion.h1>
-                                    <motion.p
-                                        className="text-lg text-muted-foreground"
-                                        initial={{ opacity: 0 }}
-                                        animate={{ opacity: 1 }}
-                                        transition={{ duration: 0.3, delay: 0.2 }}
-                                    >
-                                        {currentSection.id === "getting-started"
-                                            ? "Build and download personalized developer portfolios in minutes."
-                                            : ""}
-                                    </motion.p>
-                                </div>
-                                <div className="pb-12 pt-8">
-                                    <div className="space-y-6">
-                                        {currentSection.content.map((item, index) => {
-                                            if (item.type === "text") {
-                                                return (
-                                                    <motion.p
-                                                        key={index}
-                                                        className="leading-7"
-                                                        initial={{ opacity: 0, y: 10 }}
-                                                        animate={{ opacity: 1, y: 0 }}
-                                                        transition={{ duration: 0.3, delay: index * 0.05 }}
-                                                    >
-                                                        {item.value}
-                                                    </motion.p>
-                                                )
-                                            } else if (item.type === "heading") {
-                                                return (
-                                                    <motion.h3
-                                                        key={index}
-                                                        className="mt-8 scroll-m-20 text-xl font-semibold tracking-tight"
-                                                        initial={{ opacity: 0, y: 10 }}
-                                                        animate={{ opacity: 1, y: 0 }}
-                                                        transition={{ duration: 0.3, delay: index * 0.05 }}
-                                                    >
-                                                        {item.value}
-                                                    </motion.h3>
-                                                )
-                                            } else if (item.type === "list") {
-                                                return (
-                                                    <motion.ul
-                                                        key={index}
-                                                        className="my-6 ml-6 list-disc [&>li]:mt-2"
-                                                        initial={{ opacity: 0, y: 10 }}
-                                                        animate={{ opacity: 1, y: 0 }}
-                                                        transition={{ duration: 0.3, delay: index * 0.05 }}
-                                                    >
-                                                        {item.items?.map((listItem, i) => (
-                                                            <motion.li
-                                                                key={i}
-                                                                initial={{ opacity: 0, x: -5 }}
-                                                                animate={{ opacity: 1, x: 0 }}
-                                                                transition={{ duration: 0.2, delay: index * 0.05 + i * 0.03 }}
-                                                            >
-                                                                {listItem}
-                                                            </motion.li>
-                                                        ))}
-                                                    </motion.ul>
-                                                )
-                                            } else if (item.type === "code") {
-                                                return <CodeBlock key={index} language={item.language || ""} value={item.value || ""} />
-                                            }
-                                            return null
-                                        })}
-                                    </div>
-                                    <motion.div
-                                        className="flex justify-center gap-4 pt-8"
-                                        initial={{ opacity: 0, y: 20 }}
-                                        animate={{ opacity: 1, y: 0 }}
-                                        transition={{ duration: 0.5, delay: 0.5 }}
-                                    >
-                                        <Button asChild variant="default" className="text-lg px-6 py-2">
-                                            <Link href="/">
-                                                Go to Dashboard <ArrowRight className="ml-2 h-4 w-4" />
-                                            </Link>
-                                        </Button>
-
-                                        <Button asChild variant="outline" className="text-lg px-6 py-2">
-                                            <Link href="/pricing">
-                                                View Pricing
-                                            </Link>
-                                        </Button>
-                                    </motion.div>
-                                </div>
-                            </motion.div>
-                        </AnimatePresence>
-                    </motion.main>
                 </div>
+            </motion.header>
+
+            {/* Main Content */}
+            <div className="container flex-1 items-start md:grid md:grid-cols-[220px_minmax(0,1fr)] md:gap-6 lg:grid-cols-[240px_minmax(0,1fr)] lg:gap-10">
+                {/* Sidebar - Desktop */}
+                <motion.aside
+                    className="fixed top-14 z-30 -ml-2 hidden h-[calc(100vh-3.5rem)] w-full shrink-0 md:sticky md:block"
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.4 }}
+                >
+                    <ScrollArea className="h-full py-6 pr-6 lg:py-8">
+                        <div className="flex flex-col gap-2">
+                            {sections.map((section) => (
+                                <Button
+                                    key={section.id}
+                                    variant={activeSection === section.id ? "secondary" : "ghost"}
+                                    className={`justify-start ${activeSection === section.id ? "bg-muted  font-medium" : ""}`}
+                                    onClick={() => handleNavItemClick(section.id)}
+                                >
+                                    <span className="mr-2">{section.emoji}</span>
+                                    {section.title}
+                                </Button>
+                            ))}
+                        </div>
+                    </ScrollArea>
+                </motion.aside>
+
+                {/* Mobile Sidebar Trigger */}
+                <div className="fixed bottom-4 right-4 z-40 md:hidden">
+                    <Sheet open={isOpen} onOpenChange={setIsOpen}>
+                        <SheetTrigger asChild>
+                            <Button size="icon" variant="outline">
+                                {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+                            </Button>
+                        </SheetTrigger>
+                        <SheetContent side="left" className="w-[300px] sm:w-[400px]">
+                            <ScrollArea className="h-[calc(100vh-3.5rem)] pb-10">
+                                <div className="flex flex-col gap-2 pt-6">
+                                    {sections.map((section) => (
+                                        <Button
+                                            key={section.id}
+                                            variant={activeSection === section.id ? "secondary" : "ghost"}
+                                            className={`justify-start ${activeSection === section.id ? "bg-muted font-medium" : ""}`}
+                                            onClick={() => handleNavItemClick(section.id)}
+                                        >
+                                            <span className="mr-2">{section.emoji}</span>
+                                            {section.title}
+                                        </Button>
+                                    ))}
+                                </div>
+                            </ScrollArea>
+                        </SheetContent>
+                    </Sheet>
+                </div>
+
+                {/* Main Content Area */}
+                <motion.main
+                    className="relative py-6 lg:gap-10  lg:py-8 xl:grid xl:grid-cols-[1fr_300px]"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.5, delay: 0.2 }}
+                >
+                    <AnimatePresence mode="wait">
+                        <motion.div
+                            key={activeSection}
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -20 }}
+                            transition={{ duration: 0.3 }}
+                            className="mx-auto w-full min-w-0"
+                        >
+                            <div className="mb-4 flex items-center space-x-1 text-sm text-muted-foreground">
+                                <div className="overflow-hidden text-ellipsis whitespace-nowrap">Docs</div>
+                                <span>/</span>
+                                <div className="font-medium text-foreground">{currentSection.title.replace(/^[^ ]+ /, "")}</div>
+                            </div>
+                            <div className="space-y-2">
+                                <motion.h1
+                                    className="scroll-m-20 text-4xl font-bold tracking-tight"
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    transition={{ duration: 0.3, delay: 0.1 }}
+                                >
+                                    {currentSection.emoji} {currentSection.title}
+                                </motion.h1>
+                                <motion.p
+                                    className="text-lg text-muted-foreground"
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    transition={{ duration: 0.3, delay: 0.2 }}
+                                >
+                                    {currentSection.id === "getting-started"
+                                        ? "Build and download personalized developer portfolios in minutes."
+                                        : ""}
+                                </motion.p>
+                            </div>
+                            <div className="pb-12 pt-8">
+                                <div className="space-y-6">
+                                    {currentSection.content.map((item, index) => {
+                                        if (item.type === "text") {
+                                            return (
+                                                <motion.p
+                                                    key={index}
+                                                    className="leading-7"
+                                                    initial={{ opacity: 0, y: 10 }}
+                                                    animate={{ opacity: 1, y: 0 }}
+                                                    transition={{ duration: 0.3, delay: index * 0.05 }}
+                                                >
+                                                    {item.value}
+                                                </motion.p>
+                                            )
+                                        } else if (item.type === "heading") {
+                                            return (
+                                                <motion.h3
+                                                    key={index}
+                                                    className="mt-8 scroll-m-20 text-xl font-semibold tracking-tight"
+                                                    initial={{ opacity: 0, y: 10 }}
+                                                    animate={{ opacity: 1, y: 0 }}
+                                                    transition={{ duration: 0.3, delay: index * 0.05 }}
+                                                >
+                                                    {item.value}
+                                                </motion.h3>
+                                            )
+                                        } else if (item.type === "list") {
+                                            return (
+                                                <motion.ul
+                                                    key={index}
+                                                    className="my-6 ml-6 list-disc [&>li]:mt-2"
+                                                    initial={{ opacity: 0, y: 10 }}
+                                                    animate={{ opacity: 1, y: 0 }}
+                                                    transition={{ duration: 0.3, delay: index * 0.05 }}
+                                                >
+                                                    {item.items?.map((listItem, i) => (
+                                                        <motion.li
+                                                            key={i}
+                                                            initial={{ opacity: 0, x: -5 }}
+                                                            animate={{ opacity: 1, x: 0 }}
+                                                            transition={{ duration: 0.2, delay: index * 0.05 + i * 0.03 }}
+                                                        >
+                                                            {listItem}
+                                                        </motion.li>
+                                                    ))}
+                                                </motion.ul>
+                                            )
+                                        } else if (item.type === "code") {
+                                            return <CodeBlock key={index} language={item.language || ""} value={item.value || ""} />
+                                        }
+                                        return null
+                                    })}
+                                </div>
+                                <motion.div
+                                    className="flex justify-center gap-4 pt-8"
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ duration: 0.5, delay: 0.5 }}
+                                >
+                                    <Button asChild variant="default" className="text-lg px-6 py-2">
+                                        <Link href="/">
+                                            Go to Dashboard <ArrowRight className="ml-2 h-4 w-4" />
+                                        </Link>
+                                    </Button>
+
+                                    <Button asChild variant="outline" className="text-lg px-6 py-2">
+                                        <Link href="/pricing">
+                                            View Pricing
+                                        </Link>
+                                    </Button>
+                                </motion.div>
+                            </div>
+                        </motion.div>
+                    </AnimatePresence>
+                </motion.main>
             </div>
-        </ThemeProvider>
+        </div>
     )
 }

@@ -1,10 +1,25 @@
-// app/layout.tsx
 import type { Metadata } from "next";
 import { ClerkProvider } from "@clerk/nextjs";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ToastProvider } from "@radix-ui/react-toast";
 import ClientWrapper from "@/components/common/ClientWrapper";
-import "./globals.css"; // Global styles
+import "./globals.css";
+
+import { Nunito, Plus_Jakarta_Sans } from "next/font/google";
+
+const nunito = Nunito({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700", "800"],
+  variable: "--font-nunito",
+  display: "swap",
+});
+
+const plusJakartaSans = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700", "800"],
+  variable: "--font-plusjakarta",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: "Port Builder",
@@ -24,14 +39,11 @@ export default function RootLayout({
         },
       }}
     >
-      <html lang="en" suppressHydrationWarning>
-        <head>
-          {/* Add your Google Fonts link here */}
-          <link
-            href="https://fonts.googleapis.com/css2?family=Nunito:wght@300..800&family=Plus+Jakarta+Sans:wght@300..800&display=swap"
-            rel="stylesheet"
-          />
-        </head>
+      <html
+        lang="en"
+        className={`${nunito.variable} ${plusJakartaSans.variable}`}
+        suppressHydrationWarning
+      >
         <body>
           <ThemeProvider
             attribute="class"

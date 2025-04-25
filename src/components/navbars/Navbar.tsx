@@ -49,7 +49,7 @@ export function Navbar() {
   };
 
   return (
-    <header className=" sticky top-0 z-50 backdrop-blur-md  bg-gradient-to-tr from-[#101010] to-[#1a1a1a] dark:bg-black/70 border-b border-gray-900 dark:border-gray-800  dark:bg-gradient-to-tr dark:from-[#101010] dark:to-[#1a1a1a]">
+    <header className="  sticky top-0 z-10 backdrop-blur-md  bg-gradient-to-tr from-[#101010] to-[#1a1a1a] dark:bg-black/70 border-b border-gray-900 dark:border-gray-800  dark:bg-gradient-to-tr dark:from-[#101010] dark:to-[#1a1a1a]">
       <div className="max-w-7xl mx-auto flex h-16 items-center justify-between px-4 md:px-6">
         <div className="flex items-center">
           <Link href="/" className="flex items-center">
@@ -64,11 +64,13 @@ export function Navbar() {
         </div>
 
         {/* Desktop Navigation */}
-        <NavigationMenu className="hidden text-white md:flex items-center">
+        <NavigationMenu className="hidden z-50 text-white md:flex items-center">
           <NavigationMenuList className="flex gap-1">
             <NavigationMenuItem>
               <NavigationMenuTrigger className="bg-transparent rounded-full px-4 hover:text-white transition-colors hover:bg-[#2a2e3b] dark:hover:bg-gray-800 data-[state=open]:bg-[#2a2e3b] dark:data-[state=open]:bg-gray-800">
-                Templates
+                <Link href="/template" onClick={handleProtectedRoute}>
+                  Templates
+                </Link>
               </NavigationMenuTrigger>
               <NavigationMenuContent>
                 <ul className="grid w-48 gap-1 p-3  rounded-xl">
@@ -94,6 +96,7 @@ export function Navbar() {
                 className="bg-transparent rounded-full hover:text-white px-4 hover:bg-[#2a2e3b] dark:hover:bg-gray-800 
                         data-[state=open]:bg-[#292d38] dark:data-[state=open]:bg-gray-800"
               >
+
                 Resources
               </NavigationMenuTrigger>
               <NavigationMenuContent>

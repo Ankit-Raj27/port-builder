@@ -28,9 +28,12 @@ const triggerVercelDeployment = async (vercelToken: string, projectName: string,
   
     try {
       const deployment = await triggerVercelDeployment(vercelToken, projectName, userGitHubRepo);
-      return NextResponse.json({ message: 'Vercel deployment triggered', deployment });
-    } catch (error: any) {
-      return NextResponse.json({ error: error.message || 'Failed to trigger deployment' }, { status: 500 });
+      return new Response(JSON.stringify({ message: 'Vercel deployment triggered', deployment }), {
+        headers: { 'Content-Type': 'application/json' },
+      });
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to trigger deployment';
+      return new Response(JSON.stringify({ error: errorMessage }), { status: 500, headers: { 'Content-Type': 'application/json' } });
     }
   }
   

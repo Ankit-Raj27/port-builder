@@ -91,7 +91,7 @@ export default function PricingPage() {
       <Navbar />
       {loading ? (<LoadingPage />) : (<>
 
-        <section className="py-24 px-4 md:px-6 lg:py-32 bg-background overflow-hidden">
+        <section className="py-24 px-4 md:px-6 lg:py-32 bg-gradient-to-tr from-[#202020] via-[#000] to-[#383838]  overflow-hidden">
           <div className=" mx-auto max-w-6xl">
             <motion.div
               className="text-center space-y-4 mb-16"
@@ -99,7 +99,7 @@ export default function PricingPage() {
               animate="visible"
               variants={containerVariants}
             >
-              <motion.h2 className="text-4xl md:text-5xl font-bold tracking-tight" variants={headingVariants}>
+              <motion.h2 className="text-4xl md:text-5xl text-white font-bold tracking-tight" variants={headingVariants}>
                 Need custom portfolio websites?
               </motion.h2>
               <motion.h3
