@@ -23,9 +23,9 @@ import {
 import { useRouter } from "next/navigation";
 
 const productItems = [
-  { title: "Personal", href: "/template/template1?navbar=Navbar1&hero=Hero1" },
-  { title: "Business", href: "/template/template2?navbar=Navbar2&hero=Hero1" },
-  { title: "Creative", href: "/template/template2?navbar=Navbar2&hero=Hero1" },
+  { title: "Modern", href: "/template/Modern" },
+  { title: "Business", href: "/template/Business" },
+  { title: "Creative", href: "/template/Creative" },
 ];
 
 const resourceItems = [
@@ -49,9 +49,9 @@ export function Navbar() {
   };
 
   return (
-    <header className="  sticky top-0 z-10 backdrop-blur-md  bg-gradient-to-tr from-[#101010] to-[#1a1a1a] dark:bg-black/70 border-b border-gray-900 dark:border-gray-800  dark:bg-gradient-to-tr dark:from-[#101010] dark:to-[#1a1a1a]">
-      <div className="max-w-7xl mx-auto flex h-16 items-center justify-between px-4 md:px-6">
-        <div className="flex items-center">
+    <header className="mb-0 sticky top-0 z-10 backdrop-blur-md  bg-gradient-to-tr from-[#101010] to-[#1a1a1a] dark:bg-black/70 border-b border-gray-900 dark:border-gray-800  dark:bg-gradient-to-tr dark:from-[#101010] dark:to-[#1a1a1a]">
+      <div className=" max-w-7xl mx-auto flex h-16 items-center justify-between px-4 md:px-6">
+        <div className="  flex items-center">
           <Link href="/" className="flex items-center">
             <Image
               src="/logo.png"
@@ -80,7 +80,7 @@ export function Navbar() {
                         <Link
                           href={item.href}
                           onClick={handleProtectedRoute}
-                          className="block select-none rounded-lg p-3 leading-none no-underline outline-none transition-colors hover:hover:bg-gray-800 dark:hover:bg-gray-800"
+                          className="block select-none rounded-lg p-3 leading-none no-underline outline-none transition-colors hover:bg-[#f5f6fc] dark:hover:bg-gray-800"
                         >
                           {item.title}
                         </Link>
@@ -188,7 +188,7 @@ export function Navbar() {
 
       {/* Mobile menu */}
       {mobileMenuOpen && (
-        <div className="md:hidden px-4 pb-4 pt-2 border-t border-gray-100 dark:border-gray-800 bg-white dark:bg-black">
+        <div className="md:hidden px-4 pb-4 pt-2 border-t border-gray-100 hover:bg-[#f5f6fc] bg-white dark:bg-black">
           <div className="space-y-3">
             <div className="py-2">
               <Link
@@ -201,7 +201,7 @@ export function Navbar() {
               >
                 Templates
               </Link>
-              <div className="ml-4 pl-2 border-l border-gray-200 dark:border-gray-700">
+              <div className="ml-4 pl-2 border-l border-gray-200  dark:border-gray-700">
                 {productItems.map((item) => (
                   <Link
                     key={item.title}

@@ -21,7 +21,7 @@ const Footer = () => {
           </div>
           
           <div className="mt-4 text-sm text-gray-400">
-            <p>A product by <Link href="#" className="text-blue-400 hover:text-blue-300">Switchengeek</Link></p>
+            <p>A product by <Link href="#" className="text-blue-400 hover:text-blue-300">Switchengeek & Saksham</Link></p>
             <p className="mt-1">Building in public at <Link href="#" className="text-blue-400 hover:text-blue-300">@github</Link></p>
           </div>
         </div>
@@ -33,7 +33,7 @@ const Footer = () => {
             <Link href="/pricing" className="block text-gray-300 hover:text-white">
               Pricing
             </Link>
-            <Link href="/templates" className="block text-gray-300 hover:text-white">
+            <Link href="/template" className="block text-gray-300 hover:text-white">
               Templates
             </Link>
             <Link href="/categories" className="block text-gray-300 hover:text-white">
@@ -46,13 +46,13 @@ const Footer = () => {
             <Link href="/documentation" className="block text-gray-300 hover:text-white">
               Documentation
             </Link>
-            <Link href="/template" className="block text-gray-300 hover:text-white">
+            <Link href="/template/template1" className="block text-gray-300 hover:text-white">
               Personal
             </Link>
-            <Link href="/template" className="block text-gray-300 hover:text-white">
+            <Link href="/template/template2" className="block text-gray-300 hover:text-white">
               Business
             </Link>
-            <Link href="/template" className="block text-gray-300 hover:text-white">
+            <Link href="/template/template3" className="block text-gray-300 hover:text-white">
               Creative
             </Link>
           </div>

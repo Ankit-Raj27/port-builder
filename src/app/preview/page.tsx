@@ -2,9 +2,9 @@
 
 import { useEffect, useState } from "react";
 import React from "react";
-import Navbar1 from "@/components/navbars/Navbar1";
-import Hero1 from "@/components/heroes/Hero1";
-import Footer1 from "@/components/footer/Footer1";
+import Navbar1 from "@/components/navbars/ModernNavbars/Navbar1";
+import Hero1 from "@/components/heroes/ModernHeroes/Hero1";
+import Footer1 from "@/components/footer/ModernFooter/Footer1";
 
 // Define Component Mapping
 const componentMap = {

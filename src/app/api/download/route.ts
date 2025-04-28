@@ -6,14 +6,76 @@ import { promisify } from "util";
 
 const readFile = promisify(fs.readFile);
 
-// Function to find file paths
-function findFile(basePaths: string[], subPath: string): string | null {
+// Enhanced function to find file paths with multiple patterns and extensive logging
+function findFile(basePaths: string[], component: string, type: string): string | null {
+  console.log(`🔍 Finding ${type}/${component}`);
+  
+  // Handle plural/singular type names
+  const typeFolder = type;
+  // Convert heroes to hero if needed when looking up files (but keep folder name as heroes)
+  const lookupType = type === "heroes" ? "heroes" : type;
+  
+  // Check if component contains a number (like Hero1, Experience2)
+  const componentName = component.replace(/\d+$/, '');
+  const componentNumber = component.match(/\d+$/)?.[0] || "";
+  
+  // Define the possible styles and folder structures
+  const styles = ["Creative", "Modern", "Business"];
+  
+  // Iterate through each base path
   for (const basePath of basePaths) {
-    const fullPath = path.join(basePath, subPath);
-    if (fs.existsSync(fullPath)) {
-      return fullPath;
+    console.log(`Checking in base path: ${basePath}`);
+    
+    // Try different path patterns
+    const pathPatterns = [
+      // Pattern 1: type/StyleType/ComponentN.tsx (e.g., heroes/CreativeHeroes/Hero1.tsx)
+      ...styles.map(style => ({
+        path: path.join(basePath, typeFolder, `${style}${componentName}s`),
+        file: `${componentName}${componentNumber}.tsx`
+      })),
+      
+      // Pattern 2: type/Component/ComponentN.tsx (e.g., heroes/Hero/Hero1.tsx)
+      {
+        path: path.join(basePath, typeFolder, componentName),
+        file: `${componentName}${componentNumber}.tsx`
+      },
+      
+      // Pattern 3: type/ComponentN.tsx (e.g., heroes/Hero1.tsx)
+      {
+        path: path.join(basePath, typeFolder),
+        file: `${componentName}${componentNumber}.tsx`
+      },
+      
+      // Pattern 4: lookupType/StyleType/ComponentN.tsx (e.g., hero/CreativeHero/Hero1.tsx)
+      ...styles.map(style => ({
+        path: path.join(basePath, lookupType, `${style}${componentName}`),
+        file: `${componentName}${componentNumber}.tsx`
+      })),
+      
+      // Pattern 5: Handle letter case variations (e.g., Heroes vs heroes)
+      {
+        path: path.join(basePath, typeFolder.toLowerCase()),
+        file: `${componentName}${componentNumber}.tsx`
+      },
+      
+      // Pattern 6: Check in common folder as fallback
+      {
+        path: path.join(basePath, "common"),
+        file: `${componentName}${componentNumber}.tsx`
+      }
+    ];
+    
+    // Try all patterns
+    for (const pattern of pathPatterns) {
+      const filePath = path.join(pattern.path, pattern.file);
+      console.log(`Checking path: ${filePath}`);
+      if (fs.existsSync(filePath)) {
+        console.log(`✅ Found file: ${filePath}`);
+        return filePath;
+      }
     }
   }
+  console.log(`❌ Could not find ${type}/${component}`);
   return null;
 }
 
@@ -39,42 +101,77 @@ function addFilesFromFolder(
 
 export async function POST(req: Request): Promise<Response> {
   try {
-    const { navbar, hero, experience, project, footer, linkedPages } =
-      await req.json();
+    const { navbar, hero, experience, project, footer, linkedPages } = await req.json();
     const basePaths = [
       path.resolve(process.cwd(), "src/components"),
       path.resolve("D:/Programming 2024/port-builder/src/components"),
       path.resolve("/Users/apple/Downloads/port-builder/src/components"),
     ];
 
+    console.log("🔍 Looking for components with parameters:", {
+      navbar,
+      hero,
+      experience,
+      project, 
+      footer,
+      linkedPages
+    });
+
+    console.log("🔍 Looking for navbar component:", navbar);
     const navbarPath = navbar
-      ? findFile(basePaths, `navbars/${navbar}.tsx`)
+      ? findFile(basePaths, navbar, "navbars")
       : null;
-    const heroPath = hero ? findFile(basePaths, `heroes/${hero}.tsx`) : null;
-    const experiencePath = experience
-      ? findFile(basePaths, `experience/${experience}.tsx`)
-      : null;
-    const projectPath = project
-      ? findFile(basePaths, `projects/${project}.tsx`)
-      : null;
-    const footerPath = footer
-      ? findFile(basePaths, `footer/${footer}.tsx`)
-      : null;
-    const uiPath = findFile(basePaths, "ui");
+    console.log(navbarPath ? `✅ Found navbar at: ${navbarPath}` : `❌ Could not find navbar: ${navbar}`);
+    
+    console.log("🔍 Looking for hero component:", hero);
+    const heroPath = hero ? findFile(basePaths, hero, "heroes") : null;
+    console.log(heroPath ? `✅ Found hero at: ${heroPath}` : `❌ Could not find hero: ${hero}`);
+    
+    console.log("🔍 Looking for experience component:", experience);
+    const experiencePath = experience ? findFile(basePaths, experience, "experience") : null;
+    console.log(experiencePath ? `✅ Found experience at: ${experiencePath}` : `❌ Could not find experience: ${experience}`);
+    
+    console.log("🔍 Looking for project component:", project);
+    const projectPath = project ? findFile(basePaths, project, "projects") : null;
+    console.log(projectPath ? `✅ Found project at: ${projectPath}` : `❌ Could not find project: ${project}`);
+    
+    console.log("🔍 Looking for footer component:", footer);
+    const footerPath = footer ? findFile(basePaths, footer, "footer") : null;
+    console.log(footerPath ? `✅ Found footer at: ${footerPath}` : `❌ Could not find footer: ${footer}`);
+    
+    // Try to find UI components
+    let uiPath = null;
+    for (const basePath of basePaths) {
+      const potentialPath = path.join(basePath, "ui");
+      if (fs.existsSync(potentialPath)) {
+        uiPath = potentialPath;
+        console.log(`✅ Found UI components at: ${uiPath}`);
+        break;
+      }
+    }
+    if (!uiPath) {
+      console.log("❌ Could not find UI components folder");
+    }
+
     // Find linked page paths
     const linkedPagePaths: { [key: string]: string } = {};
     if (linkedPages && Array.isArray(linkedPages)) {
       linkedPages.forEach((page: string) => {
-        const pagePath = findFile(basePaths, `pages/${page}.tsx`);
+        console.log(`🔍 Looking for linked page: ${page}`);
+        const pagePath = findFile(basePaths, page, "pages");
         if (pagePath) {
           linkedPagePaths[page] = pagePath;
+          console.log(`✅ Found linked page at: ${pagePath}`);
+        } else {
+          console.log(`❌ Could not find linked page: ${page}`);
         }
       });
     }
 
-    console.log("📂 Selected Components:", {
+    console.log("📂 Selected Components Summary:", {
       navbarPath,
       heroPath,
+      experiencePath,
       projectPath,
       footerPath,
       uiPath,
@@ -83,7 +180,7 @@ export async function POST(req: Request): Promise<Response> {
 
     if (
       !navbarPath &&
-      !hero &&
+      !heroPath &&
       !experiencePath &&
       !projectPath &&
       !footerPath
@@ -121,7 +218,8 @@ export async function POST(req: Request): Promise<Response> {
               },
             })
           );
-        } catch {
+        } catch (err) {
+          console.error("❌ Failed to read ZIP file:", err);
           reject(
             NextResponse.json(
               { error: "Failed to read ZIP file" },
@@ -140,7 +238,19 @@ export async function POST(req: Request): Promise<Response> {
 
       archive.pipe(output);
 
-      const projectFiles = {
+      // Create the directory structure first
+      archive.append('', { name: 'components/' });
+      archive.append('', { name: 'components/navbars/' });
+      archive.append('', { name: 'components/heroes/' });
+      archive.append('', { name: 'components/experience/' });
+      archive.append('', { name: 'components/projects/' });
+      archive.append('', { name: 'components/footer/' });
+      archive.append('', { name: 'components/pages/' });
+      archive.append('', { name: 'components/ui/' });
+      archive.append('', { name: 'components/common/' });
+      archive.append('', { name: 'app/' });
+
+      const projectFiles: Record<string, string> = {
         "package.json": `{
           "name": "portfolio",
           "version": "1.0.0",
@@ -227,9 +337,11 @@ export async function POST(req: Request): Promise<Response> {
             "jsx": "preserve",
             "baseUrl": ".",
             "paths": {
-              "@/": ["./"]
+              "@/*": ["./*"]
             }
-          }
+          },
+          "include": ["**/*.ts", "**/*.tsx"],
+          "exclude": ["node_modules"]
         }`,
         "tailwind.config.js": `/** @type {import('tailwindcss').Config} */
         module.exports = {
@@ -257,60 +369,142 @@ export async function POST(req: Request): Promise<Response> {
             </html>
           );
         }`,
-        "app/page.tsx": `import Navbar from "../components/navbars/${navbar}";
-        ${hero ? `import Hero from "../components/hero/${hero}";` : ""}
-        ${
-          project
-            ? `import Project from "../components/projects/${project}";`
-            : ""
+      };
+
+      // Create a dynamic app/page.tsx file based on selected components
+      const pageImports = [];
+      const pageComponents = [];
+
+      // Determine correct import paths based on what was found
+      if (navbarPath) {
+        pageImports.push(`import Navbar from "../components/navbars/${navbar}";`);
+        pageComponents.push(`<Navbar />`);
+      }
+
+      if (heroPath) {
+        // Get the actual component path structure from the found path
+        let heroImportPath = `../components/heroes/${hero}`;
+        if (heroPath.includes("/hero/")) {
+          heroImportPath = `../components/hero/${hero}`;
+        } else if (heroPath.includes("/common/")) {
+          heroImportPath = `../components/common/${hero}`;
         }
-        ${footer ? `import Footer from "../components/footer/${footer}";` : ""}
+        pageImports.push(`import Hero from "${heroImportPath}";`);
+        pageComponents.push(`<Hero />`);
+      }
+
+      if (experiencePath) {
+        let experienceImportPath = `../components/experience/${experience}`;
+        if (experiencePath.includes("/common/")) {
+          experienceImportPath = `../components/common/${experience}`;
+        }
+        pageImports.push(`import Experience from "${experienceImportPath}";`);
+        pageComponents.push(`<Experience />`);
+      }
+
+      if (projectPath) {
+        let projectImportPath = `../components/projects/${project}`;
+        if (projectPath.includes("/common/")) {
+          projectImportPath = `../components/common/${project}`;
+        }
+        pageImports.push(`import Project from "${projectImportPath}";`);
+        pageComponents.push(`<Project />`);
+      }
+
+      if (footerPath) {
+        let footerImportPath = `../components/footer/${footer}`;
+        if (footerPath.includes("/common/")) {
+          footerImportPath = `../components/common/${footer}`;
+        }
+        pageImports.push(`import Footer from "${footerImportPath}";`);
+        pageComponents.push(`<Footer />`);
+      }
+
+      const pageTsx = `
+        import React from "react";
+        ${pageImports.join("\n")}
 
         export default function Home() {
           return (
-            <div>
-              <Navbar />
-              ${hero ? `<Hero />` : ""}
-              ${project ? `<Project />` : ""}
-              ${footer ? `<Footer />` : ""}
+            <div className="flex flex-col min-h-screen">
+              ${pageComponents.join("\n              ")}
             </div>
           );
-        }`,
-      };
+        }
+      `;
 
+      // Add the dynamically created page.tsx file
+      projectFiles["app/page.tsx"] = pageTsx;
+
+      // Add all the project files
       Object.entries(projectFiles).forEach(([fileName, fileContent]) => {
         archive.append(fileContent, { name: fileName });
       });
 
-      // Add selected component files
+      // Add selected component files with proper destination paths
       if (navbarPath) {
-        archive.file(navbarPath, { name: `components/navbars/${navbar}.tsx` });
+        const destPath = `components/navbars/${navbar}.tsx`;
+        archive.file(navbarPath, { name: destPath });
+        console.log(`✅ Added navbar: ${navbarPath} -> ${destPath}`);
       }
+      
       if (heroPath) {
-        archive.file(heroPath, { name: `components/hero/${hero}.tsx` });
+        // Determine correct destination path based on source path
+        let destPath = `components/heroes/${hero}.tsx`;
+        if (heroPath.includes("/hero/")) {
+          destPath = `components/hero/${hero}.tsx`;
+          // Make sure the directory exists
+          archive.append('', { name: 'components/hero/' });
+        } else if (heroPath.includes("/common/")) {
+          destPath = `components/common/${hero}.tsx`;
+        }
+        archive.file(heroPath, { name: destPath });
+        console.log(`✅ Added hero: ${heroPath} -> ${destPath}`);
       }
+      
       if (experiencePath) {
-        archive.file(experiencePath, {
-          name: `components/experience/${experience}.tsx`,
-        });
+        let destPath = `components/experience/${experience}.tsx`;
+        if (experiencePath.includes("/common/")) {
+          destPath = `components/common/${experience}.tsx`;
+        }
+        archive.file(experiencePath, { name: destPath });
+        console.log(`✅ Added experience: ${experiencePath} -> ${destPath}`);
       }
+      
       if (projectPath) {
-        archive.file(projectPath, {
-          name: `components/projects/${project}.tsx`,
-        });
+        let destPath = `components/projects/${project}.tsx`;
+        if (projectPath.includes("/common/")) {
+          destPath = `components/common/${project}.tsx`;
+        }
+        archive.file(projectPath, { name: destPath });
+        console.log(`✅ Added project: ${projectPath} -> ${destPath}`);
       }
+      
       if (footerPath) {
-        archive.file(footerPath, { name: `components/footer/${footer}.tsx` });
+        let destPath = `components/footer/${footer}.tsx`;
+        if (footerPath.includes("/common/")) {
+          destPath = `components/common/${footer}.tsx`;
+        }
+        archive.file(footerPath, { name: destPath });
+        console.log(`✅ Added footer: ${footerPath} -> ${destPath}`);
       }
 
       // Add all linked pages
       Object.entries(linkedPagePaths).forEach(([pageName, pagePath]) => {
-        archive.file(pagePath, { name: `components/pages/${pageName}.tsx` });
+        let destPath = `components/pages/${pageName}.tsx`;
+        if (pagePath.includes("/common/")) {
+          destPath = `components/common/${pageName}.tsx`;
+        }
+        archive.file(pagePath, { name: destPath });
+        console.log(`✅ Added linked page: ${pagePath} -> ${destPath}`);
       });
 
-      // Add UI folder recursively
-      if (uiPath) {
+      // Add UI folder recursively if it exists
+      if (uiPath && fs.existsSync(uiPath)) {
         addFilesFromFolder(archive, uiPath, "components/ui");
+        console.log(`✅ Added UI components from: ${uiPath}`);
+      } else {
+        console.log(`⚠️ UI path not found or not accessible: ${uiPath}`);
       }
 
       // Finalize ZIP
