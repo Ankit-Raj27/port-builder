@@ -126,21 +126,25 @@ const Templates: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState("All")
 
   const { isSignedIn, isLoaded } = useUser()
+  
 
   useEffect(() => {
-    if (isLoaded && !isSignedIn) {
-      router.push("/sign-in")
-    }
+
   }, [isLoaded, isSignedIn, router])
 
-  if (!isLoaded || (!isSignedIn && !isLoading)) {
+  if (!isLoaded) {
     return <LoadingPage />
   }
-
-  const handleSelectTemplate = (id: string) => {
-    setIsLoading(true)
-    router.push(`/template/${id}`)
+  const handleSelectTemplate = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, id: string): void => {
+    if (!isSignedIn) {
+      e.preventDefault();
+      router.push("/sign-in");
+      return;
+    }
+    setIsLoading(true);
+    router.push(`/template/${id}`);
   }
+  
 
   const filteredTemplates =
     selectedCategory === "All"
@@ -214,7 +218,7 @@ const Templates: React.FC = () => {
                         className="bg-white text-black px-6 py-2 rounded-full flex items-center gap-2 font-medium"
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
-                        onClick={() => handleSelectTemplate(template.id)}
+                        onClick={(e) => handleSelectTemplate(e,template.id)}
                       >
                         <Eye size={16} />
                         View Details

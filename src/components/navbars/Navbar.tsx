@@ -68,7 +68,7 @@ export function Navbar() {
           <NavigationMenuList className="flex gap-1">
             <NavigationMenuItem>
               <NavigationMenuTrigger className="bg-transparent rounded-full px-4 hover:text-white transition-colors hover:bg-[#2a2e3b] dark:hover:bg-gray-800 data-[state=open]:bg-[#2a2e3b] dark:data-[state=open]:bg-gray-800">
-                <Link href="/template" onClick={handleProtectedRoute}>
+                <Link href="/template" >
                   Templates
                 </Link>
               </NavigationMenuTrigger>
@@ -106,7 +106,6 @@ export function Navbar() {
                       <NavigationMenuLink asChild>
                         <Link
                           href={item.href}
-                          onClick={handleProtectedRoute}
                           className="block select-none rounded-lg p-3 leading-none no-underline outline-none transition-colors hover:bg-gray-100 dark:hover:bg-gray-800"
                         >
                           {item.title}
@@ -122,7 +121,6 @@ export function Navbar() {
               <NavigationMenuLink asChild>
                 <Link
                   href="/pricing"
-                  onClick={handleProtectedRoute}
                   className="inline-flex text-white h-10 items-center justify-center rounded-full px-4 py-2 text-sm font-medium transition-colors hover:text-white hover:bg-[#2a2e3b] dark:hover:bg-gray-800"
                 >
                   Pricing

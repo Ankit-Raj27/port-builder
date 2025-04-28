@@ -246,7 +246,7 @@ const CreativeTemplate: React.FC = () => {
   return (
     <>
       <Navbar />
-      <div className="flex h-screen">
+      <div className="fixed  overflow-hidden flex h-screen">
         {/* Left Preview Section */}
         <div className="flex-1 bg-gray-100 p-6 border-r overflow-y-scroll max-h-screen">
           <h2 className="text-2xl font-semibold mb-6 text-gray-800">Editing Your Portfolio</h2>
