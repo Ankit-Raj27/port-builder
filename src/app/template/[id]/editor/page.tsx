@@ -15,7 +15,7 @@ import Hero2 from "@/components/heroes/ModernHero/Hero2";
 import Hero3 from "@/components/heroes/ModernHero/Hero3";
 import Hero4 from "@/components/heroes/ModernHero/Hero4";
 import Hero5 from "@/components/heroes/ModernHero/Hero5";
-import { Hero6 } from "@/components/heroes/ModernHero/Hero6";
+import Hero6 from "@/components/heroes/ModernHero/Hero6";
 import Hero7 from "@/components/heroes/CreativeHero/Hero1";
 
 interface SelectedComponents {
@@ -60,8 +60,6 @@ export default function EditorPage() {
   });
 
   const [isDownloading, setIsDownloading] = useState(false);
-  const [isUploading, setIsUploading] = useState(false);
-
   useEffect(() => {
     const savedComponents = localStorage.getItem("selectedComponents");
     if (savedComponents) {
@@ -126,148 +124,90 @@ export default function EditorPage() {
       setIsDownloading(false);
     }
   };
+  try {
+    const files: Record<string, string> = {};
 
-  const handleUploadToVercel = async () => {
-    if (!selectedComponents.navbar && !selectedComponents.hero) {
-      console.warn("⚠️ No components selected.");
-      return;
-    }
-  
-    setIsUploading(true);
-    try {
-      const files: Record<string, string> = {};
-  
-      if (selectedComponents.navbar) {
-        const filePath = `components/${selectedComponents.navbar}.tsx`;
-        files[filePath] = `export default function ${selectedComponents.navbar}() {
+    if (selectedComponents.navbar) {
+      const filePath = `components/${selectedComponents.navbar}.tsx`;
+      files[filePath] = `export default function ${selectedComponents.navbar}() {
     return <nav>${JSON.stringify(formData.navbar)}</nav>;
   }`;
-      }
-  
-      if (selectedComponents.hero) {
-        const filePath = `components/${selectedComponents.hero}.tsx`;
-        files[filePath] = `export default function ${selectedComponents.hero}() {
+    }
+
+    if (selectedComponents.hero) {
+      const filePath = `components/${selectedComponents.hero}.tsx`;
+      files[filePath] = `export default function ${selectedComponents.hero}() {
     return <section>${JSON.stringify(formData.hero)}</section>;
   }`;
-      }
-  
-      // STEP 1: Upload to GitHub
-      const githubUploadRes = await fetch("/api/github/upload-files", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          accessToken: "user_github_token", // 🔒 Replace with real token
-          repoName: "username/portfolio-site", // ✅ Correct field name now
-          files, // ✅ Actual file content now
-        }),
-      });
-  
-      if (!githubUploadRes.ok) {
-        const errText = await githubUploadRes.text();
-        throw new Error(`GitHub upload failed: ${errText}`);
-      }
-  
-      // STEP 2: Trigger Vercel deploy
-      const vercelTriggerRes = await fetch("/api/vercel/trigger-vercel-deployment", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          vercelToken: "user_vercel_token", // 🔒 Replace with real token
-          projectName: "portfolio-site",
-          userGitHubRepo: "username/portfolio-site",
-        }),
-      });
-  
-      if (!vercelTriggerRes.ok) {
-        const errText = await vercelTriggerRes.text();
-        throw new Error(`Vercel deployment failed: ${errText}`);
-      }
-  
-      const result = await vercelTriggerRes.json();
-      console.log("✅ Vercel deployment triggered:", result);
-      alert("Deployment triggered successfully!");
-    } catch (err) {
-      console.error("❌ Upload/Deploy failed:", err);
-      alert("Upload/Deploy failed. See console.");
-    } finally {
-      setIsUploading(false);
     }
-  };
-  
-  const handleFormChange = (section: string, field: string, value: string) => {
-    setFormData((prev) => ({
-      ...prev,
-      [section]: { ...prev[section], [field]: value },
-    }));
-  };
+    const handleFormChange = (section: string, field: string, value: string) => {
+      setFormData((prev) => ({
+        ...prev,
+        [section]: { ...prev[section], [field]: value },
+      }));
+    };
 
-  const SelectedNavbarComponent = navbarComponents[selectedComponents.navbar] || null;
-  const SelectedHeroComponent = heroComponents[selectedComponents.hero] || null;
+    const SelectedNavbarComponent = navbarComponents[selectedComponents.navbar] || null;
+    const SelectedHeroComponent = heroComponents[selectedComponents.hero] || null;
 
-  return (
-    <>
-      <Navbar />
-      <div className="flex h-screen w-full">
-        {/* Preview Area */}
-        <div className="w-2/3 p-5 bg-gray-100 overflow-y-auto space-y-6">
-          {SelectedNavbarComponent && (
-            <div className="border bg-white p-5 shadow-lg rounded-md">
-              <SelectedNavbarComponent data={formData.navbar} />
-            </div>
-          )}
-          {SelectedHeroComponent && (
-            <div className="border bg-white p-5 shadow-lg rounded-md">
-              <SelectedHeroComponent data={formData.hero} />
-            </div>
-          )}
+    return (
+      <>
+        <Navbar />
+        <div className="flex h-screen w-full">
+          {/* Preview Area */}
+          <div className="w-2/3 p-5 bg-gray-100 overflow-y-auto space-y-6">
+            {SelectedNavbarComponent && (
+              <div className="border bg-white p-5 shadow-lg rounded-md">
+                <SelectedNavbarComponent data={formData.navbar} />
+              </div>
+            )}
+            {SelectedHeroComponent && (
+              <div className="border bg-white p-5 shadow-lg rounded-md">
+                <SelectedHeroComponent data={formData.hero} />
+              </div>
+            )}
+          </div>
+          {/* Editor Panel */}
+          <div className="w-1/3 h-full bg-gray-100 p-6 overflow-auto">
+            <h2 className="text-lg font-bold mb-4">Customize Your Components</h2>
+
+            {selectedComponents.navbar && (
+              <>
+                <h3 className="text-md font-semibold">Navbar Settings</h3>
+                <DynamicForm
+                  section="navbar"
+                  selectedComponent={selectedComponents.navbar}
+                  formData={formData.navbar}
+                  onChange={handleFormChange}
+                />
+              </>
+            )}
+
+            {selectedComponents.hero && (
+              <>
+                <h3 className="text-md font-semibold mt-6">Hero Settings</h3>
+                <DynamicForm
+                  section="hero"
+                  selectedComponent={selectedComponents.hero}
+                  formData={formData.hero}
+                  onChange={handleFormChange}
+                />
+              </>
+            )}
+
+            <button
+              onClick={handleEditDownload}
+              className="px-4 py-2 bg-blue-500 text-white rounded-lg mt-6 disabled:opacity-50"
+              disabled={isDownloading || (!selectedComponents.navbar && !selectedComponents.hero)}
+            >
+              {isDownloading ? "Downloading..." : "Download Edited Components"}
+            </button>
+          </div>
         </div>
-
-        {/* Editor Panel */}
-        <div className="w-1/3 h-full bg-gray-100 p-6 overflow-auto">
-          <h2 className="text-lg font-bold mb-4">Customize Your Components</h2>
-
-          {selectedComponents.navbar && (
-            <>
-              <h3 className="text-md font-semibold">Navbar Settings</h3>
-              <DynamicForm
-                section="navbar"
-                selectedComponent={selectedComponents.navbar}
-                formData={formData.navbar}
-                onChange={handleFormChange}
-              />
-            </>
-          )}
-
-          {selectedComponents.hero && (
-            <>
-              <h3 className="text-md font-semibold mt-6">Hero Settings</h3>
-              <DynamicForm
-                section="hero"
-                selectedComponent={selectedComponents.hero}
-                formData={formData.hero}
-                onChange={handleFormChange}
-              />
-            </>
-          )}
-
-          <button
-            onClick={handleEditDownload}
-            className="px-4 py-2 bg-blue-500 text-white rounded-lg mt-6 disabled:opacity-50"
-            disabled={isDownloading || (!selectedComponents.navbar && !selectedComponents.hero)}
-          >
-            {isDownloading ? "Downloading..." : "Download Edited Components"}
-          </button>
-
-          {/* New Button to Upload to Vercel */}
-          <button
-            onClick={handleUploadToVercel}
-            className="px-4 py-2 bg-green-500 text-white rounded-lg mt-6 disabled:opacity-50"
-            disabled={isUploading || (!selectedComponents.navbar && !selectedComponents.hero)}
-          >
-            {isUploading ? "Uploading..." : "Upload to Vercel"}
-          </button>
-        </div>
-      </div>
-    </>
-  );
+      </>
+    );
+  } catch (error) {
+    console.error("❌ Upload failed:", error);
+    alert("Upload failed. Check console for details.");
+  }
 }

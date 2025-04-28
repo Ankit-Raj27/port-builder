@@ -21,7 +21,7 @@ import Hero2 from "@/components/heroes/ModernHero/Hero2"
 import Hero3 from "@/components/heroes/ModernHero/Hero3"
 import Hero4 from "@/components/heroes/ModernHero/Hero4"
 import Hero5 from "@/components/heroes/ModernHero/Hero5"
-import { Hero6 } from "@/components/heroes/ModernHero/Hero6"
+import Hero6  from "@/components/heroes/ModernHero/Hero6"
 import Hero7 from "@/components/heroes/CreativeHero/Hero1"
 
 import Project1 from "@/components/projects/ModernProjects/Project1"

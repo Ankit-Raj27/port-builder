@@ -157,9 +157,11 @@ export default function HeroSection({ setIsLoading }: HeroSectionProps) {
                   ))}
                 </div>
                 <motion.div variants={buttonVariants} initial="initial" whileHover="hover" whileTap="tap">
-                  <Button className="bg-black text-white px-8 py-2 rounded-full hover:bg-gray-700 transition-colors ">
-                    Create Your Portfolio
-                  </Button>
+                  <Link href={"/sign-up"}>
+                    <Button className="bg-black text-white px-8 py-2 rounded-full hover:bg-gray-700 transition-colors ">
+                      Create Your Portfolio
+                    </Button>
+                  </Link>
                 </motion.div>
               </motion.div>
             </div>
