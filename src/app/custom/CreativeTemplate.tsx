@@ -40,7 +40,7 @@ import {
   LayoutTemplateIcon as LayoutFooter,
   ChevronLeft,
 } from "lucide-react"
-import Hero1 from "@/components/heroes/CreativeHeroes/Hero1"
+import Hero1 from "@/components/heroes/CreativeHero/Hero1"
 
 
 // Template definitions

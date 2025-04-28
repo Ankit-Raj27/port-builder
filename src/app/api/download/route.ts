@@ -382,11 +382,8 @@ export async function POST(req: Request): Promise<Response> {
       }
 
       if (heroPath) {
-        // Get the actual component path structure from the found path
         let heroImportPath = `../components/heroes/${hero}`;
-        if (heroPath.includes("/hero/")) {
-          heroImportPath = `../components/hero/${hero}`;
-        } else if (heroPath.includes("/common/")) {
+        if (heroPath.includes("/common/")) {
           heroImportPath = `../components/common/${hero}`;
         }
         pageImports.push(`import Hero from "${heroImportPath}";`);
@@ -449,18 +446,25 @@ export async function POST(req: Request): Promise<Response> {
       }
       
       if (heroPath) {
-        // Determine correct destination path based on source path
         let destPath = `components/heroes/${hero}.tsx`;
-        if (heroPath.includes("/hero/")) {
-          destPath = `components/hero/${hero}.tsx`;
-          // Make sure the directory exists
-          archive.append('', { name: 'components/hero/' });
-        } else if (heroPath.includes("/common/")) {
+        if (heroPath.includes("/common/")) {
           destPath = `components/common/${hero}.tsx`;
         }
         archive.file(heroPath, { name: destPath });
         console.log(`✅ Added hero: ${heroPath} -> ${destPath}`);
       }
+      
+      
+      
+      if (experiencePath) {
+        let destPath = `components/experience/${experience}.tsx`;
+        if (experiencePath.includes("/common/")) {
+          destPath = `components/common/${experience}.tsx`;
+        }
+        archive.file(experiencePath, { name: destPath });
+        console.log(`✅ Added experience: ${experiencePath} -> ${destPath}`);
+      }
+      
       
       if (experiencePath) {
         let destPath = `components/experience/${experience}.tsx`;
