@@ -82,12 +82,6 @@ const CreativePreview: React.FC<PortfolioPreviewProps> = ({ components }) => {
     setCurrentPage(currentPage)
   }
   
-  const navigateTo = (page: string) => {
-    const newHistory = [...history.slice(0, currentIndex + 1), page]
-    setHistory(newHistory)
-    setCurrentIndex(newHistory.length - 1)
-    setCurrentPage(page)
-  }
 
   // Determine which components to render based on the current page
   const renderContent = () => {
@@ -125,12 +119,12 @@ const CreativePreview: React.FC<PortfolioPreviewProps> = ({ components }) => {
         return (
           <>
             {/* Render selected navbar component */}
-            {navbar === "Navbar1" && <Navbar1 onNavigate={navigateTo} />}
-            {navbar === "Navbar2" && <Navbar2 onNavigate={navigateTo} />}
-            {navbar === "Navbar3" && <Navbar3 onNavigate={navigateTo} />}
-            {navbar === "Navbar4" && <Navbar4 onNavigate={navigateTo} />}
-            {navbar === "Navbar5" && <Navbar5 onNavigate={navigateTo} />}
-            {navbar === "Navbar6" && <Navbar6 onNavigate={navigateTo} />}
+            {navbar === "Navbar1" && <Navbar1  />}
+            {navbar === "Navbar2" && <Navbar2  />}
+            {navbar === "Navbar3" && <Navbar3  />}
+            {navbar === "Navbar4" && <Navbar4  />}
+            {navbar === "Navbar5" && <Navbar5  />}
+            {navbar === "Navbar6" && <Navbar6  />}
 
             {/* Render selected hero component */}
             {hero === "Hero1" && <Hero1 />}
@@ -155,11 +149,11 @@ const CreativePreview: React.FC<PortfolioPreviewProps> = ({ components }) => {
             {project === "Project5" && <Project5 />}
 
             {/* Render selected footer component */}
-            {footer === "Footer1" && <Footer1 onNavigate={navigateTo} />}
-            {footer === "Footer2" && <Footer2 onNavigate={navigateTo} />}
-            {footer === "Footer3" && <Footer3 onNavigate={navigateTo} />}
-            {footer === "Footer4" && <Footer4 onNavigate={navigateTo} />}
-            {footer === "Footer5" && <Footer5 onNavigate={navigateTo} />}
+            {footer === "Footer1" && <Footer1  />}
+            {footer === "Footer2" && <Footer2  />}
+            {footer === "Footer3" && <Footer3  />}
+            {footer === "Footer4" && <Footer4  />}
+            {footer === "Footer5" && <Footer5  />}
           </>
         )
     }

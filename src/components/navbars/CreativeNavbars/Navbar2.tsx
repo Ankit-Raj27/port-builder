@@ -1,130 +1,112 @@
 "use client"
+
+import { useState, useEffect } from "react"
 import Link from "next/link"
+import { motion } from "framer-motion"
+import { usePathname } from "next/navigation"
 
-import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-  navigationMenuTriggerStyle,
-} from "@/components/ui/navigation-menu"
-import React, { useEffect } from "react"
-
-const collections = [
-  {
-    title: "Spring/Summer 2023",
-    href: "/collections/spring-summer-2023",
-    description: "Ethereal fabrics and bold silhouettes inspired by coastal landscapes.",
-  },
-  {
-    title: "Fall/Winter 2022",
-    href: "/collections/fall-winter-2022",
-    description: "Structured pieces with architectural influences and rich textures.",
-  },
-  {
-    title: "Capsule Collection",
-    href: "/collections/capsule",
-    description: "Limited edition pieces designed for versatility and timeless appeal.",
-  },
-  {
-    title: "Accessories",
-    href: "/collections/accessories",
-    description: "Handcrafted accessories that complement and elevate every outfit.",
-  },
-]
-
-interface Navbar2Props {
-  onNavigate?: (page: string) => void
-}
-const navigationItems = [
-  { title: "Home", href: "/", page: "home" },
-  { title: "Portfolio", href: "/portfolio", page: "portfolio" },
-  { title: "About", href: "/about", page: "about" },
-  { title: "Journal", href: "/journal", page: "journal" },
-  { title: "Contact", href: "/contact", page: "contact" },
-]
-
-export default function Navbar2({ onNavigate }: Navbar2Props = {}) {
-  const [isScrolled, setIsScrolled] = React.useState(false)
+export default function Navbar3() {
+  const [scrolled, setScrolled] = useState(false)
+  const pathname = usePathname()
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50)
+      const isScrolled = window.scrollY > 10
+      if (isScrolled !== scrolled) {
+        setScrolled(isScrolled)
+      }
     }
-    window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [])
-  const handleClick = (e: React.MouseEvent<HTMLAnchorElement>, page: string) => {
-    // If we have a navigation handler, use it
-    if (onNavigate) {
-      e.preventDefault()
-      onNavigate(page)
-    }
-  }
-  
-  return (
-    <div>
 
-      <header className="  border-b bg-background">
-        <div className="container flex h-16 items-center">
-          <Link href="/" className="mr-6 flex items-center space-x-2">
-            <span className="text-xl font-bold tracking-tight">ATELIER</span>
+    document.addEventListener("scroll", handleScroll)
+    return () => {
+      document.removeEventListener("scroll", handleScroll)
+    }
+  }, [scrolled])
+
+  const navItems = [
+    { name: "Home", path: "/" },
+    { name: "Projects", path: "/projects" },
+    { name: "About", path: "/about" },
+    { name: "Contact", path: "/contact" },
+    { name: "Hire Me", path: "/hire", isButton: true },
+  ]
+
+  return (
+    <motion.header
+      initial={{ y: -100 }}
+      animate={{ y: 0 }}
+      transition={{ type: "spring", stiffness: 300, damping: 30 }}
+      className={` top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        scrolled ? "bg-white/90 dark:bg-gray-900/90 backdrop-blur-md shadow-md" : "bg-transparent"
+      }`}
+    >
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-20">
+          <Link href="/" className="flex items-center space-x-2">
+            <motion.div
+              whileHover={{ rotate: 360 }}
+              transition={{ duration: 0.5 }}
+              className="w-10 h-10 bg-gradient-to-br from-white via-slate-500 to-black rounded-full flex items-center justify-center"
+            >
+              <span className="text-white font-bold">JS</span>
+            </motion.div>
+            <span
+              className={`font-bold text-xl ${
+                scrolled ? "text-gray-800 dark:text-white" : "text-  dark:text-white"
+              }`}
+            >
+              John Smith
+            </span>
           </Link>
-          <NavigationMenu>
-            <NavigationMenuList>
-              <NavigationMenuItem>
-                <NavigationMenuTrigger>Collections</NavigationMenuTrigger>
-                <NavigationMenuContent>
-                  <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
-                    {collections.map((collection) => (
-                      <li key={collection.title} className="row-span-1">
-                        <NavigationMenuLink asChild>
-                          <a
-                            className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
-                            href={collection.href}
-                          >
-                            <div className="text-sm font-medium leading-none">{collection.title}</div>
-                            <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                              {collection.description}
-                            </p>
-                          </a>
-                        </NavigationMenuLink>
-                      </li>
-                    ))}
-                  </ul>
-                </NavigationMenuContent>
-              </NavigationMenuItem>
-              <NavigationMenuItem>
-                <Link href="/lookbook" legacyBehavior passHref>
-                  <NavigationMenuLink className={navigationMenuTriggerStyle()}>Lookbook</NavigationMenuLink>
+
+          <div className="hidden md:flex items-center space-x-8">
+            {navItems.map((item) =>
+              !item.isButton ? (
+                <Link
+                  key={item.name}
+                  href={item.path}
+                  className={`relative  font-medium text-sm ${
+                    scrolled ? "text-gray-800 dark:text-gray-200" : " dark:text-gray-200"
+                  } hover:text-gray-600 transition-colors`}
+                >
+                  {item.name}
+                  {pathname === item.path && (
+                    <motion.div
+                      layoutId="navbar-3-indicator"
+                      className="absolute -bottom-1 left-0 right-0 h-0.5 bg-pink-500"
+                      transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                    />
+                  )}
                 </Link>
-              </NavigationMenuItem>
-              <NavigationMenuItem>
-                <Link href="/atelier" legacyBehavior passHref>
-                  <NavigationMenuLink className={navigationMenuTriggerStyle()}>Atelier</NavigationMenuLink>
+              ) : (
+                <Link key={item.name} href={item.path}>
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="bg-gradient-to-r from-white via-slate-500 to-black text-white px-5 py-2 rounded-full text-sm font-medium shadow-md hover:shadow-lg transition-all"
+                  >
+                    {item.name}
+                  </motion.button>
                 </Link>
-              </NavigationMenuItem>
-              <NavigationMenuItem>
-                <Link href="/journal" legacyBehavior passHref>
-                  <NavigationMenuLink className={navigationMenuTriggerStyle()}>Journal</NavigationMenuLink>
-                </Link>
-              </NavigationMenuItem>
-              <NavigationMenuItem>
-                <Link href="/contact" legacyBehavior passHref>
-                  <NavigationMenuLink className={navigationMenuTriggerStyle()}>Contact</NavigationMenuLink>
-                </Link>
-              </NavigationMenuItem>
-            </NavigationMenuList>
-          </NavigationMenu>
-          <div className="ml-auto flex items-center space-x-4">
-            <Link href="/appointment" className="text-sm font-medium underline-offset-4 hover:underline">
-              Book Appointment
-            </Link>
+              ),
+            )}
+          </div>
+
+          <div className="md:hidden">
+            <button className={`p-2 rounded-md ${scrolled ? "text-gray-800 dark:text-white" : "text-white"}`}>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+            </button>
           </div>
         </div>
-      </header>
-    </div>
+      </div>
+    </motion.header>
   )
 }

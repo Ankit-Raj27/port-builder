@@ -16,14 +16,6 @@ export default function VideoPlayer({ src, poster }: VideoPlayerProps) {
     const [duration, setDuration] = useState(0)
     const [currentTime, setCurrentTime] = useState(0)
 
-    const imageHoverVariants = {
-        initial: { scale: 1 },
-        hover: {
-          scale: 1.05,
-          transition: { duration: 0.3 },
-        },
-      }
-
     useEffect(() => {
         const video = videoRef.current
         if (!video) { return }
