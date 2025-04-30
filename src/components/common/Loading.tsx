@@ -20,15 +20,15 @@ export default function LoadingPage() {
     }, [])
 
     return (
-        <div className="flex flex-col items-center justify-center min-h-screen bg-white dark:bg-gray-900">
+        <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-tr from-[#1a1a1a] via-[#000] to-[#1a1a1a] dark:bg-gray-900">
             <div className="relative">
                 {/* Main rotating circle - simplified to a single color */}
                 <div className="relative flex items-center justify-center w-32 h-32">
-                    <div className="absolute w-full h-full rounded-full border-4 border-t-gray-300 border-r-transparent border-b-transparent border-l-transparent animate-spin"></div>
-                    <div className="absolute w-24 h-24 rounded-full border-4 border-t-gray-200 border-r-transparent border-b-transparent border-l-transparent animate-spin-slow"></div>
+                    <div className="absolute w-full h-full rounded-full border-4 border-t-gray-500 border-r-transparent border-b-transparent border-l-transparent animate-spin"></div>
+                    <div className="absolute w-24 h-24 rounded-full border-4 border-t-gray-400 border-r-transparent border-b-transparent border-l-transparent animate-spin-slow"></div>
 
                     {/* Inner circle with icon */}
-                    <div className="flex items-center justify-center w-16 h-16 bg-white dark:bg-gray-800 rounded-full shadow-sm z-10">
+                    <div className="flex items-center justify-center w-16 h-16 bg-gradient-to-tr from-[#1a1a1a] via-[#000] to-[#1a1a1a] dark:bg-gray-800 rounded-full shadow-sm z-10">
                         <Loader2 className="w-8 h-8 text-gray-500 dark:text-gray-400 animate-spin" />
                     </div>
                 </div>

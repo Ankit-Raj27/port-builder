@@ -28,6 +28,7 @@ export default function Home() {
       <main className="font-Space Grotesk bg-gray-100 shadow-lg ">
         <HeroSection setIsLoading={setIsLoading} />
         <div className="shadow-md shadow-gray-300"></div>
+        
         <TemplatesSection />
         <CTASection />
         <Footer />

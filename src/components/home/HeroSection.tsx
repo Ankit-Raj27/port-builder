@@ -6,6 +6,7 @@ import { Variants } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { BackgroundBeamsWithCollision } from "@/components/ui/background-beams-with-collision"
+import VideoSection from "./VideoSection"
 
 interface HeroSectionProps {
   setIsLoading: (isLoading: boolean) => void;
@@ -132,7 +133,8 @@ export default function HeroSection({ setIsLoading }: HeroSectionProps) {
                   </motion.button>
                 </Link>
               </motion.div>
-
+     
+              
               <motion.div variants={itemVariants} className="w-full max-w-4xl  mx-auto text-center ">
                 <div className="flex justify-center gap-16 mb-12 mt-20 ">
                   {features.map((feature, index) => (
@@ -154,8 +156,11 @@ export default function HeroSection({ setIsLoading }: HeroSectionProps) {
                       </motion.div>
                       <p className="text-gray-400 text-sm">{feature.title}</p>
                     </motion.div>
+                    
                   ))}
+                  
                 </div>
+                
                 <motion.div variants={buttonVariants} initial="initial" whileHover="hover" whileTap="tap">
                   <Link href={"/sign-up"}>
                     <Button className="bg-black text-white px-8 py-2 rounded-full hover:bg-gray-700 transition-colors ">
@@ -167,6 +172,7 @@ export default function HeroSection({ setIsLoading }: HeroSectionProps) {
             </div>
           </motion.section>
         </BackgroundBeamsWithCollision>
+          <VideoSection src="/demo.mp4" />
       </section>
       <div className="shadow-md shadow-gray-300"></div>
     </>

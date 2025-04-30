@@ -21,7 +21,7 @@ const Footer = () => {
           </div>
           
           <div className="mt-4 text-sm text-gray-400">
-            <p>A product by <Link href="#" className="text-blue-400 hover:text-blue-300">Switchengeek & Saksham</Link></p>
+            <p>A product by <Link href="#" className="text-blue-400 hover:text-blue-300">Switchengeek </Link></p>
             <p className="mt-1">Building in public at <Link href="#" className="text-blue-400 hover:text-blue-300">@github</Link></p>
           </div>
         </div>

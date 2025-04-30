@@ -159,9 +159,9 @@ const Templates: React.FC = () => {
   return (
     <>
       <Navbar />
-      <div className="bg-gradient-to-tr from-[#000000] to-[#2D3436] text-white">
+      <div className=" bg-gradient-to-tr from-[#202020] via-[#000] to-[#383838]  text-white">
         {isLoading && <LoadingPage />}
-        <div className="p-6 md:p-10 max-w-7xl mx-auto ">
+        <div className="p-6 md:p-10 max-w-7xl mx-auto  ">
           <h2 className="text-3xl font-bold mb-8 text-center md:text-left">
             Choose a Template
           </h2>
@@ -245,9 +245,9 @@ const Templates: React.FC = () => {
                 Explore our curated selection of premium templates designed for different needs
               </p>
 
-              <Carousel items={cardItems} />
             </div>
           </div>
+              <Carousel items={cardItems} />
         </div>
 
 

@@ -8,22 +8,40 @@ import { useUser } from "@clerk/nextjs"
 import { toast, ToastContainer } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 
+
 import Navbar1 from "@/components/navbars/CreativeNavbars/Navbar1"
+import Navbar2 from "@/components/navbars/CreativeNavbars/Navbar2"
+import Navbar3 from "@/components/navbars/CreativeNavbars/Navbar3"
+import Navbar4 from "@/components/navbars/CreativeNavbars/Navbar4"
+import Navbar5 from "@/components/navbars/CreativeNavbars/Navbar5"
+import Navbar6 from "@/components/navbars/CreativeNavbars/Navbar6"
 
-import Project1 from "@/components/projects/ModernProjects/Project1"
-import Project2 from "@/components/projects/ModernProjects/Project2"
-import Project3 from "@/components/projects/ModernProjects/Project3"
-import Project4 from "@/components/projects/ModernProjects/Project4"
-import Project5 from "@/components/projects/ModernProjects/Project5"
-import Project6 from "@/components/projects/ModernProjects/Project6"
+import Hero1 from "@/components/heroes/CreativeHero/Hero1"
+import Hero2 from "@/components/heroes/CreativeHero/Hero2"
+import Hero3 from "@/components/heroes/CreativeHero/Hero3"
+import Hero4 from "@/components/heroes/CreativeHero/Hero4"
+import Hero5 from "@/components/heroes/CreativeHero/Hero5"
+import Hero6 from "@/components/heroes/CreativeHero/Hero6"
 
-import Footer1 from "@/components/footer/ModernFooter/Footer1"
-import Footer2 from "@/components/footer/ModernFooter/Footer2"
-import Footer3 from "@/components/footer/ModernFooter/Footer3"
 
-import Experience1 from "@/components/experience/ModernExperience/Experience1"
-import Experience2 from "@/components/experience/ModernExperience/Experience2"
-import Experience3 from "@/components/experience/ModernExperience/Experience3"
+import Project1 from "@/components/projects/CreativeProjects/Project1"
+import Project2 from "@/components/projects/CreativeProjects/Project2"
+import Project3 from "@/components/projects/CreativeProjects/Project3"
+import Project4 from "@/components/projects/CreativeProjects/Project4"
+import Project5 from "@/components/projects/CreativeProjects/Project5"
+
+import Footer1 from "@/components/footer/CreativeFooter/Footer1"
+import Footer2 from "@/components/footer/CreativeFooter/Footer2"
+import Footer3 from "@/components/footer/CreativeFooter/Footer3"
+import Footer4 from "@/components/footer/CreativeFooter/Footer4"
+import Footer5 from "@/components/footer/CreativeFooter/Footer5"
+
+import Experience1 from "@/components/experience/CreativeExperience/Experience1"
+import Experience2 from "@/components/experience/CreativeExperience/Experience2"
+import Experience3 from "@/components/experience/CreativeExperience/Experience3"
+import Experience4 from "@/components/experience/CreativeExperience/Experience4"
+import Experience5 from "@/components/experience/CreativeExperience/Experience5"
+
 
 import usePortfolioStore from "@/components/store/usePortfolioStore"
 import { Navbar } from "@/components/navbars/Navbar"
@@ -40,7 +58,6 @@ import {
   LayoutTemplateIcon as LayoutFooter,
   ChevronLeft,
 } from "lucide-react"
-import Hero1 from "@/components/heroes/CreativeHero/Hero1"
 
 
 // Template definitions
@@ -208,21 +225,21 @@ const CreativeTemplate: React.FC = () => {
   const sections = [
     {
       name: "Navbar",
-      options: ["Navbar1",],
+      options: ["Navbar1", "Navbar2", "Navbar3", "Navbar4", "Navbar5", "Navbar6"],
       setter: setNavbar,
       selected: navbar,
       icon: <Navigation size={16} />,
     },
     {
       name: "Hero",
-      options: [ "Hero1"],
+      options: [ "Hero1", "Hero2", "Hero3", "Hero4", "Hero5", "Hero6"],
       setter: setHero,
       selected: hero,
       icon: <Layout size={16} />,
     },
     {
       name: "Experience",
-      options: ["Experience1", "Experience2", "Experience3"],
+      options: ["Experience1", "Experience2", "Experience3", "Experience4", "Experience5"],
       setter: setExperience,
       selected: experience,
       icon: <Briefcase size={16} />,
@@ -236,7 +253,7 @@ const CreativeTemplate: React.FC = () => {
     },
     {
       name: "Footer",
-      options: ["Footer1", "Footer2", "Footer3"],
+      options: ["Footer1", "Footer2", "Footer3", "Footer4", "Footer5"],
       setter: setFooter,
       selected: footer,
       icon: <LayoutFooter size={16} />,
@@ -244,31 +261,46 @@ const CreativeTemplate: React.FC = () => {
   ]
 
   return (
-    <>
+    <div>
       <Navbar />
-      <div className="fixed  overflow-hidden flex h-screen">
+      <div className="fixed overflow-hidden flex h-screen">
         {/* Left Preview Section */}
         <div className="flex-1 bg-gray-100 p-6 border-r overflow-y-scroll max-h-screen">
           <h2 className="text-2xl font-semibold mb-6 text-gray-800">Editing Your Portfolio</h2>
           <div className="bg-white shadow-md z-10 ">
             {navbar === "Navbar1" && <Navbar1 />}
-            
+            {navbar === "Navbar2" && <Navbar2 />}
+            {navbar === "Navbar3" && <Navbar3 />}
+            {navbar === "Navbar4" && <Navbar4 />}
+            {navbar === "Navbar5" && <Navbar5 />}
+            {navbar === "Navbar6" && <Navbar6 />}
+
+
             {hero === "Hero1" && <Hero1 />}
+            {hero === "Hero2" && <Hero2 />}
+            {hero === "Hero3" && <Hero3 />}
+            {hero === "Hero4" && <Hero4 />}
+            {hero === "Hero5" && <Hero5 />}
+            {hero === "Hero6" && <Hero6 />}
+ 
 
             {experience === "Experience1" && <Experience1 />}
             {experience === "Experience2" && <Experience2 />}
             {experience === "Experience3" && <Experience3 />}
+            {experience === "Experience4" && <Experience4 />}
+            {experience === "Experience5" && <Experience5 />}
 
             {project === "Project1" && <Project1 />}
             {project === "Project2" && <Project2 />}
             {project === "Project3" && <Project3 />}
             {project === "Project4" && <Project4 />}
             {project === "Project5" && <Project5 />}
-            {project === "Project6" && <Project6 />}
 
             {footer === "Footer1" && <Footer1 />}
             {footer === "Footer2" && <Footer2 />}
             {footer === "Footer3" && <Footer3 />}
+            {footer === "Footer4" && <Footer4 />}
+            {footer === "Footer5" && <Footer5 />}
           </div>
         </div>
 
@@ -432,7 +464,7 @@ const CreativeTemplate: React.FC = () => {
         </motion.div>
       </div>
       <ToastContainer position="top-right" autoClose={3000} />
-    </>
+    </div>
   )
 }
 

@@ -1,97 +1,76 @@
 "use client"
-import Link from "next/link"
 
-import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-  navigationMenuTriggerStyle,
-} from "@/components/ui/navigation-menu"
+import * as React from "react"
+import { motion } from "framer-motion"
+import { cn } from "@/lib/utils"
 
-const collections = [
-  {
-    title: "Spring/Summer 2023",
-    href: "/collections/spring-summer-2023",
-    description: "Ethereal fabrics and bold silhouettes inspired by coastal landscapes.",
-  },
-  {
-    title: "Fall/Winter 2022",
-    href: "/collections/fall-winter-2022",
-    description: "Structured pieces with architectural influences and rich textures.",
-  },
-  {
-    title: "Capsule Collection",
-    href: "/collections/capsule",
-    description: "Limited edition pieces designed for versatility and timeless appeal.",
-  },
-  {
-    title: "Accessories",
-    href: "/collections/accessories",
-    description: "Handcrafted accessories that complement and elevate every outfit.",
-  },
+interface Navbar1Props {
+  onNavigate?: (page: string) => void
+}
+
+const navigationItems = [
+  { title: "Home", href: "/", page: "home" },
+  { title: "Portfolio", href: "/portfolio", page: "portfolio" },
+  { title: "About", href: "/about", page: "about" },
+  { title: "Journal", href: "/journal", page: "journal" },
+  { title: "Contact", href: "/contact", page: "contact" },
 ]
 
-export default function Navbar1() {
+export default function Navbar1({ onNavigate }: Navbar1Props = {}) {
+  const [isScrolled, setIsScrolled] = React.useState(false)
+
+  React.useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50)
+    }
+    window.addEventListener("scroll", handleScroll)
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [])
+
+  const handleClick = (e: React.MouseEvent<HTMLAnchorElement>, page: string) => {
+    // If we have a navigation handler, use it
+    if (onNavigate) {
+      e.preventDefault()
+      onNavigate(page)
+    }
+  }
+
   return (
-    <header className="border-b bg-background">
-      <div className="container flex h-16 items-center">
-        <Link href="/" className="mr-6 flex items-center space-x-2">
-          <span className="text-xl font-bold tracking-tight">ATELIER</span>
-        </Link>
-        <NavigationMenu>
-          <NavigationMenuList>
-            <NavigationMenuItem>
-              <NavigationMenuTrigger>Collections</NavigationMenuTrigger>
-              <NavigationMenuContent>
-                <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
-                  {collections.map((collection) => (
-                    <li key={collection.title} className="row-span-1">
-                      <NavigationMenuLink asChild>
-                        <a
-                          className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
-                          href={collection.href}
-                        >
-                          <div className="text-sm font-medium leading-none">{collection.title}</div>
-                          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                            {collection.description}
-                          </p>
-                        </a>
-                      </NavigationMenuLink>
-                    </li>
-                  ))}
-                </ul>
-              </NavigationMenuContent>
-            </NavigationMenuItem>
-            <NavigationMenuItem>
-              <Link href="/lookbook" legacyBehavior passHref>
-                <NavigationMenuLink className={navigationMenuTriggerStyle()}>Lookbook</NavigationMenuLink>
-              </Link>
-            </NavigationMenuItem>
-            <NavigationMenuItem>
-              <Link href="/atelier" legacyBehavior passHref>
-                <NavigationMenuLink className={navigationMenuTriggerStyle()}>Atelier</NavigationMenuLink>
-              </Link>
-            </NavigationMenuItem>
-            <NavigationMenuItem>
-              <Link href="/journal" legacyBehavior passHref>
-                <NavigationMenuLink className={navigationMenuTriggerStyle()}>Journal</NavigationMenuLink>
-              </Link>
-            </NavigationMenuItem>
-            <NavigationMenuItem>
-              <Link href="/contact" legacyBehavior passHref>
-                <NavigationMenuLink className={navigationMenuTriggerStyle()}>Contact</NavigationMenuLink>
-              </Link>
-            </NavigationMenuItem>
-          </NavigationMenuList>
-        </NavigationMenu>
-        <div className="ml-auto flex items-center space-x-4">
-          <Link href="/appointment" className="text-sm font-medium underline-offset-4 hover:underline">
-            Book Appointment
-          </Link>
-        </div>
+    <header
+      className={cn(
+        " top-0 z-50 w-full transition-all duration-500",
+        isScrolled ? "h-16 bg-white/90 backdrop-blur-md shadow-sm" : "h-24 bg-transparent",
+      )}
+    >
+      <div className="container h-full flex flex-col justify-center">
+        <nav className="flex justify-center items-center">
+          <ul className="flex space-x-1 sm:space-x-2 md:space-x-8">
+            {navigationItems.map((item, index) => (
+              <motion.li
+                key={item.title}
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, delay: index * 0.1 }}
+              >
+                <a
+                  href={item.href}
+                  onClick={(e) => handleClick(e, item.page)}
+                  className={cn(
+                    "relative px-3 py-2 text-sm font-medium transition-colors",
+                    index === 2 ? "mx-4 sm:mx-8 md:mx-12" : "",
+                  )}
+                >
+                  {index === 2 && (
+                    <span className="absolute left-1/2 -translate-x-1/2 -top-1 text-xl font-serif font-bold tracking-wider">
+                      ATELIER
+                    </span>
+                  )}
+                  <span className="relative z-10 hover:text-primary transition-colors">{item.title}</span>
+                </a>
+              </motion.li>
+            ))}
+          </ul>
+        </nav>
       </div>
     </header>
   )

@@ -256,12 +256,12 @@ const ModernTemplate: React.FC = () => {
   ]
 
   return (
-    <div>
+    <>
       <Navbar />
-      <div className="flex h-screen">
+      <div className=" overflow-hidden flex h-screen">
         {/* Left Preview Section */}
-        <div className="flex-1 bg-gray-100 p-6 border-r overflow-y-scroll max-h-screen">
-          <h2 className="text-2xl font-semibold mb-6 text-gray-800">Editing Your Portfolio</h2>
+        <div className="flex-1 bg-[#171717] p-6 border-r overflow-y-scroll max-h-screen">
+          <h2 className="text-2xl font-semibold mb-6 text-gray-200">Editing Your Portfolio</h2>
           <div className="bg-white shadow-md z-10 ">
             {navbar === "Navbar1" && <Navbar1 />}
             {navbar === "Navbar2" && <Navbar2 />}
@@ -307,7 +307,7 @@ const ModernTemplate: React.FC = () => {
         >
           {/* Sidebar Background */}
           <motion.div
-            className="h-full bg-gradient-to-b from-black via-slate-800 to-slate-700 text-white overflow-y-auto overflow-x-hidden"
+            className="h-full bg-gradient-to-b from-black via-slate-900 to-[#222831] text-white overflow-y-auto overflow-x-hidden"
             animate={{
               width: isSidebarExpanded ? "370px" : "90px",
             }}
@@ -455,7 +455,7 @@ const ModernTemplate: React.FC = () => {
         </motion.div>
       </div>
       <ToastContainer position="top-right" autoClose={3000} />
-    </div>
+    </>
   )
 }
 
