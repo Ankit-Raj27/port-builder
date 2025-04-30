@@ -94,7 +94,7 @@ export default function VideoPlayer({ src, poster }: VideoPlayerProps) {
                         playsInline
                         preload="metadata"
                     >
-                        <source src={src} type="/public/Demo.mp4" />
+                        <source src="Demo.mp4" type="video/mp4" />
                         Your browser does not support the video tag.
                     </video>
                 </div>
