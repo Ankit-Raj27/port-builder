@@ -172,7 +172,7 @@ export default function HeroSection({ setIsLoading }: HeroSectionProps) {
             </div>
           </motion.section>
         </BackgroundBeamsWithCollision>
-          <VideoSection src="/demo.mp4" />
+          <VideoSection />
       </section>
       <div className="shadow-md shadow-gray-300"></div>
     </>

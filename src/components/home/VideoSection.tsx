@@ -5,11 +5,10 @@ import { useState, useRef, useEffect } from "react"
 import { Pause, Play } from 'lucide-react'
 
 interface VideoPlayerProps {
-    src: string
     poster?: string
 }
 
-export default function VideoPlayer({ src, poster }: VideoPlayerProps) {
+export default function VideoPlayer({  poster }: VideoPlayerProps) {
     const videoRef = useRef<HTMLVideoElement>(null)
     const [isPlaying, setIsPlaying] = useState(true)
     const [progress, setProgress] = useState(0)
