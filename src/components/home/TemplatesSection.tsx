@@ -14,7 +14,7 @@ export default function TemplatesSection() {
 
   return (
     <>
-    
+
       <section className="w-full py-16 shadow-lg bg-gradient-to-tr from-[#1a1a1a] via-[#000] to-[#1a1a1a] dark:bg-gradient-to-tr dark:from-[#1a1a1a] dark:via-[#000] dark:to-[#1a1a1a]">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -34,11 +34,11 @@ export default function TemplatesSection() {
         <div className="grid grid-cols-2 gap-y-24 min-h-screen max-w-7xl mx-auto px-4">
           {/* First image section with grid */}
           <motion.div
-            initial={{ opacity: 0, x: -50 }}
+            initial={{ opacity: 0, x: 50 }}
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, staggerChildren: 0.1 }}
             viewport={{ once: true }}
-            className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4"
+            className="grid grid-cols-2 gap-2 p-4 object-cover"
           >
             {/* Top-left image (normal position) */}
             <motion.div whileHover="hover" initial="initial" variants={imageHoverVariants}>
@@ -47,7 +47,7 @@ export default function TemplatesSection() {
                 width={240}
                 height={240}
                 alt="portfolio2"
-                className="rounded-lg shadow-lg w-full h-full object-cover"
+                className="rounded-lg shadow-lg w-full object-cover"
               />
             </motion.div>
 
@@ -58,7 +58,7 @@ export default function TemplatesSection() {
                 width={240}
                 height={240}
                 alt="portfolio1"
-                className="rounded-lg shadow-lg object-cover md:mt-12"
+                className="rounded-lg shadow-lg object-cover mt-12"
               />
             </motion.div>
 
@@ -67,7 +67,7 @@ export default function TemplatesSection() {
               whileHover="hover"
               initial="initial"
               variants={imageHoverVariants}
-              className="md:col-span-2 flex justify-center md:-mt-8"
+              className="md:col-span-2 flex justify-center -mt-8"
             >
               <Image
                 src="/images/portfolio3.png"
@@ -92,6 +92,10 @@ export default function TemplatesSection() {
               PortBuilder gives you the freedom to mix and match beautifully designed sections—from navbars and hero sections to project showcases, experience timelines, and footers. Whether you are a designer, developer, or creative, you’ll find the perfect fit.
             </p>
           </motion.div>
+
+
+          {/* 2nd block */}
+
 
           <motion.div
             initial={{ opacity: 0, x: -50 }}
@@ -142,7 +146,7 @@ export default function TemplatesSection() {
               whileHover="hover"
               initial="initial"
               variants={imageHoverVariants}
-              className="col-span-2 flex justify-center -mt-8"
+              className="col-span-2 flex justify-center  object-cover -mt-6"
             >
               <Image
                 src="/images/editor3.jpg"
@@ -153,6 +157,8 @@ export default function TemplatesSection() {
               />
             </motion.div>
           </motion.div>
+
+
 
           {/* Third image section with grid */}
           <motion.div
@@ -177,7 +183,7 @@ export default function TemplatesSection() {
                 width={250}
                 height={250}
                 alt="img2"
-                className="rounded-lg shadow-xl -mt-6 -ml-6 object-cover z-20 relative"
+                className="rounded-lg shadow-xl -mt-6 -ml-6 object-cover  relative"
               />
             </motion.div>
           </motion.div>

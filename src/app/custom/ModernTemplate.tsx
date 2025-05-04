@@ -258,7 +258,7 @@ const ModernTemplate: React.FC = () => {
   return (
     <>
       <Navbar />
-      <div className=" overflow-hidden flex h-screen">
+      <div className=" fixed overflow-hidden flex h-screen">
         {/* Left Preview Section */}
         <div className="flex-1 bg-[#171717] p-6 border-r overflow-y-scroll max-h-screen">
           <h2 className="text-2xl font-semibold mb-6 text-gray-200">Editing Your Portfolio</h2>

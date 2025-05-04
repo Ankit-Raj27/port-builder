@@ -142,9 +142,11 @@ export async function POST(req: Request): Promise<Response> {
     }
 
     // Generate the page.tsx content
+    const start = Date.now();
     const pageCode = generatePageCode(components);
-
     // Save the generated page.tsx
+    const end = Date.now();
+    console.log(end-start, "ms to generate page.tsx");
     const pageFilePath = path.join(componentsDir, "app", "page.tsx");
     fs.mkdirSync(path.dirname(pageFilePath), { recursive: true });
     fs.writeFileSync(pageFilePath, pageCode, "utf-8");
