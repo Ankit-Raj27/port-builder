@@ -53,6 +53,7 @@ import {
   LayoutTemplateIcon as LayoutFooter,
   ChevronLeft,
 } from "lucide-react"
+import { ConnectNetlifyButton } from "@/components/common/button/ConnectNetlifyButton"
 
 
 // Template definitions
@@ -416,6 +417,7 @@ const ModernTemplate: React.FC = () => {
                       <Download size={16} />
                       <span>{isDownloading ? "Downloading..." : "Download ZIP"}</span>
                     </button>
+                    <ConnectNetlifyButton />
 
                     <button
                       onClick={handleEdit}
@@ -445,9 +447,11 @@ const ModernTemplate: React.FC = () => {
                   >
                     <Edit size={18} />
                   </button>
+                  <ConnectNetlifyButton />
                   <button className="p-2 rounded-full bg-gray-800 hover:bg-gray-700 transition-colors">
                     <Github size={18} />
-                  </button>
+                  </button> 
+                 
                 </div>
               )}
             </div>
