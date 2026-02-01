@@ -1,258 +1,322 @@
 "use client"
-import type React from "react"
-import { Navbar } from "@/components/navbars/Navbar"
-import { useRouter } from "next/navigation"
-import { motion } from "framer-motion"
-import { Eye } from "lucide-react"
-import Image from "next/image"
+
 import { useState, useEffect } from "react"
+import { motion, AnimatePresence } from "framer-motion"
+import { Eye, Sparkles, Search, Filter, ArrowRight, Loader2 } from "lucide-react"
+import Image from "next/image"
+import { useRouter } from "next/navigation"
+import { Navbar } from "@/components/navbars/Navbar"
 import Footer from "@/components/common/Footer"
-import LoadingPage from "@/components/common/Loading"
 import { useUser } from "@clerk/nextjs"
-import { Carousel, Card } from "@/components/ui/apple-card-carousel"
+import {
+  MeshGradientBackground,
+  GlowText,
+  CyberButton,
+  BentoCard,
+  FloatingCard,
+} from "@/components/ui/AntigravityComponents"
 
 type Template = {
   id: string
   name: string
-  description: string
   category: string
-  navbar: string
-  hero: string
-  experience: string
-  project: string
-  footer: string
+  description: string
+  image: string
+  gradient: string
+  features: string[]
 }
-
-const DummyContent = () => {
-  return (
-    <>
-      {[...new Array(3).fill(1)].map((_, index) => {
-        return (
-          <div
-            key={"dummy-content" + index}
-            className="bg-[#F5F5F7] dark:bg-neutral-800 p-8 md:p-14 rounded-3xl mb-4"
-          >
-            <p className="text-neutral-600 dark:text-neutral-400 text-base md:text-2xl font-sans max-w-3xl mx-auto">
-              <span className="font-bold text-neutral-700 dark:text-neutral-200">
-                The first rule of Apple club is that you boast about Apple club.
-              </span>{" "}
-              Keep a journal, quickly jot down a grocery list, and take amazing
-              class notes. Want to convert those notes to text? No problem.
-              Langotiya jeetu ka mara hua yaar is ready to capture every
-              thought.
-            </p>
-            <Image
-              src="https://assets.aceternity.com/macbook.png"
-              alt="Macbook mockup from Aceternity UI"
-              height="500"
-              width="500"
-              className="md:w-1/2 md:h-1/2 h-full w-full mx-auto object-contain"
-            />
-          </div>
-        );
-      })}
-    </>
-  );
-};
-
-const data = [
-  {
-    category: "Modern Portfolio",
-    title: "A simple portfolio for tech developers.",
-    src: "https://images.unsplash.com/photo-1593508512255-86ab42a8e620?q=80&w=3556&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    content: <DummyContent />,
-  },
-  {
-    category: "UI/UX Portfolio",
-    title: "An intriguing portfolio to showcase your designing potential.",
-    src: "https://images.unsplash.com/photo-1531554694128-c4c6665f59c2?q=80&w=3387&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    content: <DummyContent />,
-  },
-  {
-    category: "Artist Portfolio",
-    title: "A curated page for highlighting your best works.",
-    src: "https://images.unsplash.com/photo-1558655146-d09347e92766?q=80&w=3300&auto=format&fit=crop&ixlib=rb-4.0.3",
-    content: <DummyContent />,
-  },
-  {
-    category: "Business Portfolio",
-    title: "A landing page portfolio for your new venture.",
-    src: "https://images.unsplash.com/photo-1581276879432-15e50529f34b?q=80&w=3270&auto=format&fit=crop&ixlib=rb-4.0.3",
-    content: <DummyContent />,
-  },
-];
 
 const templates: Template[] = [
   {
     id: "Modern",
     name: "Modern Portfolio",
-    description: "A sleek, minimal portfolio.",
-    category: "Personal",
-    navbar: "Navbar1",
-    hero: "Hero1",
-    experience: "Experience1",
-    project: "Project1",
-    footer: "Footer1",
+    category: "Tech",
+    description: "Clean, minimal design perfect for developers and engineers",
+    image: "/images/template/Modern Portfolio.png",
+    gradient: "from-cyan-400 to-blue-500",
+    features: ["Dark Mode", "Responsive", "Animations"],
   },
   {
     id: "Creative",
     name: "Creative Portfolio",
-    description: "A stylish and colorful template.",
-    category: "Creative",
-    navbar: "Navbar2",
-    hero: "Hero2",
-    experience: "Experience2",
-    project: "Project2",
-    footer: "Footer2",
+    category: "Design",
+    description: "Bold, artistic layout for designers and creatives",
+    image: "/images/template/Creative Portfolio.png",
+    gradient: "from-purple-400 to-pink-500",
+    features: ["Vibrant Colors", "Unique Layout", "Interactive"],
   },
   {
     id: "Business",
     name: "Business Portfolio",
-    description: "A professional portfolio.",
-    category: "Business",
-    navbar: "Navbar3",
-    hero: "Hero3",
-    experience: "Experience3",
-    project: "Project3",
-    footer: "Footer3",
+    category: "Professional",
+    description: "Professional look for entrepreneurs and consultants",
+    image: "/images/template/Business Portfolio.png",
+    gradient: "from-orange-400 to-amber-500",
+    features: ["Corporate Style", "SEO Ready", "Fast Loading"],
   },
 ]
 
-const categories = ["All", "Personal", "Business", "Creative"]
+const categories = ["All", "Tech", "Design", "Professional"]
 
-const Templates: React.FC = () => {
-  const [isLoading, setIsLoading] = useState(false)
+export default function TemplatePage() {
   const router = useRouter()
-  const [selectedCategory, setSelectedCategory] = useState("All")
-
   const { isSignedIn, isLoaded } = useUser()
-  
+  const [selectedCategory, setSelectedCategory] = useState("All")
+  const [searchQuery, setSearchQuery] = useState("")
+  const [hoveredTemplate, setHoveredTemplate] = useState<string | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-
-  }, [isLoaded, isSignedIn, router])
-
-  if (!isLoaded) {
-    return <LoadingPage />
-  }
-  const handleSelectTemplate = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, id: string): void => {
-    if (!isSignedIn) {
-      e.preventDefault();
-      router.push("/sign-in");
-      return;
+    if (isLoaded) {
+      const timer = setTimeout(() => setIsLoading(false), 500)
+      return () => clearTimeout(timer)
     }
-    setIsLoading(true);
-    router.push(`/template/${id}`);
+  }, [isLoaded])
+
+  const filteredTemplates = templates.filter((template) => {
+    const matchesCategory = selectedCategory === "All" || template.category === selectedCategory
+    const matchesSearch = template.name.toLowerCase().includes(searchQuery.toLowerCase())
+    return matchesCategory && matchesSearch
+  })
+
+  const handleTemplateClick = (templateId: string) => {
+    if (!isSignedIn) {
+      router.push("/sign-in")
+    } else {
+      router.push(`/template/${templateId}`)
+    }
   }
-  
 
-  const filteredTemplates =
-    selectedCategory === "All"
-      ? templates
-      : templates.filter((template) => template.category === selectedCategory)
-
-  // Create card components array for the carousel
-  const cardItems = data.map((card, index) => (
-    <Card key={card.title} card={card} index={index} />
-  ));
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-[#000] flex items-center justify-center">
+        <motion.div
+          className="flex flex-col items-center gap-4"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+        >
+          <motion.div
+            className="p-4 rounded-full bg-cyan-500/10 border border-cyan-500/20"
+            animate={{ rotate: 360 }}
+            transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
+          >
+            <Loader2 className="w-8 h-8 text-cyan-400" />
+          </motion.div>
+          <p className="text-white/40 text-sm">Loading templates...</p>
+        </motion.div>
+      </div>
+    )
+  }
 
   return (
-    <>
+    <div className="min-h-screen bg-[#000] text-white">
       <Navbar />
-      <div className=" bg-gradient-to-tr from-[#202020] via-[#000] to-[#383838]  text-white">
-        {isLoading && <LoadingPage />}
-        <div className="p-6 md:p-10 max-w-7xl mx-auto  ">
-          <h2 className="text-3xl font-bold mb-8 text-center md:text-left">
-            Choose a Template
-          </h2>
 
-          {/* Category Filter */}
-          <div className="flex flex-wrap gap-3 mb-10">
-            {categories.map((category) => (
-              <motion.button
-                key={category}
-                className={`px-4  py-2 rounded-md border text-sm font-medium transition-colors ${selectedCategory === category
-                  ? "bg-slate-500 text-white border-black"
-                  : "bg-white text-gray-700 border-gray-300 hover:border-gray-400"
-                  }`}
-                whileHover={{ y: -2 }}
-                onClick={() => setSelectedCategory(category)}
-              >
-                {category}
-              </motion.button>
-            ))}
-          </div>
+      {/* Background */}
+      <MeshGradientBackground intensity="subtle" />
 
-          <div className="grid  grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-            {filteredTemplates.map((template) => (
-              <motion.div
-                key={template.id}
-                className="group flex flex-col"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3 }}
-              >
-                {/* Browser Frame */}
-                <div className="relative rounded-lg overflow-hidden border border-gray-200 shadow-md bg-white">
-                  {/* Browser Top Bar */}
-                  <div className="h-6 bg-gray-100 border-b border-gray-200 flex items-center px-2">
-                    <div className="flex space-x-1.5">
-                      <div className="w-2.5 h-2.5 rounded-full bg-gray-300"></div>
-                      <div className="w-2.5 h-2.5 rounded-full bg-gray-300"></div>
-                      <div className="w-2.5 h-2.5 rounded-full bg-gray-300"></div>
-                    </div>
-                  </div>
+      {/* Hero Section */}
+      <section className="relative z-10 pt-32 pb-16 px-6">
+        <div className="max-w-4xl mx-auto text-center">
+          {/* Badge */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-purple-500/10 border border-purple-500/20 mb-8"
+          >
+            <Sparkles className="w-4 h-4 text-purple-400" />
+            <span className="text-sm text-purple-300">Handcrafted with care</span>
+          </motion.div>
 
-                  {/* Template Preview */}
-                  <div className="relative h-[220px] overflow-hidden">
-                    <Image
-                      src={`/images/template/${template.name}.png`}
-                      alt={template.name}
-                      fill
-                      className="object-cover"
-                    />
+          {/* Heading */}
+          <motion.h1
+            className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+          >
+            <span className="text-white/90">Browse our </span>
+            <GlowText color="gradient" glow={false} className="text-4xl md:text-5xl lg:text-6xl font-bold">
+              template gallery
+            </GlowText>
+          </motion.h1>
 
-                    {/* Hover Overlay with Buttons */}
-                    <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center gap-3">
-                      <motion.button
-                        className="bg-white text-black px-6 py-2 rounded-full flex items-center gap-2 font-medium"
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        onClick={(e) => handleSelectTemplate(e,template.id)}
-                      >
-                        <Eye size={16} />
-                        View Details
-                      </motion.button>
-                    </div>
-                  </div>
-                </div>
+          <motion.p
+            className="text-lg text-white/50 max-w-2xl mx-auto mb-12"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
+            Choose from our collection of professionally designed templates.
+            Each one is fully customizable to match your unique style.
+          </motion.p>
 
-                {/* Template Info */}
-                <div className="mt-4">
-                  <h3 className="text-lg font-semibold">{template.name}</h3>
-                  <p className="text-sm text-gray-600 dark:text-gray-300">
-                    {template.category} Store
-                  </p>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-          {/* Featured Templates Carousel Section */}
-          <div className="py-8 text-white">
-            <div className="max-w-7xl mx-auto px-6 md:px-10">
-              <h2 className="text-3xl font-bold mb-8 text-center">Featured Templates</h2>
-              <p className="text-gray-600 dark:text-gray-300 text-center max-w-2xl mx-auto mb-12">
-                Explore our curated selection of premium templates designed for different needs
-              </p>
-
+          {/* Search and Filter */}
+          <motion.div
+            className="flex flex-col sm:flex-row gap-4 justify-center items-center"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+          >
+            {/* Search */}
+            <div className="relative w-full sm:w-auto">
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/30" />
+              <input
+                type="text"
+                placeholder="Search templates..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full sm:w-80 pl-12 pr-4 py-3 rounded-full bg-white/5 border border-white/10 text-white placeholder:text-white/30 focus:outline-none focus:border-cyan-400/50 focus:ring-1 focus:ring-cyan-400/20 transition-all"
+              />
             </div>
-          </div>
-              <Carousel items={cardItems} />
+
+            {/* Category filters */}
+            <div className="flex gap-2">
+              {categories.map((category) => (
+                <motion.button
+                  key={category}
+                  onClick={() => setSelectedCategory(category)}
+                  className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${selectedCategory === category
+                      ? "bg-gradient-to-r from-cyan-400 to-blue-500 text-black"
+                      : "bg-white/5 text-white/60 hover:bg-white/10 hover:text-white border border-white/10"
+                    }`}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  {category}
+                </motion.button>
+              ))}
+            </div>
+          </motion.div>
         </div>
-        <Footer />
-      </div>
-    </>
+      </section>
+
+      {/* Templates Grid */}
+      <section className="relative z-10 pb-32 px-6">
+        <div className="max-w-7xl mx-auto">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={selectedCategory + searchQuery}
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.4 }}
+            >
+              {filteredTemplates.map((template, index) => (
+                <motion.div
+                  key={template.id}
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  onMouseEnter={() => setHoveredTemplate(template.id)}
+                  onMouseLeave={() => setHoveredTemplate(null)}
+                  onClick={() => handleTemplateClick(template.id)}
+                  className="cursor-pointer group"
+                >
+                  <div className="relative rounded-3xl overflow-hidden bg-white/[0.03] border border-white/[0.08] hover:border-white/[0.15] transition-all duration-500">
+                    {/* Image */}
+                    <div className="relative aspect-[4/3] overflow-hidden">
+                      <Image
+                        src={template.image}
+                        alt={template.name}
+                        fill
+                        className="object-cover transition-transform duration-700 group-hover:scale-105"
+                      />
+
+                      {/* Gradient overlay */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
+                      {/* View button */}
+                      <motion.div
+                        className="absolute inset-0 flex items-center justify-center"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: hoveredTemplate === template.id ? 1 : 0 }}
+                        transition={{ duration: 0.2 }}
+                      >
+                        <motion.button
+                          className="flex items-center gap-2 px-6 py-3 rounded-full bg-white text-black font-medium shadow-xl"
+                          initial={{ y: 20 }}
+                          animate={{ y: hoveredTemplate === template.id ? 0 : 20 }}
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
+                        >
+                          <Eye className="w-4 h-4" />
+                          View Template
+                        </motion.button>
+                      </motion.div>
+
+                      {/* Category badge */}
+                      <div className="absolute top-4 left-4">
+                        <span className={`px-3 py-1 rounded-full text-xs font-medium bg-gradient-to-r ${template.gradient} text-white`}>
+                          {template.category}
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Content */}
+                    <div className="p-6">
+                      <h3 className="text-xl font-bold text-white mb-2 group-hover:text-cyan-400 transition-colors">
+                        {template.name}
+                      </h3>
+                      <p className="text-white/50 text-sm mb-4">{template.description}</p>
+
+                      {/* Features */}
+                      <div className="flex flex-wrap gap-2">
+                        {template.features.map((feature) => (
+                          <span
+                            key={feature}
+                            className="px-2 py-1 rounded-md bg-white/5 text-white/40 text-xs"
+                          >
+                            {feature}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Hover glow */}
+                    <AnimatePresence>
+                      {hoveredTemplate === template.id && (
+                        <motion.div
+                          className="absolute inset-0 pointer-events-none"
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          exit={{ opacity: 0 }}
+                        >
+                          <div className={`absolute inset-0 opacity-5 bg-gradient-to-br ${template.gradient}`} />
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                </motion.div>
+              ))}
+            </motion.div>
+          </AnimatePresence>
+
+          {/* Empty state */}
+          {filteredTemplates.length === 0 && (
+            <motion.div
+              className="text-center py-20"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+            >
+              <p className="text-white/40 mb-4">No templates found matching your criteria.</p>
+              <button
+                onClick={() => {
+                  setSelectedCategory("All")
+                  setSearchQuery("")
+                }}
+                className="text-cyan-400 hover:text-cyan-300 text-sm"
+              >
+                Clear filters
+              </button>
+            </motion.div>
+          )}
+        </div>
+      </section>
+
+      <Footer />
+    </div>
   )
 }
-
-export default Templates

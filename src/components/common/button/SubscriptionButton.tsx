@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react'
 import axios from 'axios'
-import { Button } from '@/components/ui/button'
 import { useRouter } from 'next/navigation'
 import { useUser } from '@clerk/nextjs'
 import { toast } from 'react-toastify'
@@ -78,7 +77,7 @@ export default function PaymentButton({ setLoading, amount }: Props) {
         },
         modal: {
           ondismiss: () => {
-           toast.error('Payment popup closed without completing the payment')
+            toast.error('Payment popup closed without completing the payment')
             setLoading(false)
           },
         },
@@ -90,8 +89,8 @@ export default function PaymentButton({ setLoading, amount }: Props) {
         axios.isAxiosError(error) && error.response?.data?.error !== undefined
           ? error.response.data.error
           : error instanceof Error
-          ? error.message
-          : 'Unknown error occurred'
+            ? error.message
+            : 'Unknown error occurred'
       console.error('❌ Error:', msg)
       alert(`❌ ${msg}`)
       setLoading(false)
@@ -99,13 +98,12 @@ export default function PaymentButton({ setLoading, amount }: Props) {
   }
 
   return (
-    <Button
-      variant="outline"
-      className="w-full dark:text-white text-black"
+    <button
       onClick={handlePayment}
+      className="w-full py-3 rounded-full font-medium transition-all duration-300 bg-gradient-to-r from-cyan-400 to-blue-500 text-black hover:shadow-[0_0_30px_rgba(0,240,255,0.3)] hover:scale-[1.02] active:scale-[0.98]"
     >
       Get Started
-    </Button>
+    </button>
   )
 }
 
