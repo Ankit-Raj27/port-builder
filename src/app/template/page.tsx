@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { Eye, Sparkles, Search, Filter, ArrowRight, Loader2 } from "lucide-react"
+import { Eye, Sparkles, Search, Loader2 } from "lucide-react"
 import Image from "next/image"
 import { useRouter } from "next/navigation"
 import { Navbar } from "@/components/navbars/Navbar"
@@ -11,9 +11,6 @@ import { useUser } from "@clerk/nextjs"
 import {
   MeshGradientBackground,
   GlowText,
-  CyberButton,
-  BentoCard,
-  FloatingCard,
 } from "@/components/ui/AntigravityComponents"
 
 type Template = {
@@ -178,8 +175,8 @@ export default function TemplatePage() {
                   key={category}
                   onClick={() => setSelectedCategory(category)}
                   className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${selectedCategory === category
-                      ? "bg-gradient-to-r from-cyan-400 to-blue-500 text-black"
-                      : "bg-white/5 text-white/60 hover:bg-white/10 hover:text-white border border-white/10"
+                    ? "bg-gradient-to-r from-cyan-400 to-blue-500 text-black"
+                    : "bg-white/5 text-white/60 hover:bg-white/10 hover:text-white border border-white/10"
                     }`}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}

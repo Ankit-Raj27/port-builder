@@ -13,7 +13,7 @@ import {
     CommandItem,
     CommandList,
 } from "@/components/ui/command"
-import { ArrowRight, Copy, Check, Menu, X, SearchIcon, BookOpen, Sparkles } from "lucide-react"
+import { ArrowRight, Copy, Check, Menu, X, SearchIcon, BookOpen } from "lucide-react"
 import Link from "next/link"
 import { DialogTitle } from "@/components/ui/dialog"
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden"
@@ -346,8 +346,8 @@ export default function DocumentationPage() {
                                     <Button
                                         variant={activeSection === section.id ? "secondary" : "ghost"}
                                         className={`w-full justify-start transition-all duration-300 ${activeSection === section.id
-                                                ? "bg-purple-500/20 text-purple-300 border border-purple-500/30"
-                                                : "text-gray-400 hover:text-white hover:bg-white/5"
+                                            ? "bg-purple-500/20 text-purple-300 border border-purple-500/30"
+                                            : "text-gray-400 hover:text-white hover:bg-white/5"
                                             }`}
                                         onClick={() => handleNavItemClick(section.id)}
                                     >
@@ -381,8 +381,8 @@ export default function DocumentationPage() {
                                             key={section.id}
                                             variant={activeSection === section.id ? "secondary" : "ghost"}
                                             className={`justify-start ${activeSection === section.id
-                                                    ? "bg-purple-500/20 text-purple-300"
-                                                    : "text-gray-400"
+                                                ? "bg-purple-500/20 text-purple-300"
+                                                : "text-gray-400"
                                                 }`}
                                             onClick={() => handleNavItemClick(section.id)}
                                         >

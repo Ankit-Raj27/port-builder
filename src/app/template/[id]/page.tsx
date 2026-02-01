@@ -5,7 +5,7 @@ import CreativeTemplate from "@/app/custom/CreativeTemplate"
 import BusinessTemplate from "@/app/custom/BusinessTemplate"
 import { useParams } from "next/navigation"
 import { motion, AnimatePresence } from "framer-motion"
-import { Loader2, AlertCircle } from "lucide-react"
+import { AlertCircle } from "lucide-react"
 import Link from "next/link"
 
 const templatesMap: Record<string, JSX.Element> = {

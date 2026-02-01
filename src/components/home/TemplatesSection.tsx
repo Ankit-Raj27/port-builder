@@ -135,7 +135,7 @@ export default function TemplatesSection() {
 
           {/* Bento Grid */}
           <BentoGrid className="mb-16">
-            {templates.map((template, index) => (
+            {templates.map((template) => (
               <BentoCard
                 key={template.id}
                 span={template.span}
@@ -278,7 +278,7 @@ export default function TemplatesSection() {
             <h2 className="text-3xl font-bold text-white tracking-tighter sm:text-3xl md:text-4xl">Choose from Stunning Templates</h2>
             <h3 className="text font-medium sm:text-2xl mt-2 text-cyan-400">Create web pages easily</h3>
             <p className="mt-2 max-w-[600px] text-white/50 md:text-xl/relaxed lg:text-base/relaxed xl:text-lg/relaxed">
-              PortBuilder gives you the freedom to mix and match beautifully designed sections—from navbars and hero sections to project showcases, experience timelines, and footers. Whether you are a designer, developer, or creative, you'll find the perfect fit.
+              PortBuilder gives you the freedom to mix and match beautifully designed sections—from navbars and hero sections to project showcases, experience timelines, and footers. Whether you are a designer, developer, or creative, you&apos;ll find the perfect fit.
             </p>
           </motion.div>
 
@@ -294,7 +294,7 @@ export default function TemplatesSection() {
             <h2 className="text-3xl font-bold tracking-tighter sm:text-3xl md:text-4xl text-white">Fully Customizable Layouts</h2>
             <h3 className="text font-medium sm:text-2xl mt-2 text-purple-400">Craft your unique digital presence with ease.</h3>
             <p className="mt-2 max-w-[600px] text-white/50 md:text-xl/relaxed lg:text-base/relaxed xl:text-lg/relaxed">
-              Select from a variety of layout options for every section of your portfolio—no code required. Want a minimal navbar and a bold hero? Go for it. Prefer a dark footer with animated project cards? You're in control.
+              Select from a variety of layout options for every section of your portfolio—no code required. Want a minimal navbar and a bold hero? Go for it. Prefer a dark footer with animated project cards? You&apos;re in control.
             </p>
           </motion.div>
 

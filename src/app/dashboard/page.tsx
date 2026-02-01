@@ -6,7 +6,6 @@ import Footer from "@/components/common/Footer"
 import { motion, Variants } from "framer-motion"
 import { Sparkles, Search, Layout } from "lucide-react"
 import { GradientText } from "@/components/ui/GradientText"
-import { AnimatedSection } from "@/components/common/AnimatedSection"
 
 const containerVariants: Variants = {
   hidden: { opacity: 0 },

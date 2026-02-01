@@ -126,7 +126,7 @@ export default function PricingPage() {
             animate="visible"
             className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto"
           >
-            {plans.map((plan, index) => (
+            {plans.map((plan) => (
               <MotionCard
                 key={plan.name}
                 variants={cardVariants}
@@ -199,8 +199,8 @@ export default function PricingPage() {
                   ) : (
                     <motion.button
                       className={`w-full py-3 rounded-full font-medium transition-all duration-300 ${plan.name === "Free"
-                          ? "bg-white/5 text-white/50 border border-white/10 cursor-default"
-                          : "bg-white/10 text-white border border-white/20 hover:bg-white/20"
+                        ? "bg-white/5 text-white/50 border border-white/10 cursor-default"
+                        : "bg-white/10 text-white border border-white/20 hover:bg-white/20"
                         }`}
                       whileHover={plan.name !== "Free" ? { scale: 1.02 } : {}}
                       whileTap={plan.name !== "Free" ? { scale: 0.98 } : {}}
