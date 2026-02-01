@@ -114,7 +114,7 @@ export async function POST(req: Request): Promise<Response> {
         try {
           const fileBuffer = await readFile(zipPath);
           resolve(
-            new NextResponse(fileBuffer, {
+            new NextResponse(new Uint8Array(fileBuffer), {
               headers: {
                 "Content-Type": "application/zip",
                 "Content-Disposition": "attachment; filename=portfolio.zip",

@@ -39,7 +39,7 @@ export default function LoadingPage() {
 
             {/* Simplified dots */}
             <div className="flex gap-3 mt-6">
-                {[...Array(3)].map((_, i) => (
+                {[...Array(6)].map((_, i) => (
                     <div
                         key={i}
                         className="w-2 h-2 rounded-full bg-gray-300 dark:bg-gray-600"

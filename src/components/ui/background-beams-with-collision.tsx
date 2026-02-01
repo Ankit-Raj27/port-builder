@@ -23,7 +23,7 @@ export const BackgroundBeamsWithCollision = ({
 
   // Generate random stars on component mount
   useEffect(() => {
-    const numberOfStars = 200;
+    const numberOfStars = 1000;
     const newStars = [];
     
     for (let i = 0; i < numberOfStars; i++) {

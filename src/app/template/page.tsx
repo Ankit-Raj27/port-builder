@@ -249,9 +249,6 @@ const Templates: React.FC = () => {
           </div>
               <Carousel items={cardItems} />
         </div>
-
-
-
         <Footer />
       </div>
     </>

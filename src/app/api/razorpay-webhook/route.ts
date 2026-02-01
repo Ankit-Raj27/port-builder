@@ -23,7 +23,7 @@ export async function POST(req: Request) {
 
   const event = JSON.parse(rawBody);
 
-  // ✅ Handle payment.captured
+  // success
   if (event.event === 'payment.captured') {
     const userEmail = event.payload.payment.entity.notes.email;
     const razorpayPaymentId = event.payload.payment.entity.id;
@@ -38,19 +38,12 @@ export async function POST(req: Request) {
     }
   }
 
-  // ✅ (Optional) Handle subscription.activated if needed
   if (event.event === 'subscription.activated') {
     const razorpaySubscriptionId = event.payload.subscription.entity.id;
     const userEmail = event.payload.subscription.entity.notes?.email;
 
-    console.log("✅ Webhook received: subscription.activated");
-    console.log("📧 User Email:", userEmail);
-    console.log("🆔 Razorpay Subscription ID:", razorpaySubscriptionId);
-
     if (userEmail) {
       await updateClerkUserSubscription(userEmail, razorpaySubscriptionId);
-    } else {
-      console.warn('⚠️ No user email in subscription notes');
     }
   }
 
@@ -68,7 +61,6 @@ async function updateClerkUserSubscription(email: string, subscriptionId: string
     const users = await response.json();
 
     if (!users || users.length === 0) {
-      console.error('❌ User not found in Clerk for email:', email);
       return;
     }
 

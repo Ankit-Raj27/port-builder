@@ -62,7 +62,7 @@ function findFile(
   return null;
 }
 
-// Recursively add folders to ZIP
+// adding folders to ZIP
 function addFilesFromFolder(
   archive: archiver.Archiver,
   folderPath: string,
@@ -103,7 +103,7 @@ export async function POST(req: Request): Promise<Response> {
       : null;
     const footerPath = footer ? findFile(basePaths, footer, "footer") : null;
 
-    // Try to find UI components
+    // UI components
     let uiPath = null;
     for (const basePath of basePaths) {
       const potentialPath = path.join(basePath, "ui");
@@ -117,7 +117,6 @@ export async function POST(req: Request): Promise<Response> {
       console.log("❌ Could not find UI components folder");
     }
 
-    // Find linked page paths
     const linkedPagePaths: { [key: string]: string } = {};
     if (linkedPages && Array.isArray(linkedPages)) {
       linkedPages.forEach((page: string) => {
@@ -164,7 +163,7 @@ export async function POST(req: Request): Promise<Response> {
         try {
           const fileBuffer = await readFile(zipPath);
           resolve(
-            new NextResponse(fileBuffer, {
+            new NextResponse(new Uint8Array(fileBuffer), {
               headers: {
                 "Content-Type": "application/zip",
                 "Content-Disposition": "attachment; filename=portfolio.zip",
@@ -394,7 +393,6 @@ export async function POST(req: Request): Promise<Response> {
           destPath = `components/common/${hero}.tsx`;
         }
         archive.file(heroPath, { name: destPath });
-        console.log(`✅ Added hero: ${heroPath} -> ${destPath}`);
       }
 
       if (experiencePath) {
@@ -403,7 +401,6 @@ export async function POST(req: Request): Promise<Response> {
           destPath = `components/common/${experience}.tsx`;
         }
         archive.file(experiencePath, { name: destPath });
-        console.log(`✅ Added experience: ${experiencePath} -> ${destPath}`);
       }
 
       if (experiencePath) {
@@ -430,28 +427,23 @@ export async function POST(req: Request): Promise<Response> {
         archive.file(footerPath, { name: destPath });
       }
 
-      // Add all linked pages
+    
       Object.entries(linkedPagePaths).forEach(([pageName, pagePath]) => {
         let destPath = `components/pages/${pageName}.tsx`;
         if (pagePath.includes("/common/")) {
           destPath = `components/common/${pageName}.tsx`;
         }
         archive.file(pagePath, { name: destPath });
-        console.log(`✅ Added linked page: ${pagePath} -> ${destPath}`);
       });
 
-      // Add UI folder recursively if it exists
+    
       if (uiPath && fs.existsSync(uiPath)) {
         addFilesFromFolder(archive, uiPath, "components/ui");
-        console.log(`✅ Added UI components from: ${uiPath}`);
-      } else {
-        console.log(`⚠️ UI path not found or not accessible: ${uiPath}`);
       }
 
       archive.finalize();
     });
-  } catch (error) {
-    console.error("❌ Server Error:", error);
+  } catch {
     return NextResponse.json({ error: "Server Error" }, { status: 500 });
   }
 }
