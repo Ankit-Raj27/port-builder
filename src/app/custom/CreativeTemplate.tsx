@@ -16,12 +16,12 @@ import Navbar4 from "@/components/navbars/CreativeNavbars/Navbar4"
 import Navbar5 from "@/components/navbars/CreativeNavbars/Navbar5"
 import Navbar6 from "@/components/navbars/CreativeNavbars/Navbar6"
 
-import Hero1 from "@/components/heroes/CreativeHero/Hero1"
-import Hero2 from "@/components/heroes/CreativeHero/Hero2"
-import Hero3 from "@/components/heroes/CreativeHero/Hero3"
-import Hero4 from "@/components/heroes/CreativeHero/Hero4"
-import Hero5 from "@/components/heroes/CreativeHero/Hero5"
-import Hero6 from "@/components/heroes/CreativeHero/Hero6"
+import Hero1 from "@/components/heroes/CreativeHeroes/Hero1"
+import Hero2 from "@/components/heroes/CreativeHeroes/Hero2"
+import Hero3 from "@/components/heroes/CreativeHeroes/Hero3"
+import Hero4 from "@/components/heroes/CreativeHeroes/Hero4"
+import Hero5 from "@/components/heroes/CreativeHeroes/Hero5"
+import Hero6 from "@/components/heroes/CreativeHeroes/Hero6"
 
 
 import Project1 from "@/components/projects/CreativeProjects/Project1"
@@ -30,17 +30,17 @@ import Project3 from "@/components/projects/CreativeProjects/Project3"
 import Project4 from "@/components/projects/CreativeProjects/Project4"
 import Project5 from "@/components/projects/CreativeProjects/Project5"
 
-import Footer1 from "@/components/footer/CreativeFooter/Footer1"
-import Footer2 from "@/components/footer/CreativeFooter/Footer2"
-import Footer3 from "@/components/footer/CreativeFooter/Footer3"
-import Footer4 from "@/components/footer/CreativeFooter/Footer4"
-import Footer5 from "@/components/footer/CreativeFooter/Footer5"
+import Footer1 from "@/components/footer/CreativeFooters/Footer1"
+import Footer2 from "@/components/footer/CreativeFooters/Footer2"
+import Footer3 from "@/components/footer/CreativeFooters/Footer3"
+import Footer4 from "@/components/footer/CreativeFooters/Footer4"
+import Footer5 from "@/components/footer/CreativeFooters/Footer5"
 
-import Experience1 from "@/components/experience/CreativeExperience/Experience1"
-import Experience2 from "@/components/experience/CreativeExperience/Experience2"
-import Experience3 from "@/components/experience/CreativeExperience/Experience3"
-import Experience4 from "@/components/experience/CreativeExperience/Experience4"
-import Experience5 from "@/components/experience/CreativeExperience/Experience5"
+import Experience1 from "@/components/experience/CreativeExperiences/Experience1"
+import Experience2 from "@/components/experience/CreativeExperiences/Experience2"
+import Experience3 from "@/components/experience/CreativeExperiences/Experience3"
+import Experience4 from "@/components/experience/CreativeExperiences/Experience4"
+import Experience5 from "@/components/experience/CreativeExperiences/Experience5"
 
 
 import usePortfolioStore from "@/components/store/usePortfolioStore"
@@ -59,8 +59,8 @@ import {
   ChevronLeft,
 } from "lucide-react"
 
+// ... rest of the file stays same ...
 
-// Template definitions
 const templates = [
   {
     id: "template1",
@@ -186,7 +186,14 @@ const CreativeTemplate: React.FC = () => {
         linkedPages.push("/contact", "/about")
       }
 
-      const bodyData = { navbar, hero, project, footer, experience, linkedPages }
+      const bodyData = { 
+        navbar, navbarStyle: templateId,
+        hero, heroStyle: templateId,
+        project, projectStyle: templateId,
+        footer, footerStyle: templateId,
+        experience, experienceStyle: templateId,
+        linkedPages 
+      }
       const response = await fetch("/api/download", {
         method: "POST",
         headers: { "Content-Type": "application/json" },

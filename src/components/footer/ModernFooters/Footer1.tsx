@@ -7,15 +7,18 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { toast } from "sonner"
+import { EditableText } from "@/components/common/EditableText"
+import usePortfolioStore from "@/components/store/usePortfolioStore"
 
-interface FormData {
-    name: string
-    email: string
-    message: string
+interface FooterProps {
+  isEditable?: boolean
 }
 
-export default function Footer1() {
-    const [formData, setFormData] = useState<FormData>({
+export default function Footer1({ isEditable = true }: FooterProps) {
+    const { footerContent, updateFooterContent } = usePortfolioStore()
+    const { text = "Connect with me", copyright = "All rights reserved" } = footerContent || {}
+
+    const [formData, setFormData] = useState({
         name: "",
         email: "",
         message: "",
@@ -28,10 +31,7 @@ export default function Footer1() {
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        console.log("Form submitted:", formData)
-
         toast("Message sent successfully!")
-
         setFormData({ name: "", email: "", message: "" })
     }
 
@@ -42,7 +42,16 @@ export default function Footer1() {
                     <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-3">
                         <div className="space-y-6">
                             <h2 className="text-2xl font-bold">Let us Connect</h2>
-                            <p className="text-white/70">I am always open to discussing new projects, creative ideas, or opportunities.</p>
+                            {isEditable ? (
+                                <EditableText 
+                                    value={text} 
+                                    onChange={(val) => updateFooterContent({ text: val })} 
+                                    tag="p"
+                                    className="text-white/70"
+                                />
+                            ) : (
+                                <p className="text-white/70">{text}</p>
+                            )}
                             <div className="space-y-4">
                                 <ContactInfo Icon={Mail} label="Mail me at" value="hello@example.com" href="mailto:hello@example.com" />
                                 <ContactInfo Icon={Phone} label="Call me at" value="+1 (123) 456-7890" href="tel:+11234567890" />
@@ -64,6 +73,17 @@ export default function Footer1() {
                             </form>
                         </div>
                     </div>
+                    <div className="mt-12 border-t border-white/10 pt-8 text-center text-sm text-white/50">
+                         {isEditable ? (
+                             <EditableText 
+                                value={copyright} 
+                                onChange={(val) => updateFooterContent({ copyright: val })} 
+                                tag="p"
+                            />
+                         ) : (
+                             <p>{copyright}</p>
+                         )}
+                    </div>
                 </div>
             </div>
         </footer>
@@ -81,11 +101,11 @@ function ContactInfo({ Icon, label, value, href }: { Icon: LucideIcon; label: st
             <div>
                 <p className="text-sm text-white/50">{label}</p>
                 {href ? (
-                    <Link href={href} className="text-sm font-medium hover:text-primary">
+                    <Link href={href} className="text-sm font-medium hover:text-primary text-white">
                         {value}
                     </Link>
                 ) : (
-                    <p className="text-sm font-medium">{value}</p>
+                    <p className="text-sm font-medium text-white">{value}</p>
                 )}
             </div>
         </div>
@@ -103,7 +123,7 @@ function SocialLinks() {
         <div className="flex gap-4">
             {socialLinks.map(({ href, Icon, label }) => (
                 <Link key={href} href={href} target="_blank" rel="noopener noreferrer" className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 hover:bg-primary">
-                    <Icon className="h-5 w-5" />
+                    <Icon className="h-5 w-5 text-white" />
                     <span className="sr-only">{label}</span>
                 </Link>
             ))}

@@ -16,7 +16,42 @@ const basePaths = [
 function findFile(paths: string[], subPath: string): string | null {
   for (const base of paths) {
     const fullPath = path.join(base, subPath);
-    if (fs.existsSync(fullPath)) {return fullPath};
+    if (fs.existsSync(fullPath)) {
+      return fullPath;
+    }
+  }
+  
+  // If not found with direct path, search recursively in subdirectories
+  // e.g., looking for "heroes/Hero1.tsx" should find "heroes/ModernHeroes/Hero1.tsx"
+  for (const base of paths) {
+    const [typeFolder, fileName] = subPath.split("/");
+    const typePath = path.join(base, typeFolder);
+    
+    if (fs.existsSync(typePath) && fs.statSync(typePath).isDirectory()) {
+      const found = searchRecursive(typePath, fileName);
+      if (found) {
+        return found;
+      }
+    }
+  }
+  
+  return null;
+}
+
+function searchRecursive(dir: string, fileName: string): string | null {
+  const files = fs.readdirSync(dir);
+  for (const file of files) {
+    const filePath = path.join(dir, file);
+    const stat = fs.statSync(filePath);
+    
+    if (stat.isFile() && file === fileName) {
+      return filePath;
+    } else if (stat.isDirectory()) {
+      const result = searchRecursive(filePath, fileName);
+      if (result) {
+        return result;
+      }
+    }
   }
   return null;
 }

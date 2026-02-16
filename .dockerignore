@@ -1,0 +1,11 @@
+# Ignore node_modules and other artifacts
+node_modules
+.next
+npm-debug.log
+Dockerfile
+docker-compose.yml
+.git
+.env*
+!.env.example
+.env.local
+.env.production

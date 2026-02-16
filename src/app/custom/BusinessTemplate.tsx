@@ -16,13 +16,13 @@ import Navbar5 from "@/components/navbars/ModernNavbars/Navbar5"
 import Navbar6 from "@/components/navbars/ModernNavbars/Navbar6"
 import Navbar7 from "@/components/navbars/ModernNavbars/Navbar7"
 
-import Hero1 from "@/components/heroes/ModernHero/Hero1"
-import Hero2 from "@/components/heroes/ModernHero/Hero2"
-import Hero3 from "@/components/heroes/ModernHero/Hero3"
-import Hero4 from "@/components/heroes/ModernHero/Hero4"
-import Hero5 from "@/components/heroes/ModernHero/Hero5"
-import Hero6  from "@/components/heroes/ModernHero/Hero6"
-import Hero7 from "@/components/heroes/CreativeHero/Hero1"
+import Hero1 from "@/components/heroes/ModernHeroes/Hero1"
+import Hero2 from "@/components/heroes/ModernHeroes/Hero2"
+import Hero3 from "@/components/heroes/ModernHeroes/Hero3"
+import Hero4 from "@/components/heroes/ModernHeroes/Hero4"
+import Hero5 from "@/components/heroes/ModernHeroes/Hero5"
+import Hero6 from "@/components/heroes/ModernHeroes/Hero6"
+import Hero7 from "@/components/heroes/CreativeHeroes/Hero1"
 
 import Project1 from "@/components/projects/ModernProjects/Project1"
 import Project2 from "@/components/projects/ModernProjects/Project2"
@@ -31,13 +31,13 @@ import Project4 from "@/components/projects/ModernProjects/Project4"
 import Project5 from "@/components/projects/ModernProjects/Project5"
 import Project6 from "@/components/projects/ModernProjects/Project6"
 
-import Footer1 from "@/components/footer/ModernFooter/Footer1"
-import Footer2 from "@/components/footer/ModernFooter/Footer2"
-import Footer3 from "@/components/footer/ModernFooter/Footer3"
+import Footer1 from "@/components/footer/ModernFooters/Footer1"
+import Footer2 from "@/components/footer/ModernFooters/Footer2"
+import Footer3 from "@/components/footer/ModernFooters/Footer3"
 
-import Experience1 from "@/components/experience/ModernExperience/Experience1"
-import Experience2 from "@/components/experience/ModernExperience/Experience2"
-import Experience3 from "@/components/experience/ModernExperience/Experience3"
+import Experience1 from "@/components/experience/ModernExperiences/Experience1"
+import Experience2 from "@/components/experience/ModernExperiences/Experience2"
+import Experience3 from "@/components/experience/ModernExperiences/Experience3"
 
 import usePortfolioStore from "@/components/store/usePortfolioStore"
 import { Navbar } from "@/components/navbars/Navbar"
@@ -55,8 +55,8 @@ import {
   ChevronLeft,
 } from "lucide-react"
 
+// ... rest of the file stays same ...
 
-// Template definitions
 const templates = [
   {
     id: "template1",
@@ -182,7 +182,14 @@ const BusinessTemplate: React.FC = () => {
         linkedPages.push("/contact", "/about")
       }
 
-      const bodyData = { navbar, hero, project, footer, experience, linkedPages }
+      const bodyData = { 
+        navbar, navbarStyle: templateId,
+        hero, heroStyle: templateId,
+        project, projectStyle: templateId,
+        footer, footerStyle: templateId,
+        experience, experienceStyle: templateId,
+        linkedPages 
+      }
       const response = await fetch("/api/download", {
         method: "POST",
         headers: { "Content-Type": "application/json" },

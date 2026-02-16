@@ -2,9 +2,14 @@
 
 import { useEffect, useRef, useState } from "react"
 import { motion, useScroll, useTransform } from "framer-motion"
-import {  MousePointer } from "lucide-react"
+import { MousePointer } from "lucide-react"
+import { EditableText } from "@/components/common/EditableText"
+import usePortfolioStore from "@/components/store/usePortfolioStore"
 
 export default function Hero3() {
+  const { heroContent, updateHeroContent } = usePortfolioStore()
+  const { title, description, subtitle } = heroContent
+
   const [, setScreenSize] = useState({ width: 0, height: 0 })
   const [dots, setDots] = useState<{ x: number; y: number; opacity: number; scale: number }[]>([])
 
@@ -78,7 +83,11 @@ export default function Hero3() {
           transition={{ duration: 0.8 }}
           className="mb-6 inline-block rounded-full border border-white/10 bg-white/5 px-3 py-1 text-sm backdrop-blur-sm"
         >
-          Creative Developer & Designer
+          <EditableText 
+            value={subtitle} 
+            onChange={(val) => updateHeroContent({ subtitle: val })} 
+            tag="span"
+          />
         </motion.div>
 
         <motion.h1
@@ -87,7 +96,11 @@ export default function Hero3() {
           transition={{ duration: 0.8, delay: 0.2 }}
           className="mb-6 max-w-4xl bg-gradient-to-r from-white via-white to-white/70 bg-clip-text text-center text-4xl font-bold tracking-tighter text-transparent sm:text-5xl md:text-6xl lg:text-7xl"
         >
-          Crafting Digital Experiences That Inspire & Engage
+          <EditableText 
+            value={title} 
+            onChange={(val) => updateHeroContent({ title: val })} 
+            tag="span"
+          />
         </motion.h1>
 
         <motion.p
@@ -96,8 +109,11 @@ export default function Hero3() {
           transition={{ duration: 0.8, delay: 0.4 }}
           className="mb-12 max-w-[700px] text-xl text-white/70 md:text-2xl"
         >
-          I am Jordan Lee, a creative developer and designer specializing in immersive digital
-          experiences that push the boundaries of web design.
+          <EditableText 
+            value={description} 
+            onChange={(val) => updateHeroContent({ description: val })} 
+            tag="span"
+          />
         </motion.p>
 
       </motion.div>
