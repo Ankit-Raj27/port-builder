@@ -10,7 +10,7 @@ import usePortfolioStore from "@/components/store/usePortfolioStore"
 
 export default function Hero2() {
   const { heroContent, updateHeroContent } = usePortfolioStore()
-  const { name, subtitle, primaryButton } = heroContent
+  const { name, subtitle, primaryButton, primaryLink = "#projects" } = heroContent
 
   return (
     <section className="relative bg-muted py-24 md:py-32">
@@ -40,7 +40,7 @@ export default function Hero2() {
 
           <div className="mt-12">
             <Button size="lg" variant="outline" className="rounded-full" asChild>
-              <Link href="#projects">
+              <Link href={primaryLink}>
                 <EditableText 
                     value={primaryButton} 
                     onChange={(val) => updateHeroContent({ primaryButton: val })} 

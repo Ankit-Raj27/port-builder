@@ -4,8 +4,12 @@ import { motion } from "framer-motion"
 import { ArrowRight, Github, Linkedin, Twitter } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
+import usePortfolioStore from "@/components/store/usePortfolioStore"
 
 export default function Hero4() {
+  const { heroContent } = usePortfolioStore()
+  const { title, name, description, primaryButton, primaryLink = "#projects", secondaryButton, secondaryLink = "#about" } = heroContent
+
   const skills = [
     "React", "Next.js", "TypeScript", "UI/UX Design", "Figma", "Tailwind CSS"
   ]
@@ -41,7 +45,7 @@ export default function Hero4() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.1 }}
               >
-                Building digital products, brands, and experiences
+                {title} {name}
               </motion.h1>
 
               <motion.p
@@ -50,8 +54,7 @@ export default function Hero4() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.2 }}
               >
-                I am Alex Chen, a product designer and developer with over 5 years of experience
-                creating digital products that solve real problems.
+                {description}
               </motion.p>
             </div>
             
@@ -76,12 +79,12 @@ export default function Hero4() {
               transition={{ duration: 0.5, delay: 0.4 }}
             >
               <Button size="lg" asChild>
-                <Link href="/projects">
-                  Explore Projects <ArrowRight className="ml-2 h-4 w-4" />
+                <Link href={primaryLink}>
+                  {primaryButton} <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
               </Button>
               <Button size="lg" variant="outline" asChild>
-                <Link href="/about">About Me</Link>
+                <Link href={secondaryLink}>{secondaryButton}</Link>
               </Button>
             </motion.div>
 

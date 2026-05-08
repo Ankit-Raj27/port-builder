@@ -1,8 +1,6 @@
 "use client"
 
 import { SearchBar } from "@/components/forms/search"
-import { Navbar } from "@/components/navbars/Navbar"
-import Footer from "@/components/common/Footer"
 import { motion, Variants } from "framer-motion"
 import { Sparkles, Search, Layout } from "lucide-react"
 import { GradientText } from "@/components/ui/GradientText"
@@ -35,7 +33,6 @@ const itemVariants: Variants = {
 export default function DashboardPage() {
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white">
-      <Navbar />
 
       {/* Animated background */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden">
@@ -189,7 +186,6 @@ export default function DashboardPage() {
         </motion.div>
       </section>
 
-      <Footer />
     </div>
   )
 }

@@ -15,14 +15,10 @@ export function SearchBar() {
 
   const handleSuggestionClick = (suggestion: string) => {
     setSearchQuery(suggestion)
-    // Add your search logic here
-    console.log(`Searching for: ${suggestion}`)
   }
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    // Add your search logic here
-    console.log(`Searching for: ${searchQuery}`)
   }
 
   return (

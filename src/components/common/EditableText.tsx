@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { cn } from "@/lib/utils";
 
-interface EditableTextProps extends React.HTMLAttributes<HTMLElement> {
+interface EditableTextProps extends Omit<React.HTMLAttributes<HTMLElement>, "onChange"> {
   value: string;
   onChange: (value: string) => void;
   tag?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "p" | "span" | "div";
@@ -58,6 +58,7 @@ export const EditableText = ({
 
   return (
     <Tag
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       ref={contentRef as any}
       contentEditable
       suppressContentEditableWarning

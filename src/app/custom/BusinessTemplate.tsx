@@ -139,8 +139,7 @@ const BusinessTemplate: React.FC = () => {
         setProject(project)
         setFooter(footer)
         setExperience(experience)
-      } catch (error) {
-        console.error("Error parsing saved state:", error)
+      } catch {
       }
     }
   }, [setFooter, setHero, setNavbar, setProject, setExperience])
@@ -156,11 +155,7 @@ const BusinessTemplate: React.FC = () => {
     if (!isLoaded) {
       return
     }
-    const userEmail = user?.publicMetadata?.email
     const isSubscribed = user?.publicMetadata?.isSubscribed
-    console.log("Webhook received:")
-    console.log("User email from Razorpay notes:", userEmail)
-    console.log("Clerk user lookup result:", user)
 
     if (!isSubscribed) {
       router.push("/pricing")
@@ -170,25 +165,12 @@ const BusinessTemplate: React.FC = () => {
 
     setIsDownloading(true)
     try {
-      const linkedPages: string[] = []
-
-      if (project) {
-        linkedPages.push("/projects/[id]")
-      }
-      if (experience) {
-        linkedPages.push("/experience")
-      }
-      if (navbar) {
-        linkedPages.push("/contact", "/about")
-      }
-
       const bodyData = { 
         navbar, navbarStyle: templateId,
         hero, heroStyle: templateId,
         project, projectStyle: templateId,
         footer, footerStyle: templateId,
         experience, experienceStyle: templateId,
-        linkedPages 
       }
       const response = await fetch("/api/download", {
         method: "POST",
@@ -207,8 +189,8 @@ const BusinessTemplate: React.FC = () => {
       document.body.appendChild(link)
       link.click()
       document.body.removeChild(link)
-    } catch (error) {
-      console.error("Download failed:", error)
+    } catch {
+      toast.error("Download failed.")
     } finally {
       setIsDownloading(false)
     }

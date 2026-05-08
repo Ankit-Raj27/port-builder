@@ -1,6 +1,23 @@
-import { clerkMiddleware } from "@clerk/nextjs/server";
+import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 
-export default clerkMiddleware();
+const isProtectedRoute = createRouteMatcher([
+  "/dashboard(.*)",
+  "/preview(.*)",
+  "/studio(.*)",
+  "/template(.*)",
+  "/api/download(.*)",
+  "/api/editdownload(.*)",
+  "/api/generate(.*)",
+  "/api/razorpay/create-order(.*)",
+  "/api/razorpay/verify-payment(.*)",
+  "/api/vercel(.*)",
+]);
+
+export default clerkMiddleware(async (auth, req) => {
+  if (isProtectedRoute(req)) {
+    await auth.protect();
+  }
+});
 
 export const config = {
   matcher: [

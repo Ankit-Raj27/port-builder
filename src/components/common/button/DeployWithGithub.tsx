@@ -23,7 +23,6 @@ const DeployToGithubButton: React.FC<DeployToGithubButtonProps> = ({ className }
 
     if (!githubClientId) {
       toast.error("GitHub Client ID not configured.");
-      console.error("GITHUB_CLIENT_ID environment variable is missing.");
       return;
     }
 

@@ -3,6 +3,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
+import Link from "next/link";
 import { EditableText } from "@/components/common/EditableText";
 import usePortfolioStore from "@/components/store/usePortfolioStore";
 import { ArrowRight, Sparkles } from "lucide-react";
@@ -19,7 +20,9 @@ const EliteHero = ({ isEditable = true }: EliteHeroProps) => {
     subtitle,
     description,
     primaryButton,
+    primaryLink,
     secondaryButton,
+    secondaryLink,
   } = heroContent || {};
 
   return (
@@ -93,25 +96,29 @@ const EliteHero = ({ isEditable = true }: EliteHeroProps) => {
             transition={{ duration: 0.6, delay: 0.6 }}
             className="flex flex-wrap items-center justify-center md:justify-start gap-6"
           >
-            <button className="group relative px-8 py-4 bg-white text-black font-bold rounded-xl overflow-hidden transition-all hover:pr-12">
-              <EditableText
-                value={primaryButton || "View Arsenal"}
-                onChange={(val) => updateHeroContent({ primaryButton: val })}
-                tag="span"
-                isEditable={isEditable}
-                className="relative z-10"
-              />
-              <ArrowRight className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 opacity-0 group-hover:opacity-100 transition-all" />
-            </button>
+            <Link href={primaryLink || "#projects"}>
+              <button className="group relative px-8 py-4 bg-white text-black font-bold rounded-xl overflow-hidden transition-all hover:pr-12">
+                <EditableText
+                  value={primaryButton || "View Arsenal"}
+                  onChange={(val) => updateHeroContent({ primaryButton: val })}
+                  tag="span"
+                  isEditable={isEditable}
+                  className="relative z-10"
+                />
+                <ArrowRight className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 opacity-0 group-hover:opacity-100 transition-all" />
+              </button>
+            </Link>
             
-            <button className="text-white/60 hover:text-white transition-colors font-semibold border-b border-white/10 pb-1">
-              <EditableText
-                value={secondaryButton || "Talk Strategy"}
-                onChange={(val) => updateHeroContent({ secondaryButton: val })}
-                tag="span"
-                isEditable={isEditable}
-              />
-            </button>
+            <Link href={secondaryLink || "#contact"}>
+              <button className="text-white/60 hover:text-white transition-colors font-semibold border-b border-white/10 pb-1">
+                <EditableText
+                  value={secondaryButton || "Talk Strategy"}
+                  onChange={(val) => updateHeroContent({ secondaryButton: val })}
+                  tag="span"
+                  isEditable={isEditable}
+                />
+              </button>
+            </Link>
           </motion.div>
         </div>
 

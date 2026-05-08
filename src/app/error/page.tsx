@@ -5,7 +5,6 @@ import { Suspense } from "react"
 import { motion } from "framer-motion"
 import { AlertCircle, ArrowLeft, RefreshCw, Home } from "lucide-react"
 import Link from "next/link"
-import { Navbar } from "@/components/navbars/Navbar"
 
 function ErrorContent() {
   const searchParams = useSearchParams()
@@ -151,7 +150,6 @@ function ErrorContent() {
 export default function ErrorPage() {
   return (
     <>
-      <Navbar />
       <Suspense
         fallback={
           <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center">

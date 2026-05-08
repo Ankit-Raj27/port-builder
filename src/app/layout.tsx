@@ -3,6 +3,8 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ToastProvider } from "@radix-ui/react-toast";
 import ClientWrapper from "@/components/common/ClientWrapper";
+import { Navbar } from "@/components/navbars/Navbar";
+import Footer from "@/components/common/Footer";
 import "./globals.css";
 
 import { Nunito, Plus_Jakarta_Sans } from "next/font/google";
@@ -101,8 +103,10 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             <ClientWrapper>
+              <Navbar isMain={true} />
               <main>
                 {children}</main>
+              <Footer isMain={true} />
               <ToastProvider />
             </ClientWrapper>
           </ThemeProvider>

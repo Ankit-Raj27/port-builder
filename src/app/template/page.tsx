@@ -5,8 +5,6 @@ import { motion, AnimatePresence } from "framer-motion"
 import { Eye, Sparkles, Search, Loader2 } from "lucide-react"
 import Image from "next/image"
 import { useRouter } from "next/navigation"
-import { Navbar } from "@/components/navbars/Navbar"
-import Footer from "@/components/common/Footer"
 import { useUser } from "@clerk/nextjs"
 import {
   MeshGradientBackground,
@@ -107,7 +105,6 @@ export default function TemplatePage() {
 
   return (
     <div className="min-h-screen bg-[#000] text-white">
-      <Navbar />
 
       {/* Background */}
       <MeshGradientBackground intensity="subtle" />
@@ -313,7 +310,6 @@ export default function TemplatePage() {
         </div>
       </section>
 
-      <Footer />
     </div>
   )
 }

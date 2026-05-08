@@ -13,7 +13,7 @@ import {
 import { UserButton, useUser, SignInButton } from "@clerk/nextjs"
 import Image from "next/image"
 import { Menu, X } from "lucide-react"
-import { useRouter } from "next/navigation"
+import { useRouter, usePathname } from "next/navigation"
 import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion"
 
 const productItems = [
@@ -29,9 +29,10 @@ const resourceItems = [
   { title: "API Reference", href: "#" },
 ]
 
-export function Navbar() {
+export function Navbar({ isMain = false }: { isMain?: boolean }) {
   const { isSignedIn } = useUser()
   const router = useRouter()
+  const pathname = usePathname()
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false)
   const { scrollY } = useScroll()
 
@@ -46,6 +47,10 @@ export function Navbar() {
     [0, 100],
     ["rgba(255, 255, 255, 0)", "rgba(255, 255, 255, 0.05)"]
   )
+
+  const isHiddenPage = pathname?.includes('/editor') || pathname?.includes('/studio')
+  
+  if (isMain && isHiddenPage) return null
 
   const handleProtectedRoute = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>): void => {
     if (!isSignedIn) {
@@ -136,7 +141,7 @@ export function Navbar() {
                           className="flex items-center gap-2 px-3 py-2 text-sm text-cyan-400 hover:text-cyan-300 transition-colors"
                         >
                           View all templates
-                          <span className="text-xs">→</span>
+                          <span className="text-xs">➜</span>
                         </Link>
                       </NavigationMenuLink>
                     </li>

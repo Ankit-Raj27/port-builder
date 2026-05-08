@@ -2,7 +2,7 @@
 
 import { CalendarIcon, GraduationCap, Briefcase } from "lucide-react"
 import { cn } from "@/lib/utils"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardDescription, CardHeader } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { EditableText } from "@/components/common/EditableText"
 import usePortfolioStore from "@/components/store/usePortfolioStore"

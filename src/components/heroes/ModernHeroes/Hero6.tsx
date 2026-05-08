@@ -1,11 +1,15 @@
 "use client"
 
 import { motion } from "framer-motion"
-// import Link from "next/link"
+import Link from "next/link"
 import { ArrowRight } from 'lucide-react'
 import { Button } from "@/components/ui/button"
+import usePortfolioStore from "@/components/store/usePortfolioStore"
 
 export default function Hero6() {
+  const { heroContent } = usePortfolioStore()
+  const { title, name, subtitle, description, primaryButton, primaryLink = "#projects", secondaryButton, secondaryLink = "#contact" } = heroContent
+
   return (
     <section className="w-full py-12 md:py-24 lg:py-32 xl:py-48 bg-black text-white">
       <div className="container px-4 md:px-6">
@@ -16,7 +20,7 @@ export default function Hero6() {
             transition={{ duration: 0.5 }}
           >
             <span className="inline-block rounded-full bg-white/10 px-3 py-1 text-sm backdrop-blur-sm">
-              Frontend Developer & UI Designer
+              {subtitle}
             </span>
           </motion.div>
           
@@ -26,9 +30,9 @@ export default function Hero6() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
           >
-            <span className="block">Crafting digital</span>
+            <span className="block">{title}</span>
             <span className="block mt-1 bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 bg-clip-text text-transparent">
-              experiences that matter
+              {name}
             </span>
           </motion.h1>
           
@@ -38,8 +42,7 @@ export default function Hero6() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
-            I design and build engaging digital products that connect brands with their audience,
-            focusing on clean aesthetics and intuitive interactions.
+            {description}
           </motion.p>
           
           <motion.div
@@ -48,20 +51,13 @@ export default function Hero6() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.3 }}
           >
-            <Button 
-              size="lg" 
-              className="bg-white text-black hover:bg-white/90"
-              onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}
-            >
-              View My Work <ArrowRight className="ml-2 h-4 w-4" />
+            <Button size="lg" className="bg-white text-black hover:bg-white/90" asChild>
+              <Link href={primaryLink}>
+                {primaryButton} <ArrowRight className="ml-2 h-4 w-4" />
+              </Link>
             </Button>
-            <Button 
-              variant="outline" 
-              size="lg"
-              className="border-white/20 text-white hover:bg-white/10"
-              onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
-            >
-              Contact Me
+            <Button variant="outline" size="lg" className="border-white/20 text-white hover:bg-white/10" asChild>
+              <Link href={secondaryLink}>{secondaryButton}</Link>
             </Button>
           </motion.div>
         </div>

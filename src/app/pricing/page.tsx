@@ -4,8 +4,6 @@ import { CheckCheck, CircleOff } from "lucide-react"
 import { motion } from "framer-motion"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Navbar } from "@/components/navbars/Navbar"
-import Footer from "@/components/common/Footer"
 import PaymentButton from "@/components/common/button/SubscriptionButton"
 import LoadingPage from "@/components/common/Loading"
 import { useState } from "react"
@@ -94,7 +92,6 @@ export default function PricingPage() {
 
   return (
     <>
-      <Navbar />
 
       {/* Antigravity-inspired background */}
       <MeshGradientBackground intensity="subtle" />
@@ -227,7 +224,6 @@ export default function PricingPage() {
         </div>
       </section>
 
-      <Footer />
     </>
   )
 }

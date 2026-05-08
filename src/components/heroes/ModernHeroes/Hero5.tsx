@@ -1,8 +1,12 @@
 import Link from "next/link"
 import { ArrowRight } from 'lucide-react'
 import { Button } from "@/components/ui/button"
+import usePortfolioStore from "@/components/store/usePortfolioStore"
 
 export default function Hero5() {
+  const { heroContent } = usePortfolioStore()
+  const { title, name, description, primaryButton, primaryLink = "#projects", secondaryButton, secondaryLink = "#contact" } = heroContent
+
   return (
     <section className="w-full py-12 md:py-8 lg:py-8 xl:py-8">
       <div className="container px-4 md:px-6">
@@ -10,21 +14,20 @@ export default function Hero5() {
           <div className="flex flex-col justify-center space-y-4">
             <div className="space-y-2">
               <h1 className="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none">
-                Hi, I am Sarah Johnson
+                {title} {name}
               </h1>
               <p className="max-w-[600px] text-muted-foreground md:text-xl">
-                A product designer and front-end developer specializing in creating minimal and 
-                user-friendly digital experiences.
+                {description}
               </p>
             </div>
             <div className="flex flex-col gap-2 min-[400px]:flex-row">
               <Button asChild>
-                <Link href="/projects">
-                  View My Work <ArrowRight className="ml-2 h-4 w-4" />
+                <Link href={primaryLink}>
+                  {primaryButton} <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
               </Button>
               <Button variant="outline" asChild>
-                <Link href="/contact">Contact Me</Link>
+                <Link href={secondaryLink}>{secondaryButton}</Link>
               </Button>
             </div>
           </div>

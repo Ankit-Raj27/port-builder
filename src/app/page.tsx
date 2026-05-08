@@ -4,8 +4,6 @@ import { useAuth } from "@clerk/nextjs"
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { Navbar } from "@/components/navbars/Navbar"
-import Footer from "@/components/common/Footer"
 import LoadingPage from "@/components/common/Loading"
 import HeroSection from "@/components/home/HeroSection"
 import TemplatesSection from "@/components/home/TemplatesSection"
@@ -33,7 +31,6 @@ export default function Home() {
         className="relative bg-[#000] min-h-screen"
       >
         {/* Fixed navbar */}
-        <Navbar />
 
         {/* Loading overlay */}
         <AnimatePresence>
@@ -101,7 +98,6 @@ export default function Home() {
           <CTASection />
 
           {/* Footer */}
-          <Footer />
         </main>
 
         {/* Cursor follower glow (desktop only) */}

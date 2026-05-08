@@ -7,7 +7,9 @@ interface HeroContent {
   subtitle: string;
   description: string;
   primaryButton: string;
+  primaryLink: string;
   secondaryButton: string;
+  secondaryLink: string;
 }
 
 interface NavbarContent {
@@ -25,6 +27,7 @@ interface ProjectItem {
   title: string;
   description: string;
   tags: string[];
+  link: string;
 }
 
 interface ExperienceItem {
@@ -45,6 +48,8 @@ interface PortfolioState {
   experience: string | null;
   linkedPages: { [key: string]: string[] };
   
+  activeSection: string;
+
   // Content State
   heroContent: HeroContent;
   navbarContent: NavbarContent;
@@ -53,9 +58,10 @@ interface PortfolioState {
   experienceContent: { title: string; items: ExperienceItem[] };
   
   // AI Generated Content
-  generatedCodes: { [key: string]: string }; // e.g. { Hero: "code...", Navbar: "code..." }
-  lastUpdated: number; // For triggering re-renders
+  generatedCodes: { [key: string]: string }; 
+  lastUpdated: number; 
 
+  setActiveSection: (section: string) => void;
   setNavbar: (navbar: string | null) => void;
   setHero: (hero: string | null) => void;
   setProject: (project: string | null) => void;
@@ -65,7 +71,6 @@ interface PortfolioState {
   setExperience: (experience: string | null) => void;
   setLinkedPages: (section: string, pages: string[]) => void;
   
-  // Content Actions
   updateHeroContent: (updates: Partial<HeroContent>) => void;
   updateNavbarContent: (updates: Partial<NavbarContent>) => void;
   updateFooterContent: (updates: Partial<FooterContent>) => void;
@@ -86,18 +91,20 @@ const usePortfolioStore = create<PortfolioState>()(
       footer: "Footer1",
       experience: "Experience1",
       linkedPages: {},
+      activeSection: "hero",
       
       generatedCodes: {},
       lastUpdated: 0,
 
-      // Default Contents
       heroContent: {
         title: "Hi, I am",
         name: "John Doe",
         subtitle: "Frontend Developer & UI/UX Designer",
         description: "I create beautiful, responsive websites with modern technologies that help businesses grow and users smile.",
         primaryButton: "View My Work",
-        secondaryButton: "Contact Me"
+        primaryLink: "#projects",
+        secondaryButton: "Contact Me",
+        secondaryLink: "#contact"
       },
       navbarContent: {
         brandName: "PORTFOLIO",
@@ -115,8 +122,8 @@ const usePortfolioStore = create<PortfolioState>()(
       projectContent: {
         title: "Featured Projects",
         items: [
-          { id: 1, title: "E-Commerce App", description: "A full-stack online store.", tags: ["Next.js", "Stripe"] },
-          { id: 2, title: "Portfolio Tool", description: "AI-powered builder.", tags: ["React", "AI"] }
+          { id: 1, title: "E-Commerce App", description: "A full-stack online store.", tags: ["Next.js", "Stripe"], link: "https://google.com" },
+          { id: 2, title: "Portfolio Tool", description: "AI-powered builder.", tags: ["React", "AI"], link: "https://github.com" }
         ]
       },
       experienceContent: {
@@ -134,6 +141,7 @@ const usePortfolioStore = create<PortfolioState>()(
       setFooter: (footer) => set({ footer }),
       setExperience: (experience) => set({ experience }),
       setContact: (contact) => set({ contact }),
+      setActiveSection: (section) => set({ activeSection: section }),
 
       setLinkedPages: (section, pages) => set((state) => ({
         linkedPages: { ...state.linkedPages, [section]: pages },

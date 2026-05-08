@@ -1,55 +1,66 @@
-import Razorpay from 'razorpay'
-import { NextResponse } from 'next/server'
-import { auth } from '@clerk/nextjs/server'
-import { createClerkClient } from '@clerk/backend'
+import Razorpay from "razorpay";
+import { createClerkClient } from "@clerk/backend";
+import { NextResponse } from "next/server";
+import { z } from "zod";
+import { isGuardFailure, requireAuthenticatedUser } from "@/lib/server/auth";
+import { getRazorpayPlan } from "@/lib/server/plans";
 
-const clerkClient = createClerkClient({ secretKey: process.env.CLERK_SECRET_KEY })
+const clerkClient = createClerkClient({ secretKey: process.env.CLERK_SECRET_KEY });
+
+const createOrderSchema = z.object({
+  planId: z.string().optional().default("pro"),
+});
 
 export async function POST(req: Request) {
   try {
-    const key_id = process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID
-    const key_secret = process.env.RAZORPAY_KEY_SECRET
+    const keyId = process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID;
+    const keySecret = process.env.RAZORPAY_KEY_SECRET;
 
-    if (!key_id || !key_secret) {
-      console.error('❌ Razorpay keys missing. ID:', key_id, 'Secret provided:', !!key_secret)
-      return NextResponse.json({ error: 'Server misconfiguration: Missing Razorpay keys' }, { status: 500 })
+    if (!keyId || !keySecret) {
+      return NextResponse.json(
+        { error: "Server misconfiguration: Missing Razorpay keys" },
+        { status: 500 }
+      );
+    }
+
+    const guard = await requireAuthenticatedUser();
+    if (isGuardFailure(guard)) {
+      return guard.response;
+    }
+
+    const parsed = createOrderSchema.safeParse(await req.json());
+    if (!parsed.success) {
+      return NextResponse.json({ error: "Invalid payment request" }, { status: 400 });
+    }
+
+    const plan = getRazorpayPlan(parsed.data.planId);
+    if (!plan) {
+      return NextResponse.json({ error: "Unknown plan" }, { status: 400 });
     }
 
     const razorpay = new Razorpay({
-      key_id,
-      key_secret,
-    })
-    const { userId } = await auth()
-    if (!userId) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-    }
-    const user = await clerkClient.users.getUser(userId)
-    const email = user.emailAddresses[0]?.emailAddress
+      key_id: keyId,
+      key_secret: keySecret,
+    });
 
+    const user = await clerkClient.users.getUser(guard.userId);
+    const email = user.emailAddresses[0]?.emailAddress;
 
-    const { amount } = await req.json()
-    if (!amount) {
-      return NextResponse.json({ error: 'Missing amount' }, { status: 400 })
-    }
     const order = await razorpay.orders.create({
-      amount,
-      currency: 'INR',
+      amount: plan.amountInPaise,
+      currency: plan.currency,
       payment_capture: true,
       notes: {
-        email: email || 'no-email-found',
+        planId: plan.id,
+        clerkUserId: guard.userId,
+        email: email || "no-email-found",
       },
-    })
+    });
 
-    return NextResponse.json(order)
+    return NextResponse.json(order);
   } catch (err: unknown) {
-    console.error('❌ Razorpay error:', err)
-    const errorMessage =
-      err instanceof Error
-        ? err.message
-        : 'Unknown error';
-    return NextResponse.json(
-      { error: errorMessage },
-      { status: 500 }
-    )
+    const errorMessage = err instanceof Error ? err.message : "Unknown error";
+
+    return NextResponse.json({ error: errorMessage }, { status: 500 });
   }
 }

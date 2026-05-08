@@ -4,7 +4,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import { EditableText } from "@/components/common/EditableText";
 import usePortfolioStore from "@/components/store/usePortfolioStore";
-import { Briefcase, Calendar } from "lucide-react";
+import { Calendar } from "lucide-react";
 
 interface EliteExperienceProps {
   isEditable?: boolean;

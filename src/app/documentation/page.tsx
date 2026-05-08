@@ -17,8 +17,6 @@ import { ArrowRight, Copy, Check, Menu, X, SearchIcon, BookOpen } from "lucide-r
 import Link from "next/link"
 import { DialogTitle } from "@/components/ui/dialog"
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden"
-import { Navbar } from "@/components/navbars/Navbar"
-import Footer from "@/components/common/Footer"
 import { GradientText } from "@/components/ui/GradientText"
 
 // Data for documentation sections
@@ -270,7 +268,6 @@ export default function DocumentationPage() {
 
     return (
         <div className="min-h-screen bg-[#0a0a0a]">
-            <Navbar />
 
             {/* Animated background */}
             <div className="fixed inset-0 pointer-events-none overflow-hidden">
@@ -539,7 +536,6 @@ export default function DocumentationPage() {
                     </AnimatePresence>
                 </motion.main>
             </div>
-            <Footer />
         </div>
     )
 }

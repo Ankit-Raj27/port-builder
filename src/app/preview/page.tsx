@@ -5,26 +5,26 @@ import React from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Eye, Loader2 } from "lucide-react"
 import Navbar1 from "@/components/navbars/ModernNavbars/Navbar1"
-import Hero1 from "@/components/heroes/ModernHero/Hero1"
-import Footer1 from "@/components/footer/ModernFooter/Footer1"
+import Hero1 from "@/components/heroes/ModernHeroes/Hero1"
+import Footer1 from "@/components/footer/ModernFooters/Footer1"
 
-// Define Component Mapping
-const componentMap = {
+// Define Component Mapping using React.ComponentType to avoid 'any'
+const componentMap: Record<string, Record<string, React.ComponentType>> = {
   navbar: {
-    Navbar1,
+    Navbar1: Navbar1 as React.ComponentType,
   },
   hero: {
-    Hero1,
+    Hero1: Hero1 as React.ComponentType,
   },
   footer: {
-    Footer1,
+    Footer1: Footer1 as React.ComponentType,
   },
 }
 
 interface SelectedComponents {
-  navbar?: keyof typeof componentMap.navbar
-  hero?: keyof typeof componentMap.hero
-  footer?: keyof typeof componentMap.footer
+  navbar?: string
+  hero?: string
+  footer?: string
 }
 
 const PreviewPage = () => {
@@ -79,7 +79,7 @@ const PreviewPage = () => {
         >
           {!hasComponents ? (
             // Empty state
-            <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center relative overflow-hidden">
+            <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center relative overflow-hidden text-white">
               {/* Animated background */}
               <div className="absolute inset-0 pointer-events-none">
                 <motion.div
@@ -129,7 +129,7 @@ const PreviewPage = () => {
             </div>
           ) : (
             // Preview content with smooth transitions
-            <>
+            <div className="bg-white min-h-screen">
               {/* Navbar Preview */}
               <motion.div
                 initial={{ opacity: 0, y: -20 }}
@@ -162,7 +162,7 @@ const PreviewPage = () => {
                   componentMap.footer[selectedComponents.footer] &&
                   React.createElement(componentMap.footer[selectedComponents.footer])}
               </motion.div>
-            </>
+            </div>
           )}
         </motion.div>
       )}

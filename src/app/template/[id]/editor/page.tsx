@@ -3,20 +3,19 @@
 import { useEffect, useState } from "react";
 import usePortfolioStore from "@/components/store/usePortfolioStore";
 import DynamicForm from "@/components/forms/DynamicForm";
-import { Navbar } from "@/components/navbars/Navbar";
 import Navbar1 from "@/components/navbars/ModernNavbars/Navbar1";
 import Navbar2 from "@/components/navbars/ModernNavbars/Navbar2";
 import Navbar3 from "@/components/navbars/ModernNavbars/Navbar3";
 import Navbar4 from "@/components/navbars/ModernNavbars/Navbar4";
 import Navbar5 from "@/components/navbars/ModernNavbars/Navbar5";
 import Navbar6 from "@/components/navbars/ModernNavbars/Navbar6";
-import Hero1 from "@/components/heroes/ModernHero/Hero1";
-import Hero2 from "@/components/heroes/ModernHero/Hero2";
-import Hero3 from "@/components/heroes/ModernHero/Hero3";
-import Hero4 from "@/components/heroes/ModernHero/Hero4";
-import Hero5 from "@/components/heroes/ModernHero/Hero5";
-import Hero6 from "@/components/heroes/ModernHero/Hero6";
-import Hero7 from "@/components/heroes/CreativeHero/Hero1";
+import Hero1 from "@/components/heroes/ModernHeroes/Hero1";
+import Hero2 from "@/components/heroes/ModernHeroes/Hero2";
+import Hero3 from "@/components/heroes/ModernHeroes/Hero3";
+import Hero4 from "@/components/heroes/ModernHeroes/Hero4";
+import Hero5 from "@/components/heroes/ModernHeroes/Hero5";
+import Hero6 from "@/components/heroes/ModernHeroes/Hero6";
+import Hero7 from "@/components/heroes/CreativeHeroes/Hero1";
 
 interface SelectedComponents {
   navbar: string;
@@ -67,15 +66,13 @@ export default function EditorPage() {
         const parsedData = JSON.parse(savedComponents) as SelectedComponents;
         setNavbar(parsedData.navbar);
         setSelectedComponents(parsedData);
-      } catch (error) {
-        console.error("Error loading selected components:", error);
+      } catch {
       }
     }
   }, [setNavbar]);
 
   const handleEditDownload = async () => {
     if (!selectedComponents.navbar && !selectedComponents.hero) {
-      console.warn("⚠️ No components selected.");
       return;
     }
 
@@ -117,9 +114,8 @@ export default function EditorPage() {
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
-    } catch (error) {
-      console.error("❌ Download failed:", error);
-      alert("Download failed. Check console for details.");
+    } catch {
+      alert("Download failed.");
     } finally {
       setIsDownloading(false);
     }
@@ -152,7 +148,6 @@ export default function EditorPage() {
 
     return (
       <>
-        <Navbar />
         <div className="flex h-screen w-full">
           {/* Preview Area */}
           <div className="w-2/3 p-5 bg-gray-100 overflow-y-auto space-y-6">
@@ -206,8 +201,7 @@ export default function EditorPage() {
         </div>
       </>
     );
-  } catch (error) {
-    console.error("❌ Upload failed:", error);
-    alert("Upload failed. Check console for details.");
+  } catch {
+    alert("Upload failed.");
   }
 }

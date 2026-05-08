@@ -1,10 +1,40 @@
 import { NextResponse } from "next/server";
-import fs from "fs";
-import path from "path";
+import { z } from "zod";
+import { isGuardFailure, requireAuthenticatedUser } from "@/lib/server/auth";
+
+interface GeminiResponse {
+  candidates?: Array<{
+    content?: {
+      parts?: Array<{
+        text?: string;
+      }>;
+    };
+  }>;
+  error?: {
+    message?: string;
+  };
+}
+
+const generateSchema = z.object({
+  prompt: z.string().trim().min(10).max(2000),
+  type: z
+    .enum(["navbar", "hero", "experience", "project", "footer", "section"])
+    .default("section"),
+});
 
 export async function POST(req: Request) {
   try {
-    const { prompt, type } = await req.json();
+    const guard = await requireAuthenticatedUser();
+    if (isGuardFailure(guard)) {
+      return guard.response;
+    }
+
+    const parsed = generateSchema.safeParse(await req.json());
+    if (!parsed.success) {
+      return NextResponse.json({ error: "Invalid generation request" }, { status: 400 });
+    }
+
+    const { prompt, type } = parsed.data;
 
     const apiKey = process.env.GEMINI_API_KEY;
     if (!apiKey) {
@@ -34,7 +64,6 @@ User Description:
 ${prompt}
 `;
 
-    // ---------------- GEMINI CALL ----------------
     const response = await fetch(
       `https://generativelanguage.googleapis.com/v1/models/gemini-2.0-flash:generateContent?key=${apiKey}`,
       {
@@ -54,63 +83,36 @@ ${prompt}
       }
     );
 
-    // -------- SAFE RESPONSE PARSING --------
-    let data: any = null;
     const raw = await response.text();
+    let data: GeminiResponse | null = null;
 
     try {
       data = raw ? JSON.parse(raw) : null;
     } catch {
-      console.error("🔴 Non-JSON Gemini response:", raw);
+      return NextResponse.json({ error: "Invalid AI provider response" }, { status: 502 });
     }
 
     if (!response.ok) {
-      console.error("🔴 Gemini API Error:", raw);
       throw new Error(data?.error?.message || "Gemini API request failed");
     }
 
-    if (!data?.candidates?.length) {
-      console.error("⚠️ Empty Gemini output:", raw);
-      throw new Error("Gemini returned empty output");
-    }
-
-    let generatedCode =
-      data.candidates?.[0]?.content?.parts?.[0]?.text || "";
+    const generatedCode = data?.candidates?.[0]?.content?.parts?.[0]?.text
+      ?.replace(/```[a-zA-Z]*\n?/g, "")
+      .replace(/```/g, "")
+      .trim();
 
     if (!generatedCode) {
       throw new Error("No code returned by Gemini");
     }
 
-    // -------- CLEAN MARKDOWN BLOCKS --------
-    generatedCode = generatedCode
-      .replace(/```[a-zA-Z]*\n?/g, "")
-      .replace(/```/g, "")
-      .trim();
-
-    // -------- WRITE FILE SAFELY --------
-    const generatedPath = path.resolve(
-      process.cwd(),
-      "src/components/generated/AIComponent.tsx"
-    );
-
-    const dir = path.dirname(generatedPath);
-    if (!fs.existsSync(dir)) {
-      fs.mkdirSync(dir, { recursive: true });
-    }
-
-    fs.writeFileSync(generatedPath, generatedCode);
-
     return NextResponse.json({
       success: true,
-      message: "Component forged in the fire of AI.",
       code: generatedCode,
     });
+  } catch (error: unknown) {
+    const errorMessage =
+      error instanceof Error ? error.message : "Failed to generate component";
 
-  } catch (error: any) {
-    console.error("❌ Generation Error:", error.message || error);
-    return NextResponse.json(
-      { error: error.message || "Failed to generate component" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: errorMessage }, { status: 500 });
   }
 }

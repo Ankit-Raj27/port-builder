@@ -1,73 +1,73 @@
-'use client'
+"use client";
 
-import { useEffect, useState } from 'react'
-import axios from 'axios'
-import { useRouter } from 'next/navigation'
-import { useUser } from '@clerk/nextjs'
-import { toast } from 'react-toastify'
+import axios from "axios";
+import { useUser } from "@clerk/nextjs";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 interface Props {
-  amount: number // Amount in INR
-  setLoading: (value: boolean) => void
+  amount: number; // Display-only amount in INR. Server decides the trusted price.
+  setLoading: (value: boolean) => void;
 }
 
-export default function PaymentButton({ setLoading, amount }: Props) {
-  const router = useRouter()
-  const [isRazorpayLoaded, setIsRazorpayLoaded] = useState(false)
-  const { user } = useUser()
+export default function PaymentButton({ setLoading }: Props) {
+  const router = useRouter();
+  const [isRazorpayLoaded, setIsRazorpayLoaded] = useState(false);
+  const { user } = useUser();
 
   useEffect(() => {
-    const script = document.createElement('script')
-    script.src = 'https://checkout.razorpay.com/v1/checkout.js'
-    script.async = true
-    script.onload = () => setIsRazorpayLoaded(true)
-    document.body.appendChild(script)
+    const script = document.createElement("script");
+    script.src = "https://checkout.razorpay.com/v1/checkout.js";
+    script.async = true;
+    script.onload = () => setIsRazorpayLoaded(true);
+    document.body.appendChild(script);
 
     return () => {
-      document.body.removeChild(script)
-    }
-  }, [])
+      document.body.removeChild(script);
+    };
+  }, []);
 
   const handlePayment = async () => {
-    setLoading(true)
+    setLoading(true);
 
     if (!user) {
-      alert('Please log in to proceed with payment.')
-      setLoading(false)
-      return
+      alert("Please log in to proceed with payment.");
+      setLoading(false);
+      return;
     }
 
     if (!isRazorpayLoaded) {
-      alert('Razorpay not loaded. Please try again.')
-      setLoading(false)
-      return
+      alert("Razorpay not loaded. Please try again.");
+      setLoading(false);
+      return;
     }
 
     try {
-      const { data } = await axios.post('/api/razorpay/create-order', {
-        amount: amount * 100, // Convert to paise
-        email: user?.emailAddresses[0]?.emailAddress,
-      })
+      const { data } = await axios.post("/api/razorpay/create-order", {
+        planId: "pro",
+      });
 
       const razorpay = new (window as unknown as WindowWithRazorpay).Razorpay({
         key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID!,
         amount: data.amount,
         currency: data.currency,
-        name: 'PortBuilder',
-        description: 'One-Time Payment',
+        name: "PortBuilder",
+        description: "One-Time Payment",
         order_id: data.id,
-        handler: () => {
-          toast.success('Payment successful!')
-          setLoading(false)
-          router.push('/template')
+        handler: async (response) => {
+          await axios.post("/api/razorpay/verify-payment", response);
+          toast.success("Payment successful!");
+          setLoading(false);
+          router.push("/template");
         },
         prefill: {
-          name: `${user?.firstName ?? ''} ${user?.lastName ?? ''}`.trim(),
-          email: user?.emailAddresses[0]?.emailAddress ?? '',
-          contact: '',
+          name: `${user?.firstName ?? ""} ${user?.lastName ?? ""}`.trim(),
+          email: user?.emailAddresses[0]?.emailAddress ?? "",
+          contact: "",
         },
         theme: {
-          color: '#000',
+          color: "#000",
         },
         method: {
           card: true,
@@ -77,25 +77,25 @@ export default function PaymentButton({ setLoading, amount }: Props) {
         },
         modal: {
           ondismiss: () => {
-            toast.error('Payment popup closed without completing the payment')
-            setLoading(false)
+            toast.error("Payment popup closed without completing the payment");
+            setLoading(false);
           },
         },
-      })
+      });
 
-      razorpay.open()
+      razorpay.open();
     } catch (error: unknown) {
       const msg =
         axios.isAxiosError(error) && error.response?.data?.error !== undefined
           ? error.response.data.error
           : error instanceof Error
             ? error.message
-            : 'Unknown error occurred'
-      console.error('❌ Error:', msg)
-      alert(`❌ ${msg}`)
-      setLoading(false)
+            : "Unknown error occurred";
+
+      alert(msg);
+      setLoading(false);
     }
-  }
+  };
 
   return (
     <button
@@ -104,44 +104,44 @@ export default function PaymentButton({ setLoading, amount }: Props) {
     >
       Get Started
     </button>
-  )
+  );
 }
 
 interface WindowWithRazorpay extends Window {
-  Razorpay: new (options: RazorpayOrderOptions) => RazorpayInstance
+  Razorpay: new (options: RazorpayOrderOptions) => RazorpayInstance;
 }
 
 interface RazorpayInstance {
-  open: () => void
+  open: () => void;
 }
 
 interface RazorpayOrderOptions {
-  key: string
-  amount: number
-  currency: string
-  name: string
-  description: string
-  order_id: string
+  key: string;
+  amount: number;
+  currency: string;
+  name: string;
+  description: string;
+  order_id: string;
   handler: (response: {
-    razorpay_payment_id: string
-    razorpay_order_id: string
-    razorpay_signature: string
-  }) => void
+    razorpay_payment_id: string;
+    razorpay_order_id: string;
+    razorpay_signature: string;
+  }) => void | Promise<void>;
   prefill: {
-    name?: string
-    email: string
-    contact?: string
-  }
+    name?: string;
+    email: string;
+    contact?: string;
+  };
   theme?: {
-    color?: string
-  }
+    color?: string;
+  };
   method?: {
-    card?: boolean
-    netbanking?: boolean
-    upi?: boolean
-    wallet?: boolean
-  }
+    card?: boolean;
+    netbanking?: boolean;
+    upi?: boolean;
+    wallet?: boolean;
+  };
   modal?: {
-    ondismiss?: () => void
-  }
+    ondismiss?: () => void;
+  };
 }

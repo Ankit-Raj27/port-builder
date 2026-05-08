@@ -4,6 +4,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { motion } from "framer-motion"
 import { Github, Twitter, Linkedin, Mail, ArrowUpRight, Sparkles } from "lucide-react"
+import { usePathname } from "next/navigation"
 
 const footerLinks = {
   product: [
@@ -37,7 +38,13 @@ const socialLinks = [
   { icon: <Mail className="w-5 h-5" />, href: "mailto:hello@portbuilder.com", label: "Email" },
 ]
 
-const Footer = () => {
+const Footer = ({ isMain = false }: { isMain?: boolean }) => {
+  const pathname = usePathname()
+  
+  // Hide main footer on editor and studio pages if isMain is true
+  const isHiddenPage = pathname?.includes('/editor') || pathname?.includes('/studio')
+  if (isMain && isHiddenPage) return null
+
   return (
     <footer className="relative bg-[#000] overflow-hidden">
       {/* Background effects */}
